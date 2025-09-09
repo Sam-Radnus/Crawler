@@ -1,0 +1,124 @@
+2025-09-09 22:40:34,799 - web_crawler - INFO - Web crawler initialized successfully
+2025-09-09 22:40:34,799 - web_crawler - INFO - Starting web crawler...
+2025-09-09 22:40:35,349 - web_crawler - INFO - Added seed URL: https://youtube.com
+2025-09-09 22:40:37,460 - web_crawler - INFO - Added seed URL: https://httpbin.org
+2025-09-09 22:40:37,460 - web_crawler - INFO - Crawling: https://youtube.com
+2025-09-09 22:40:39,022 - web_crawler - INFO - Crawling: https://httpbin.org
+2025-09-09 22:40:44,796 - web_crawler - INFO - ============================================================
+2025-09-09 22:40:44,797 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-09 22:40:44,797 - web_crawler - INFO - ============================================================
+2025-09-09 22:40:44,797 - web_crawler - INFO - Runtime: 10.0 seconds
+2025-09-09 22:40:44,798 - web_crawler - INFO - Pages crawled: 1
+2025-09-09 22:40:44,798 - web_crawler - INFO - Successful: 1
+2025-09-09 22:40:44,798 - web_crawler - INFO - Failed: 0
+2025-09-09 22:40:44,798 - web_crawler - INFO - Links found: 13
+2025-09-09 22:40:44,798 - web_crawler - INFO - Queue size: 12
+2025-09-09 22:40:44,798 - web_crawler - INFO - Errors: 0
+2025-09-09 22:40:44,799 - web_crawler - INFO - Robots blocked: 1
+2025-09-09 22:40:44,799 - web_crawler - INFO - Overall rate: 0.10 pages/sec
+2025-09-09 22:40:44,799 - web_crawler - INFO - Recent rate: 0.10 pages/sec
+2025-09-09 22:40:44,799 - web_crawler - INFO - Success rate: 100.0%
+2025-09-09 22:40:44,799 - web_crawler - INFO - ============================================================
+2025-09-09 22:40:54,804 - web_crawler - INFO - ============================================================
+2025-09-09 22:40:54,805 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-09 22:40:54,805 - web_crawler - INFO - ============================================================
+2025-09-09 22:40:54,805 - web_crawler - INFO - Runtime: 20.0 seconds
+2025-09-09 22:40:54,805 - web_crawler - INFO - Pages crawled: 2
+2025-09-09 22:40:54,805 - web_crawler - INFO - Successful: 2
+2025-09-09 22:40:54,805 - web_crawler - INFO - Failed: 0
+2025-09-09 22:40:54,805 - web_crawler - INFO - Links found: 17
+2025-09-09 22:40:54,805 - web_crawler - INFO - Queue size: 12
+2025-09-09 22:40:54,805 - web_crawler - INFO - Errors: 0
+2025-09-09 22:40:54,805 - web_crawler - INFO - Robots blocked: 1
+2025-09-09 22:40:54,805 - web_crawler - INFO - Overall rate: 0.10 pages/sec
+2025-09-09 22:40:54,805 - web_crawler - INFO - Recent rate: 0.10 pages/sec
+2025-09-09 22:40:54,805 - web_crawler - INFO - Success rate: 100.0%
+2025-09-09 22:40:54,805 - web_crawler - INFO - ============================================================
+2025-09-09 22:40:55,694 - web_crawler - INFO - Crawling: https://www.youtube.com/ads
+2025-09-09 22:40:56,834 - web_crawler - INFO - Crawling: https://youtube.com/
+2025-09-09 22:40:58,183 - web_crawler - INFO - Crawling: https://youtube.com/new
+2025-09-09 22:40:59,516 - web_crawler - INFO - Crawling: https://www.youtube.com/howyoutubeworks?utm_campaign=ytgen&utm_source=ythp&utm_medium=LeftNav&utm_content=txt&u=https%3A%2F%2Fwww.youtube.com%2Fhowyoutubeworks%3Futm_source%3Dythp%26utm_medium%3DLeftNav%26utm_campaign%3Dytgen
+2025-09-09 22:41:00,630 - web_crawler - INFO - Crawling: https://www.youtube.com/about
+2025-09-09 22:41:02,019 - web_crawler - INFO - Crawling: https://www.youtube.com/about/copyright
+2025-09-09 22:41:03,221 - web_crawler - INFO - Crawling: https://www.youtube.com/about/policies
+2025-09-09 22:41:04,427 - web_crawler - INFO - Crawling: https://developers.google.com/youtube
+2025-09-09 22:41:04,811 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:04,811 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-09 22:41:04,812 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:04,812 - web_crawler - INFO - Runtime: 30.0 seconds
+2025-09-09 22:41:04,812 - web_crawler - INFO - Pages crawled: 9
+2025-09-09 22:41:04,812 - web_crawler - INFO - Successful: 9
+2025-09-09 22:41:04,812 - web_crawler - INFO - Failed: 0
+2025-09-09 22:41:04,812 - web_crawler - INFO - Links found: 138
+2025-09-09 22:41:04,813 - web_crawler - INFO - Queue size: 72
+2025-09-09 22:41:04,814 - web_crawler - INFO - Errors: 0
+2025-09-09 22:41:04,814 - web_crawler - INFO - Robots blocked: 3
+2025-09-09 22:41:04,814 - web_crawler - INFO - Overall rate: 0.30 pages/sec
+2025-09-09 22:41:04,814 - web_crawler - INFO - Recent rate: 0.70 pages/sec
+2025-09-09 22:41:04,814 - web_crawler - INFO - Success rate: 100.0%
+2025-09-09 22:41:04,814 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:06,129 - web_crawler - INFO - Crawling: https://youtube.com/t/contact_us
+2025-09-09 22:41:07,759 - web_crawler - INFO - Crawling: https://youtube.com/t/privacy
+2025-09-09 22:41:09,373 - web_crawler - INFO - Crawling: https://www.youtube.com/creators
+2025-09-09 22:41:10,676 - web_crawler - INFO - Crawling: https://www.youtube.com/about/press
+2025-09-09 22:41:12,386 - web_crawler - INFO - Crawling: https://github.com/rochacbruno/flasgger
+2025-09-09 22:41:14,819 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:14,822 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-09 22:41:14,822 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:14,822 - web_crawler - INFO - Runtime: 40.0 seconds
+2025-09-09 22:41:14,822 - web_crawler - INFO - Pages crawled: 15
+2025-09-09 22:41:14,822 - web_crawler - INFO - Successful: 15
+2025-09-09 22:41:14,822 - web_crawler - INFO - Failed: 0
+2025-09-09 22:41:14,822 - web_crawler - INFO - Links found: 555
+2025-09-09 22:41:14,822 - web_crawler - INFO - Queue size: 297
+2025-09-09 22:41:14,822 - web_crawler - INFO - Errors: 0
+2025-09-09 22:41:14,822 - web_crawler - INFO - Robots blocked: 5
+2025-09-09 22:41:14,823 - web_crawler - INFO - Overall rate: 0.37 pages/sec
+2025-09-09 22:41:14,823 - web_crawler - INFO - Recent rate: 0.60 pages/sec
+2025-09-09 22:41:14,823 - web_crawler - INFO - Success rate: 100.0%
+2025-09-09 22:41:14,823 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:14,914 - web_crawler - INFO - Crawling: https://github.com/requests/httpbin
+2025-09-09 22:41:17,274 - web_crawler - INFO - Crawling: https://kennethreitz.org
+2025-09-09 22:41:19,145 - web_crawler - INFO - Crawling: https://httpbin.org/forms/post
+2025-09-09 22:41:22,923 - web_crawler - INFO - Crawling: https://www.youtube.com/intl/ALL_in/howyoutubeworks/recommendations
+2025-09-09 22:41:24,365 - web_crawler - INFO - Crawling: https://www.youtube.com/intl/ALL_in/howyoutubeworks/ai
+2025-09-09 22:41:24,828 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:24,828 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-09 22:41:24,828 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:24,828 - web_crawler - INFO - Runtime: 50.0 seconds
+2025-09-09 22:41:24,829 - web_crawler - INFO - Pages crawled: 20
+2025-09-09 22:41:24,829 - web_crawler - INFO - Successful: 20
+2025-09-09 22:41:24,829 - web_crawler - INFO - Failed: 0
+2025-09-09 22:41:24,829 - web_crawler - INFO - Links found: 767
+2025-09-09 22:41:24,829 - web_crawler - INFO - Queue size: 568
+2025-09-09 22:41:24,829 - web_crawler - INFO - Errors: 0
+2025-09-09 22:41:24,829 - web_crawler - INFO - Robots blocked: 5
+2025-09-09 22:41:24,829 - web_crawler - INFO - Overall rate: 0.40 pages/sec
+2025-09-09 22:41:24,829 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-09 22:41:24,829 - web_crawler - INFO - Success rate: 100.0%
+2025-09-09 22:41:24,829 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:25,583 - web_crawler - INFO - Crawling: https://blog.youtube/inside-youtube/our-big-bets-for-2025
+2025-09-09 22:41:27,268 - web_crawler - INFO - Crawling: https://blog.youtube/news-and-events/2025-youth-digital-wellbeing-pact
+2025-09-09 22:41:28,995 - web_crawler - INFO - Crawling: https://blog.youtube/news-and-events/happy-birthday-youtube-20
+2025-09-09 22:41:30,678 - web_crawler - INFO - Crawling: https://www.youtube.com/intl/ALL_in/howyoutubeworks/elections
+2025-09-09 22:41:31,903 - web_crawler - INFO - Crawling: https://www.youtube.com/intl/ALL_in/howyoutubeworks/kids-and-teens
+2025-09-09 22:41:33,155 - web_crawler - INFO - Crawling: https://www.youtube.com/intl/ALL_in/howyoutubeworks/creator-economy
+2025-09-09 22:41:33,258 - web_crawler - INFO - Crawling interrupted by user
+2025-09-09 22:41:33,258 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:33,258 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-09 22:41:33,258 - web_crawler - INFO - ============================================================
+2025-09-09 22:41:33,259 - web_crawler - INFO - pages_crawled: 25
+2025-09-09 22:41:33,259 - web_crawler - INFO - pages_successful: 25
+2025-09-09 22:41:33,259 - web_crawler - INFO - pages_failed: 0
+2025-09-09 22:41:33,259 - web_crawler - INFO - links_found: 1056
+2025-09-09 22:41:33,259 - web_crawler - INFO - queue_size: 688
+2025-09-09 22:41:33,259 - web_crawler - INFO - errors: 0
+2025-09-09 22:41:33,259 - web_crawler - INFO - robots_blocked: 5
+2025-09-09 22:41:33,259 - web_crawler - INFO - last_pages_crawled: 20
+2025-09-09 22:41:33,262 - web_crawler - INFO - Storage Statistics:
+2025-09-09 22:41:33,262 - web_crawler - INFO -   total_pages: 25
+2025-09-09 22:41:33,262 - web_crawler - INFO -   successful_pages: 25
+2025-09-09 22:41:33,262 - web_crawler - INFO -   failed_pages: 0
+2025-09-09 22:41:33,262 - web_crawler - INFO -   success_rate: 100.0
+2025-09-09 22:41:33,262 - web_crawler - INFO -   domain_distribution: {'www.youtube.com': 11, 'youtube.com': 5, 'blog.youtube': 3, 'github.com': 2, 'httpbin.org': 2, 'developers.google.com': 1, 'kennethreitz.org': 1}
+2025-09-09 22:41:33,262 - web_crawler - INFO - ============================================================
