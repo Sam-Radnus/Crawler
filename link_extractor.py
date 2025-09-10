@@ -4,7 +4,7 @@ Link Extractor - Extract and normalize <a href> links from HTML
 import re
 import logging
 from urllib.parse import urljoin, urlparse, urlunparse
-from typing import Set, List, Optional
+from typing import Set, Optional
 from bs4 import BeautifulSoup
 
 

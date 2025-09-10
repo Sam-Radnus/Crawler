@@ -2,7 +2,7 @@
 URL Seen - HashSet and Bloom filter for URL deduplication
 """
 import logging
-from typing import Set, Optional
+from typing import Set
 from pybloom_live import BloomFilter
 
 

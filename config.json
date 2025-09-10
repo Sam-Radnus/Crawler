@@ -1,15 +1,14 @@
 {
     "seed_urls": [
-        "https://youtube.com",
-        "https://httpbin.org"
+        "https://tbpn.com"
     ],
-    "max_pages": 100,
+    "max_pages": 50,
     "delay_between_requests": 1.0,
     "timeout": 10,
     "max_retries": 3,
     "user_agent": "WebCrawler/1.0",
     "respect_robots": true,
-    "max_queue_size": 1000,
+    "max_queue_size": 100,
     "stats_interval": 10,
     "output_dir": "crawled_data",
     "db_path": "crawler.db"

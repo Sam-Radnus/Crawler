@@ -3,10 +3,8 @@ Web Crawler - Main orchestrator for the web crawling system
 """
 import json
 import time
-import os
 import logging
-from typing import Dict, Any, Set
-from urllib.parse import urlparse
+from typing import Dict, Any
 
 from url_frontier import URLFrontier
 from html_downloader import HTMLDownloader
