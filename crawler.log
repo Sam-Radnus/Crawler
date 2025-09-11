@@ -447,3 +447,292 @@
 2025-09-10 22:15:19,776 - web_crawler - INFO -   success_rate: 100.0
 2025-09-10 22:15:19,776 - web_crawler - INFO -   domain_distribution: {'podcasts.apple.com': 21, 'www.youtube.com': 11, 'youtube.com': 6, 'blog.youtube': 3, 'www.instagram.com': 3, 'www.linkedin.com': 3, 'x.com': 3, 'github.com': 2, 'httpbin.org': 2, 'dayjob.work': 1}
 2025-09-10 22:15:19,776 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:16,386 - web_crawler - INFO - Web crawler initialized successfully
+2025-09-11 22:18:16,386 - web_crawler - INFO - Starting web crawler...
+2025-09-11 22:18:17,051 - web_crawler - INFO - Added seed URL: https://tbpn.com
+2025-09-11 22:18:17,051 - web_crawler - INFO - Crawling: https://tbpn.com
+2025-09-11 22:18:18,907 - web_crawler - INFO - Crawling: http://johncoogan.com
+2025-09-11 22:18:21,679 - web_crawler - INFO - Crawling: https://www.linkedin.com/company/tbpn
+2025-09-11 22:18:22,703 - web_crawler - WARNING - Queue full, cannot add: https://www.linkedin.com/signup/cold-join?session_redirect=https%3A%2F%2Fwww%2Elinkedin%2Ecom%2Fcompany%2Ftbpn&trk=public_biz_promo-join
+2025-09-11 22:18:23,709 - web_crawler - INFO - Crawling: https://linear.app/
+2025-09-11 22:18:24,654 - web_crawler - WARNING - Queue full, cannot add: https://linear.app/security/vulnerability
+2025-09-11 22:18:25,660 - web_crawler - INFO - Crawling: https://www.vanta.com/
+2025-09-11 22:18:26,077 - web_crawler - WARNING - Queue full, cannot add: https://help.vanta.com/hc/en-us/articles/360052045891-Product-Updates
+2025-09-11 22:18:26,389 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:26,390 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:18:26,390 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:26,390 - web_crawler - INFO - Runtime: 10.0 seconds
+2025-09-11 22:18:26,390 - web_crawler - INFO - Pages crawled: 5
+2025-09-11 22:18:26,390 - web_crawler - INFO - Successful: 5
+2025-09-11 22:18:26,391 - web_crawler - INFO - Failed: 0
+2025-09-11 22:18:26,391 - web_crawler - INFO - Links found: 302
+2025-09-11 22:18:26,391 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:18:26,391 - web_crawler - INFO - Errors: 0
+2025-09-11 22:18:26,391 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:18:26,391 - web_crawler - INFO - Overall rate: 0.50 pages/sec
+2025-09-11 22:18:26,392 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-11 22:18:26,392 - web_crawler - INFO - Success rate: 100.0%
+2025-09-11 22:18:26,392 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:27,083 - web_crawler - INFO - Crawling: https://www.eightsleep.com/
+2025-09-11 22:18:27,425 - web_crawler - WARNING - Queue full, cannot add: https://www.eightsleep.com/wall-of-love
+2025-09-11 22:18:28,431 - web_crawler - INFO - Crawling: https://www.instagram.com/jordihays?hl=en
+2025-09-11 22:18:30,823 - web_crawler - INFO - Crawling: https://x.com/johncoogan?ref=johncoogan.com
+2025-09-11 22:18:31,326 - web_crawler - WARNING - Queue full, cannot add: https://support.x.com/articles/20170514
+2025-09-11 22:18:32,332 - web_crawler - INFO - Crawling: https://podcasts.apple.com/us/podcast/tbpn-live/id1772360235
+2025-09-11 22:18:35,183 - web_crawler - WARNING - Queue full, cannot add: https://podcasts.apple.com/eg/browse
+2025-09-11 22:18:36,189 - web_crawler - INFO - Crawling: https://shop.getbezel.com
+2025-09-11 22:18:36,397 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:36,398 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:18:36,398 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:36,398 - web_crawler - INFO - Runtime: 20.0 seconds
+2025-09-11 22:18:36,399 - web_crawler - INFO - Pages crawled: 9
+2025-09-11 22:18:36,399 - web_crawler - INFO - Successful: 9
+2025-09-11 22:18:36,399 - web_crawler - INFO - Failed: 0
+2025-09-11 22:18:36,399 - web_crawler - INFO - Links found: 537
+2025-09-11 22:18:36,399 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:18:36,399 - web_crawler - INFO - Errors: 0
+2025-09-11 22:18:36,400 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:18:36,400 - web_crawler - INFO - Overall rate: 0.45 pages/sec
+2025-09-11 22:18:36,400 - web_crawler - INFO - Recent rate: 0.40 pages/sec
+2025-09-11 22:18:36,400 - web_crawler - INFO - Success rate: 100.0%
+2025-09-11 22:18:36,400 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:38,208 - web_crawler - INFO - Crawling: https://www.numeralhq.com/
+2025-09-11 22:18:38,706 - web_crawler - WARNING - Queue full, cannot add: https://www.numeralhq.com/customers/kitsch
+2025-09-11 22:18:39,711 - web_crawler - INFO - Crawling: https://www.instagram.com/tbpnlive
+2025-09-11 22:18:41,759 - web_crawler - INFO - Crawling: https://dayjob.work
+2025-09-11 22:18:43,270 - web_crawler - INFO - Crawling: https://www.wander.com
+2025-09-11 22:18:44,545 - web_crawler - WARNING - Queue full, cannot add: https://www.wander.com/branded
+2025-09-11 22:18:45,551 - web_crawler - INFO - Crawling: https://ramp.com
+2025-09-11 22:18:46,404 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:46,405 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:18:46,405 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:46,405 - web_crawler - INFO - Runtime: 30.0 seconds
+2025-09-11 22:18:46,405 - web_crawler - INFO - Pages crawled: 14
+2025-09-11 22:18:46,405 - web_crawler - INFO - Successful: 14
+2025-09-11 22:18:46,405 - web_crawler - INFO - Failed: 0
+2025-09-11 22:18:46,405 - web_crawler - INFO - Links found: 588
+2025-09-11 22:18:46,406 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:18:46,406 - web_crawler - INFO - Errors: 0
+2025-09-11 22:18:46,406 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:18:46,406 - web_crawler - INFO - Overall rate: 0.47 pages/sec
+2025-09-11 22:18:46,406 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-11 22:18:46,406 - web_crawler - INFO - Success rate: 100.0%
+2025-09-11 22:18:46,406 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:47,042 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/careers
+2025-09-11 22:18:48,048 - web_crawler - INFO - Crawling: https://www.linkedin.com/in/jordi-hays-559199113
+2025-09-11 22:18:56,412 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:56,412 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:18:56,412 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:56,413 - web_crawler - INFO - Runtime: 40.0 seconds
+2025-09-11 22:18:56,413 - web_crawler - INFO - Pages crawled: 15
+2025-09-11 22:18:56,413 - web_crawler - INFO - Successful: 15
+2025-09-11 22:18:56,413 - web_crawler - INFO - Failed: 0
+2025-09-11 22:18:56,413 - web_crawler - INFO - Links found: 678
+2025-09-11 22:18:56,413 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:18:56,414 - web_crawler - INFO - Errors: 0
+2025-09-11 22:18:56,414 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:18:56,414 - web_crawler - INFO - Overall rate: 0.37 pages/sec
+2025-09-11 22:18:56,414 - web_crawler - INFO - Recent rate: 0.10 pages/sec
+2025-09-11 22:18:56,414 - web_crawler - INFO - Success rate: 100.0%
+2025-09-11 22:18:56,414 - web_crawler - INFO - ============================================================
+2025-09-11 22:18:56,479 - web_crawler - ERROR - Failed to download: https://www.linkedin.com/in/jordi-hays-559199113
+2025-09-11 22:18:57,483 - web_crawler - INFO - Crawling: https://www.adquick.com
+2025-09-11 22:19:01,680 - web_crawler - WARNING - Queue full, cannot add: https://www.adquick.com/billboard-locations/texas/arlington
+2025-09-11 22:19:02,686 - web_crawler - INFO - Crawling: https://polymarket.com/
+2025-09-11 22:19:04,421 - web_crawler - WARNING - Queue full, cannot add: https://polymarket.com/event/republican-presidential-nominee-2028/will-marco-rubio-win-the-2028-republican-presidential-nomination
+2025-09-11 22:19:05,427 - web_crawler - INFO - Crawling: https://www.figma.com/
+2025-09-11 22:19:06,308 - web_crawler - WARNING - Queue full, cannot add: https://www.figma.com/release-notes
+2025-09-11 22:19:06,416 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:06,416 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:19:06,416 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:06,416 - web_crawler - INFO - Runtime: 50.0 seconds
+2025-09-11 22:19:06,416 - web_crawler - INFO - Pages crawled: 19
+2025-09-11 22:19:06,416 - web_crawler - INFO - Successful: 18
+2025-09-11 22:19:06,416 - web_crawler - INFO - Failed: 1
+2025-09-11 22:19:06,416 - web_crawler - INFO - Links found: 1054
+2025-09-11 22:19:06,416 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:19:06,416 - web_crawler - INFO - Errors: 1
+2025-09-11 22:19:06,416 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:19:06,417 - web_crawler - INFO - Overall rate: 0.38 pages/sec
+2025-09-11 22:19:06,417 - web_crawler - INFO - Recent rate: 0.40 pages/sec
+2025-09-11 22:19:06,417 - web_crawler - INFO - Success rate: 94.7%
+2025-09-11 22:19:06,417 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:07,314 - web_crawler - INFO - Crawling: https://open.spotify.com/show/2L6WMqY3GUPCGBD0dX6p00?si=d9f5b424754548c1
+2025-09-11 22:19:08,767 - web_crawler - INFO - Crawling: http://youtube.com/@tbpnlive
+2025-09-11 22:19:10,009 - web_crawler - WARNING - Queue full, cannot add: http://youtube.com/new
+2025-09-11 22:19:11,015 - web_crawler - INFO - Crawling: https://x.com/tbpn
+2025-09-11 22:19:11,553 - web_crawler - WARNING - Queue full, cannot add: https://legal.twitter.com/imprint.html
+2025-09-11 22:19:12,559 - web_crawler - INFO - Crawling: https://public.com
+2025-09-11 22:19:13,897 - web_crawler - WARNING - Queue full, cannot add: https://help.public.com
+2025-09-11 22:19:14,903 - web_crawler - INFO - Crawling: https://www.instagram.com/johncoogan
+2025-09-11 22:19:16,422 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:16,422 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:19:16,423 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:16,423 - web_crawler - INFO - Runtime: 60.0 seconds
+2025-09-11 22:19:16,423 - web_crawler - INFO - Pages crawled: 24
+2025-09-11 22:19:16,423 - web_crawler - INFO - Successful: 23
+2025-09-11 22:19:16,424 - web_crawler - INFO - Failed: 1
+2025-09-11 22:19:16,424 - web_crawler - INFO - Links found: 1150
+2025-09-11 22:19:16,424 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:19:16,424 - web_crawler - INFO - Errors: 1
+2025-09-11 22:19:16,424 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:19:16,424 - web_crawler - INFO - Overall rate: 0.40 pages/sec
+2025-09-11 22:19:16,424 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-11 22:19:16,424 - web_crawler - INFO - Success rate: 95.8%
+2025-09-11 22:19:16,424 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:17,257 - web_crawler - INFO - Crawling: https://www.linkedin.com/in/jacoogan
+2025-09-11 22:19:25,656 - web_crawler - ERROR - Failed to download: https://www.linkedin.com/in/jacoogan
+2025-09-11 22:19:26,428 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:26,429 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:19:26,429 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:26,429 - web_crawler - INFO - Runtime: 70.0 seconds
+2025-09-11 22:19:26,429 - web_crawler - INFO - Pages crawled: 25
+2025-09-11 22:19:26,430 - web_crawler - INFO - Successful: 23
+2025-09-11 22:19:26,430 - web_crawler - INFO - Failed: 2
+2025-09-11 22:19:26,430 - web_crawler - INFO - Links found: 1150
+2025-09-11 22:19:26,430 - web_crawler - INFO - Queue size: 98
+2025-09-11 22:19:26,430 - web_crawler - INFO - Errors: 2
+2025-09-11 22:19:26,430 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:19:26,431 - web_crawler - INFO - Overall rate: 0.36 pages/sec
+2025-09-11 22:19:26,431 - web_crawler - INFO - Recent rate: 0.10 pages/sec
+2025-09-11 22:19:26,431 - web_crawler - INFO - Success rate: 92.0%
+2025-09-11 22:19:26,431 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:26,658 - web_crawler - INFO - Crawling: https://x.com/jordihays
+2025-09-11 22:19:29,555 - web_crawler - INFO - Crawling: http://jordihays.com
+2025-09-11 22:19:31,235 - web_crawler - WARNING - Queue full, cannot add: https://twitter.com/sarahchase
+2025-09-11 22:19:32,239 - web_crawler - INFO - Crawling: https://www.tiktok.com/@tbpn
+2025-09-11 22:19:32,644 - web_crawler - WARNING - Queue full, cannot add: https://www.tiktok.com/legal/terms-of-service
+2025-09-11 22:19:33,645 - web_crawler - INFO - Crawling: https://overcast.fm/itunes1772360235
+2025-09-11 22:19:35,714 - web_crawler - WARNING - Queue full, cannot add: https://overcast.fm/
+2025-09-11 22:19:36,436 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:36,437 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:19:36,437 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:36,437 - web_crawler - INFO - Runtime: 80.1 seconds
+2025-09-11 22:19:36,437 - web_crawler - INFO - Pages crawled: 29
+2025-09-11 22:19:36,437 - web_crawler - INFO - Successful: 27
+2025-09-11 22:19:36,437 - web_crawler - INFO - Failed: 2
+2025-09-11 22:19:36,437 - web_crawler - INFO - Links found: 1176
+2025-09-11 22:19:36,437 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:19:36,437 - web_crawler - INFO - Errors: 2
+2025-09-11 22:19:36,437 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:19:36,437 - web_crawler - INFO - Overall rate: 0.36 pages/sec
+2025-09-11 22:19:36,437 - web_crawler - INFO - Recent rate: 0.40 pages/sec
+2025-09-11 22:19:36,437 - web_crawler - INFO - Success rate: 93.1%
+2025-09-11 22:19:36,437 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:36,715 - web_crawler - INFO - Crawling: https://www.johncoogan.com/life
+2025-09-11 22:19:43,199 - web_crawler - WARNING - Queue full, cannot add: https://twitter.com/johncoogan?ref=johncoogan.com
+2025-09-11 22:19:44,205 - web_crawler - INFO - Crawling: http://johncoogan.com/metaverse
+2025-09-11 22:19:45,563 - web_crawler - WARNING - Queue full, cannot add: https://neuralink.com/?ref=johncoogan.com
+2025-09-11 22:19:46,442 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:46,443 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:19:46,443 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:46,443 - web_crawler - INFO - Runtime: 90.1 seconds
+2025-09-11 22:19:46,443 - web_crawler - INFO - Pages crawled: 31
+2025-09-11 22:19:46,444 - web_crawler - INFO - Successful: 29
+2025-09-11 22:19:46,444 - web_crawler - INFO - Failed: 2
+2025-09-11 22:19:46,444 - web_crawler - INFO - Links found: 1211
+2025-09-11 22:19:46,444 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:19:46,444 - web_crawler - INFO - Errors: 2
+2025-09-11 22:19:46,444 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:19:46,445 - web_crawler - INFO - Overall rate: 0.34 pages/sec
+2025-09-11 22:19:46,445 - web_crawler - INFO - Recent rate: 0.20 pages/sec
+2025-09-11 22:19:46,445 - web_crawler - INFO - Success rate: 93.5%
+2025-09-11 22:19:46,445 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:46,569 - web_crawler - INFO - Crawling: http://johncoogan.com/how-to-get-a-job
+2025-09-11 22:19:48,528 - web_crawler - WARNING - Queue full, cannot add: https://www.johncoogan.com/experience
+2025-09-11 22:19:49,534 - web_crawler - INFO - Crawling: https://www.johncoogan.com/my-experience
+2025-09-11 22:19:51,079 - web_crawler - WARNING - Queue full, cannot add: https://twitter.com/johncoogan?ref=johncoogan.com
+2025-09-11 22:19:52,083 - web_crawler - INFO - Crawling: http://johncoogan.com/spaceryde
+2025-09-11 22:19:54,170 - web_crawler - WARNING - Queue full, cannot add: https://en.wikipedia.org/wiki/Northrop_Grumman_Pegasus?ref=johncoogan.com
+2025-09-11 22:19:55,176 - web_crawler - INFO - Crawling: http://johncoogan.com/page/2
+2025-09-11 22:19:56,450 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:56,451 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:19:56,451 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:56,451 - web_crawler - INFO - Runtime: 100.1 seconds
+2025-09-11 22:19:56,452 - web_crawler - INFO - Pages crawled: 34
+2025-09-11 22:19:56,452 - web_crawler - INFO - Successful: 32
+2025-09-11 22:19:56,452 - web_crawler - INFO - Failed: 2
+2025-09-11 22:19:56,452 - web_crawler - INFO - Links found: 1265
+2025-09-11 22:19:56,452 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:19:56,452 - web_crawler - INFO - Errors: 2
+2025-09-11 22:19:56,452 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:19:56,453 - web_crawler - INFO - Overall rate: 0.34 pages/sec
+2025-09-11 22:19:56,453 - web_crawler - INFO - Recent rate: 0.30 pages/sec
+2025-09-11 22:19:56,453 - web_crawler - INFO - Success rate: 94.1%
+2025-09-11 22:19:56,453 - web_crawler - INFO - ============================================================
+2025-09-11 22:19:56,625 - web_crawler - WARNING - Queue full, cannot add: http://johncoogan.com/how-airbnb-manages-to-do-business-in-china
+2025-09-11 22:19:57,630 - web_crawler - INFO - Crawling: https://www.johncoogan.com/podcasts
+2025-09-11 22:19:58,751 - web_crawler - WARNING - Queue full, cannot add: https://twitter.com/johncoogan?ref=johncoogan.com
+2025-09-11 22:19:59,757 - web_crawler - INFO - Crawling: http://johncoogan.com/peter-thiel-bitcoin
+2025-09-11 22:20:00,682 - web_crawler - WARNING - Queue full, cannot add: https://ee.stanford.edu/~hellman?ref=johncoogan.com
+2025-09-11 22:20:01,688 - web_crawler - INFO - Crawling: https://www.johncoogan.com/contact
+2025-09-11 22:20:03,859 - web_crawler - INFO - Crawling: http://johncoogan.com/boom-supersonic
+2025-09-11 22:20:04,786 - web_crawler - WARNING - Queue full, cannot add: https://www.linkedin.com/in/blakescholl?ref=johncoogan.com
+2025-09-11 22:20:05,792 - web_crawler - INFO - Crawling: https://x.com/johncoogan
+2025-09-11 22:20:06,454 - web_crawler - INFO - ============================================================
+2025-09-11 22:20:06,455 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:20:06,455 - web_crawler - INFO - ============================================================
+2025-09-11 22:20:06,455 - web_crawler - INFO - Runtime: 110.1 seconds
+2025-09-11 22:20:06,455 - web_crawler - INFO - Pages crawled: 40
+2025-09-11 22:20:06,455 - web_crawler - INFO - Successful: 38
+2025-09-11 22:20:06,455 - web_crawler - INFO - Failed: 2
+2025-09-11 22:20:06,455 - web_crawler - INFO - Links found: 1384
+2025-09-11 22:20:06,455 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:20:06,455 - web_crawler - INFO - Errors: 2
+2025-09-11 22:20:06,455 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:20:06,455 - web_crawler - INFO - Overall rate: 0.36 pages/sec
+2025-09-11 22:20:06,455 - web_crawler - INFO - Recent rate: 0.60 pages/sec
+2025-09-11 22:20:06,455 - web_crawler - INFO - Success rate: 95.0%
+2025-09-11 22:20:06,456 - web_crawler - INFO - ============================================================
+2025-09-11 22:20:07,184 - web_crawler - INFO - Crawling: https://www.johncoogan.com/community
+2025-09-11 22:20:09,396 - web_crawler - INFO - Crawling: http://johncoogan.com/discord-community
+2025-09-11 22:20:11,157 - web_crawler - WARNING - Queue full, cannot add: http://johncoogan.com/author/john
+2025-09-11 22:20:12,163 - web_crawler - INFO - Crawling: http://johncoogan.com/y-combinator-lessons
+2025-09-11 22:20:13,115 - web_crawler - WARNING - Queue full, cannot add: https://www.facebook.com/sharer.php?u=https://www.johncoogan.com/y-combinator-lessons/
+2025-09-11 22:20:14,121 - web_crawler - INFO - Crawling: http://johncoogan.com/facebook-vr
+2025-09-11 22:20:14,972 - web_crawler - WARNING - Queue full, cannot add: https://youtu.be/k8USncWsHIo?t=8&ref=johncoogan.com
+2025-09-11 22:20:15,978 - web_crawler - INFO - Crawling: https://ghost.org/
+2025-09-11 22:20:16,379 - web_crawler - WARNING - Queue full, cannot add: https://ghost.org/integrations/discourse
+2025-09-11 22:20:16,458 - web_crawler - INFO - ============================================================
+2025-09-11 22:20:16,458 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-11 22:20:16,458 - web_crawler - INFO - ============================================================
+2025-09-11 22:20:16,458 - web_crawler - INFO - Runtime: 120.1 seconds
+2025-09-11 22:20:16,458 - web_crawler - INFO - Pages crawled: 45
+2025-09-11 22:20:16,458 - web_crawler - INFO - Successful: 43
+2025-09-11 22:20:16,458 - web_crawler - INFO - Failed: 2
+2025-09-11 22:20:16,458 - web_crawler - INFO - Links found: 1534
+2025-09-11 22:20:16,458 - web_crawler - INFO - Queue size: 99
+2025-09-11 22:20:16,458 - web_crawler - INFO - Errors: 2
+2025-09-11 22:20:16,458 - web_crawler - INFO - Robots blocked: 0
+2025-09-11 22:20:16,458 - web_crawler - INFO - Overall rate: 0.37 pages/sec
+2025-09-11 22:20:16,459 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-11 22:20:16,459 - web_crawler - INFO - Success rate: 95.6%
+2025-09-11 22:20:16,459 - web_crawler - INFO - ============================================================
+2025-09-11 22:20:17,385 - web_crawler - INFO - Crawling: http://johncoogan.com/everything-is-free-now
+2025-09-11 22:20:19,257 - web_crawler - WARNING - Queue full, cannot add: http://johncoogan.com/author/john
+2025-09-11 22:20:20,261 - web_crawler - INFO - Crawling: https://www.johncoogan.com/
+2025-09-11 22:20:20,330 - web_crawler - WARNING - Queue full, cannot add: https://www.johncoogan.com/how-to-get-a-job
+2025-09-11 22:20:21,336 - web_crawler - INFO - Crawling: http://johncoogan.com/squid-game
+2025-09-11 22:20:22,294 - web_crawler - WARNING - Queue full, cannot add: http://johncoogan.com/author/john
+2025-09-11 22:20:23,299 - web_crawler - INFO - Crawling: https://www.johncoogan.com
+2025-09-11 22:20:23,373 - web_crawler - WARNING - Queue full, cannot add: https://www.johncoogan.com/y-combinator-lessons
+2025-09-11 22:20:24,378 - web_crawler - INFO - Crawling: https://www.linkedin.com/redir/redirect?url=https%3A%2F%2Ftbpn%2Ecom&urlhash=x100&trk=about_website
+2025-09-11 22:20:25,738 - web_crawler - INFO - Crawling completed. Total pages crawled: 50
+2025-09-11 22:20:25,739 - web_crawler - INFO - ============================================================
+2025-09-11 22:20:25,739 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-11 22:20:25,739 - web_crawler - INFO - ============================================================
+2025-09-11 22:20:25,739 - web_crawler - INFO - pages_crawled: 50
+2025-09-11 22:20:25,739 - web_crawler - INFO - pages_successful: 48
+2025-09-11 22:20:25,740 - web_crawler - INFO - pages_failed: 2
+2025-09-11 22:20:25,740 - web_crawler - INFO - links_found: 1612
+2025-09-11 22:20:25,740 - web_crawler - INFO - queue_size: 99
+2025-09-11 22:20:25,740 - web_crawler - INFO - errors: 2
+2025-09-11 22:20:25,741 - web_crawler - INFO - robots_blocked: 0
+2025-09-11 22:20:25,741 - web_crawler - INFO - last_pages_crawled: 45
+2025-09-11 22:20:25,744 - web_crawler - INFO - Storage Statistics:
+2025-09-11 22:20:25,744 - web_crawler - INFO -   total_pages: 96
+2025-09-11 22:20:25,744 - web_crawler - INFO -   successful_pages: 96
+2025-09-11 22:20:25,744 - web_crawler - INFO -   failed_pages: 0
+2025-09-11 22:20:25,745 - web_crawler - INFO -   success_rate: 100.0
+2025-09-11 22:20:25,745 - web_crawler - INFO -   domain_distribution: {'podcasts.apple.com': 21, 'johncoogan.com': 12, 'www.youtube.com': 11, 'www.johncoogan.com': 7, 'youtube.com': 6, 'www.linkedin.com': 4, 'x.com': 4, 'blog.youtube': 3, 'www.instagram.com': 3, 'github.com': 2}
+2025-09-11 22:20:25,745 - web_crawler - INFO - ============================================================

@@ -3,9 +3,8 @@ Web Crawler - Main orchestrator for the web crawling system
 """
 import json
 import time
-import logging
 from typing import Dict, Any
-
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from url_frontier import URLFrontier
 from html_downloader import HTMLDownloader
 from robots_parser import RobotsParser
@@ -25,6 +24,7 @@ class WebCrawler:
             log_level="INFO",
             stats_interval=self.config.get('stats_interval', 10)
         )
+        self.max_workers = self.config.get('max_workers', 3)
         
         # Initialize components
         self.url_frontier = URLFrontier(
@@ -113,40 +113,58 @@ class WebCrawler:
                 self.logger.log_warning(f"Invalid seed URL: {url}")
     
     def _crawl_loop(self):
-        """Main crawling loop"""
+        """Main crawling loop with producer–consumer pattern"""
         pages_crawled = 0
-        
-        while (self.is_crawling and 
-               not self.url_frontier.is_empty() and 
-               pages_crawled < self.max_pages):
-            
-            # Get next URL from frontier
-            url = self.url_frontier.get_url()
-            if not url:
-                break
-            
-            # Update queue size in stats
-            self.logger.update_queue_size(self.url_frontier.size())
-            
-            # Crawl the URL
-            success = self._crawl_url(url)
-            pages_crawled += 1
-            self.logger.increment_pages_crawled()
-            
-            if success:
-                self.logger.increment_pages_successful()
-            else:
-                self.logger.increment_pages_failed()
-            
-            # Respect crawl delay
-            if self.respect_robots:
-                delay = self.robots_parser.get_crawl_delay(url)
-                if delay > 0:
-                    time.sleep(delay)
-            else:
-                time.sleep(self.config.get('delay_between_requests', 1.0))
-        
+        futures = {}
+    
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Prime the executor with initial tasks (up to max_workers)
+            for _ in range(min(self.max_workers, self.url_frontier.size())):
+                url = self.url_frontier.get_url()
+                if not url:
+                    break
+                self.logger.update_queue_size(self.url_frontier.size())
+                # Schedule _crawl_url(url) to run in a thread, get back a Future, and store a mapping from that future back to the original url.
+                futures[executor.submit(self._crawl_url, url)] = url
+    
+            # Process tasks as they finish
+            while futures and self.is_crawling and pages_crawled < self.max_pages:
+                for future in as_completed(futures):
+                    url = futures.pop(future)
+    
+                    try:
+                        success = future.result()
+                    except Exception as e:
+                        self.logger.log_error(f"Error in future for {url}: {e}")
+                        success = False
+    
+                    # Update stats
+                    pages_crawled += 1
+                    self.logger.increment_pages_crawled()
+                    if success:
+                        self.logger.increment_pages_successful()
+                    else:
+                        self.logger.increment_pages_failed()
+    
+                    # Respect crawl delay (per-domain)
+                    if self.respect_robots:
+                        delay = self.robots_parser.get_crawl_delay(url)
+                        if delay > 0:
+                            time.sleep(delay)
+                    else:
+                        time.sleep(self.config.get('delay_between_requests', 1.0))
+    
+                    # Schedule a new task if URLs remain
+                    if (self.is_crawling and 
+                        pages_crawled < self.max_pages and 
+                        not self.url_frontier.is_empty()):
+                        next_url = self.url_frontier.get_url()
+                        if next_url:
+                            self.logger.update_queue_size(self.url_frontier.size())
+                            futures[executor.submit(self._crawl_url, next_url)] = next_url
+    
         self.logger.log_info(f"Crawling completed. Total pages crawled: {pages_crawled}")
+
     
     def _crawl_url(self, url: str) -> bool:
         """Crawl a single URL"""

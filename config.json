@@ -3,6 +3,7 @@
         "https://tbpn.com"
     ],
     "max_pages": 50,
+    "max_workers": 3,
     "delay_between_requests": 1.0,
     "timeout": 10,
     "max_retries": 3,
