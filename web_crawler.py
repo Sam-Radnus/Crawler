@@ -4,27 +4,42 @@ Web Crawler - Main orchestrator for the web crawling system
 import json
 import time
 import logging
+import argparse
 from typing import Dict, Any
-
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from url_frontier import URLFrontier
 from html_downloader import HTMLDownloader
 from robots_parser import RobotsParser
 from link_extractor import LinkExtractor
 from url_seen import URLSeen
 from content_storage import ContentStorage
+
 from logger import CrawlerLogger
 
 
 class WebCrawler:
     """Main web crawler orchestrator"""
     
-    def __init__(self, config_path: str = "config.json"):
+    def __init__(self, config_path: str = "config.json", mode: str = "soft"):
         """Initialize crawler with configuration"""
         self.config = self._load_config(config_path)
+        self.mode = mode  # "soft" or "hard"
         self.logger = CrawlerLogger(
             log_level="INFO",
             stats_interval=self.config.get('stats_interval', 10)
         )
+        self.max_workers = self.config.get('max_workers', 3)
+        
+        # Initialize MongoDB content storage
+        database_config = self.config.get('database', {})
+        self.content_storage = ContentStorage(
+            output_dir=self.config.get('output_dir', 'crawled_data'),
+            connection_string=database_config.get('connection_string', 'mongodb://localhost:27017/'),
+            database_name=database_config.get('database_name', 'web_crawler')
+        )
+        
+        # Get existing URLs from database for URL Seen initialization
+        existing_urls = self.content_storage.get_all_urls()
         
         # Initialize components
         self.url_frontier = URLFrontier(
@@ -40,18 +55,14 @@ class WebCrawler:
             user_agent=self.config.get('user_agent', 'WebCrawler/1.0')
         )
         self.link_extractor = LinkExtractor()
-        self.url_seen = URLSeen(capacity=100000)
-        self.content_storage = ContentStorage(
-            db_path=self.config.get('db_path', 'crawler.db'),
-            output_dir=self.config.get('output_dir', 'crawled_data')
-        )
+        self.url_seen = URLSeen(capacity=100000, existing_urls=existing_urls)
         
         # Crawling state
         self.is_crawling = False
         self.max_pages = self.config.get('max_pages', 100)
         self.respect_robots = self.config.get('respect_robots', True)
         
-        self.logger.log_info("Web crawler initialized successfully")
+        self.logger.log_info(f"Web crawler initialized successfully in {mode} mode with {len(existing_urls)} existing URLs")
     
     def _load_config(self, config_path: str) -> Dict[str, Any]:
         """Load configuration from JSON file"""
@@ -74,7 +85,7 @@ class WebCrawler:
         
         self.is_crawling = True
         self.logger.log_info("Starting web crawler...")
-        
+        start_time = time.time()
         # Add seed URLs to frontier
         self._add_seed_urls()
         
@@ -88,6 +99,8 @@ class WebCrawler:
         finally:
             self.is_crawling = False
             self._print_final_stats()
+            end_time = time.time()
+            self.logger.log_info(f"Crawling completed in {end_time - start_time:.2f} seconds")
     
     def _add_seed_urls(self):
         """Add seed URLs to the frontier"""
@@ -103,57 +116,80 @@ class WebCrawler:
                         self.logger.increment_robots_blocked()
                         continue
                 
-                # Add to frontier and mark as seen
+                # Add to frontier (don't mark as seen yet - will be marked after crawling)
                 if self.url_frontier.add_url(url):
-                    self.url_seen.add_url(url)
-                    self.logger.log_info(f"Added seed URL: {url}")
+                    # self.logger.log_info(f"Added seed URL: {url}")
+                    pass
                 else:
                     self.logger.log_warning(f"Failed to add seed URL (queue full): {url}")
-            else:
-                self.logger.log_warning(f"Invalid seed URL: {url}")
+            # else:
+            #     self.logger.log_warning(f"Invalid seed URL: {url}")
     
     def _crawl_loop(self):
         """Main crawling loop"""
         pages_crawled = 0
-        
-        while (self.is_crawling and 
-               not self.url_frontier.is_empty() and 
-               pages_crawled < self.max_pages):
-            
-            # Get next URL from frontier
-            url = self.url_frontier.get_url()
-            if not url:
-                break
-            
-            # Update queue size in stats
-            self.logger.update_queue_size(self.url_frontier.size())
-            
-            # Crawl the URL
-            success = self._crawl_url(url)
-            pages_crawled += 1
-            self.logger.increment_pages_crawled()
-            
-            if success:
-                self.logger.increment_pages_successful()
-            else:
-                self.logger.increment_pages_failed()
-            
-            # Respect crawl delay
-            if self.respect_robots:
-                delay = self.robots_parser.get_crawl_delay(url)
-                if delay > 0:
-                    time.sleep(delay)
-            else:
-                time.sleep(self.config.get('delay_between_requests', 1.0))
-        
-        self.logger.log_info(f"Crawling completed. Total pages crawled: {pages_crawled}")
+        futures = {}
+    
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Prime the executor with initial tasks (up to max_workers)
+            for _ in range(min(self.max_workers, self.url_frontier.size())):
+                url = self.url_frontier.get_url()
+                if not url:
+                    break
+                self.logger.update_queue_size(self.url_frontier.size())
+                # Schedule _crawl_url(url) to run in a thread, get back a Future, and store a mapping from that future back to the original url.
+                futures[executor.submit(self._crawl_url, url)] = url
+    
+            # Process tasks as they finish
+            while futures and self.is_crawling and pages_crawled < self.max_pages:
+                for future in as_completed(futures):
+                    url = futures.pop(future)
+    
+                    try:
+                        success = future.result()
+                    except Exception as e:
+                        self.logger.log_error(f"Error in future for {url}: {e}")
+                        success = False
+    
+                    # Update stats
+                    pages_crawled += 1
+                    self.logger.increment_pages_crawled()
+                    if success:
+                        self.logger.increment_pages_successful()
+                    else:
+                        self.logger.increment_pages_failed()
+    
+                    # Respect crawl delay (per-domain)
+                    if self.respect_robots:
+                        delay = self.robots_parser.get_crawl_delay(url)
+                        if delay > 0:
+                            time.sleep(delay)
+                    else:
+                        time.sleep(self.config.get('delay_between_requests', 1.0))
+    
+                    # Schedule a new task if URLs remain
+                    if (self.is_crawling and 
+                        pages_crawled < self.max_pages and 
+                        not self.url_frontier.is_empty()):
+                        next_url = self.url_frontier.get_url()
+                        if next_url:
+                            self.logger.update_queue_size(self.url_frontier.size())
+                            futures[executor.submit(self._crawl_url, next_url)] = next_url
+    
+        # self.logger.log_info(f"Crawling completed. Total pages crawled: {pages_crawled}")
+
     
     def _crawl_url(self, url: str) -> bool:
         """Crawl a single URL"""
         start_time = time.time()
         
         try:
-            self.logger.log_info(f"Crawling: {url}")
+            self.logger.log_info(f"Begin crawling URL: {url}")
+            
+            # Check if URL is already seen (both modes check URL)
+            if self.url_seen.has_seen(url):
+                self.logger.log_info(f"URL already seen: {url}")
+                return False
             
             # Check robots.txt compliance
             if self.respect_robots and not self.robots_parser.is_allowed(url):
@@ -162,10 +198,20 @@ class WebCrawler:
                 return False
             
             # Download HTML content
+            self.logger.log_info(f"Downloading page: {url}")
             result = self.html_downloader.download(url)
             if not result:
                 self.logger.log_error(f"Failed to download: {url}")
                 return False
+            
+            # Check content hash for hard mode
+            if self.mode == "hard":
+                content_hash = self.content_storage._generate_content_hash(result['content'])
+                if self.content_storage.has_content_hash(content_hash):
+                    self.logger.log_info(f"Content already seen (hash match): {url}")
+                    # Still add URL to seen set to avoid re-crawling
+                    self.url_seen.add_url(url)
+                    return False
             
             # Save content to storage
             crawl_duration = time.time() - start_time
@@ -180,6 +226,9 @@ class WebCrawler:
             if not success:
                 self.logger.log_error(f"Failed to save content for: {url}")
                 return False
+            
+            # Mark URL as seen
+            self.url_seen.add_url(url)
             
             # Extract and process links
             self._process_links(url, result['content'])
@@ -214,13 +263,14 @@ class WebCrawler:
                     
                     # Add to frontier
                     if self.url_frontier.add_url(link):
-                        self.url_seen.add_url(link)
                         new_links_added += 1
                     else:
                         self.logger.log_warning(f"Queue full, cannot add: {link}")
                         break
+                # else:
+                #     self.logger.log_debug(f"Link already seen: {link}")
             
-            self.logger.log_debug(f"Added {new_links_added} new links from {base_url}")
+            # self.logger.log_debug(f"Added {new_links_added} new links from {base_url}")
             
         except Exception as e:
             self.logger.log_error(f"Error processing links from {base_url}: {e}")
@@ -261,10 +311,21 @@ class WebCrawler:
         }
 
 
+def parse_arguments():
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser(description='Web Crawler with deduplication modes')
+    parser.add_argument('--mode', choices=['soft', 'hard'], default='soft',
+                       help='Deduplication mode: soft (URL only) or hard (URL + content hash)')
+    parser.add_argument('--config', default='config.json',
+                       help='Path to configuration file')
+    return parser.parse_args()
+
+
 def main():
     """Main entry point"""
     try:
-        crawler = WebCrawler()
+        args = parse_arguments()
+        crawler = WebCrawler(config_path=args.config, mode=args.mode)
         crawler.start_crawling()
     except Exception as e:
         print(f"Error starting crawler: {e}")

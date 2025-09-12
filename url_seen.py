@@ -9,13 +9,14 @@ from pybloom_live import BloomFilter
 class URLSeen:
     """URL deduplication using HashSet and Bloom filter"""
     
-    def __init__(self, capacity: int = 100000, error_rate: float = 0.001):
+    def __init__(self, capacity: int = 100000, error_rate: float = 0.001, existing_urls: list = None):
         """
         Initialize URL seen tracker
         
         Args:
             capacity: Expected number of URLs (for Bloom filter sizing)
             error_rate: False positive rate for Bloom filter
+            existing_urls: List of URLs to pre-populate the tracker with
         """
         self.capacity = capacity
         self.error_rate = error_rate
@@ -26,8 +27,14 @@ class URLSeen:
         # Bloom filter for quick negative checks
         self._bloom_filter = BloomFilter(capacity=capacity, error_rate=error_rate)
         
+        # Pre-populate with existing URLs if provided
+        if existing_urls:
+            for url in existing_urls:
+                self._url_set.add(url)
+                self._bloom_filter.add(url)
+        
         self.logger = logging.getLogger(__name__)
-        self.logger.info(f"Initialized URLSeen with capacity {capacity}, error rate {error_rate}")
+        self.logger.info(f"Initialized URLSeen with capacity {capacity}, error rate {error_rate}, pre-loaded {len(existing_urls) if existing_urls else 0} URLs")
     
     def add_url(self, url: str) -> bool:
         """

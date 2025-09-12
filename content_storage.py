@@ -1,81 +1,73 @@
 """
-Content Storage - SQLite database for storing crawled content
+Content Storage - MongoDB database for storing crawled content
 """
-import sqlite3
 import os
 import json
 import logging
 import re
+import hashlib
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 from urllib.parse import urlparse
+from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure, DuplicateKeyError
 
 
 class ContentStorage:
-    """SQLite-based storage for crawled content and metadata"""
+    """MongoDB-based storage for crawled content and metadata"""
     
-    def __init__(self, db_path: str = "crawler.db", output_dir: str = "crawled_data"):
-        self.db_path = db_path
+    def __init__(self, output_dir: str = "crawled_data", 
+                 connection_string: str = "mongodb://localhost:27017/", 
+                 database_name: str = "web_crawler"):
         self.output_dir = output_dir
+        self.connection_string = connection_string
+        self.database_name = database_name
         self.logger = logging.getLogger(__name__)
         
         # Create output directory if it doesn't exist
         os.makedirs(output_dir, exist_ok=True)
         
-        # Initialize database
+        # Initialize MongoDB connection
         self._init_database()
     
     def _init_database(self):
-        """Initialize SQLite database with required schema"""
+        """Initialize MongoDB database with required collections and indexes"""
         try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                
-                # Create main table for crawled pages
-                cursor.execute('''
-                    CREATE TABLE IF NOT EXISTS pages (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        url TEXT UNIQUE NOT NULL,
-                        html_path TEXT,
-                        status_code INTEGER,
-                        content_length INTEGER,
-                        title TEXT,
-                        domain TEXT,
-                        metadata TEXT,
-                        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                        crawl_duration REAL
-                    )
-                ''')
-                
-                # Create index for faster queries
-                cursor.execute('CREATE INDEX IF NOT EXISTS idx_url ON pages(url)')
-                cursor.execute('CREATE INDEX IF NOT EXISTS idx_domain ON pages(domain)')
-                cursor.execute('CREATE INDEX IF NOT EXISTS idx_timestamp ON pages(timestamp)')
-                
-                # Create table for crawl statistics
-                cursor.execute('''
-                    CREATE TABLE IF NOT EXISTS crawl_stats (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        total_pages INTEGER DEFAULT 0,
-                        successful_pages INTEGER DEFAULT 0,
-                        failed_pages INTEGER DEFAULT 0,
-                        total_links_found INTEGER DEFAULT 0,
-                        queue_size INTEGER DEFAULT 0,
-                        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-                    )
-                ''')
-                
-                conn.commit()
-                self.logger.info(f"Database initialized at {self.db_path}")
-                
+            # Connect to MongoDB
+            self.client = MongoClient(self.connection_string, serverSelectionTimeoutMS=5000)
+            
+            # Test connection
+            self.client.admin.command('ping')
+            
+            # Get database
+            self.db = self.client[self.database_name]
+            
+            # Get collections
+            self.pages_collection = self.db.pages
+            self.crawl_stats_collection = self.db.crawl_stats
+            
+            # Create indexes for better performance
+            self.pages_collection.create_index("url", unique=True)
+            self.pages_collection.create_index("domain")
+            self.pages_collection.create_index("timestamp")
+            self.pages_collection.create_index("content_hash")
+            self.pages_collection.create_index([("url", 1), ("content_hash", 1)])
+            
+            self.crawl_stats_collection.create_index("timestamp")
+            
+            self.logger.info(f"MongoDB database initialized: {self.database_name}")
+            
+        except ConnectionFailure as e:
+            self.logger.error(f"Failed to connect to MongoDB: {e}")
+            raise
         except Exception as e:
-            self.logger.error(f"Error initializing database: {e}")
+            self.logger.error(f"Error initializing MongoDB database: {e}")
             raise
     
     def save_page(self, url: str, html_content: str, status_code: int, 
                   headers: Dict[str, str], crawl_duration: float) -> bool:
         """
-        Save crawled page to database and filesystem
+        Save crawled page to MongoDB and filesystem
         
         Args:
             url: Page URL
@@ -102,6 +94,9 @@ class ContentStorage:
             # Extract title from HTML
             title = self._extract_title(html_content)
             
+            # Generate content hash
+            content_hash = self._generate_content_hash(html_content)
+            
             # Prepare metadata
             metadata = {
                 'headers': headers,
@@ -111,28 +106,33 @@ class ContentStorage:
                 'content_encoding': headers.get('content-encoding', '')
             }
             
-            # Save to database
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    INSERT OR REPLACE INTO pages 
-                    (url, html_path, status_code, content_length, title, domain, metadata, crawl_duration)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (
-                    url,
-                    html_path,
-                    status_code,
-                    len(html_content),
-                    title,
-                    domain,
-                    json.dumps(metadata),
-                    crawl_duration
-                ))
-                conn.commit()
+            # Prepare document for MongoDB
+            document = {
+                'url': url,
+                'html_path': html_path,
+                'status_code': status_code,
+                'content_length': len(html_content),
+                'title': title,
+                'domain': domain,
+                'metadata': metadata,
+                'content_hash': content_hash,
+                'timestamp': datetime.utcnow(),
+                'crawl_duration': crawl_duration
+            }
+            
+            # Save to MongoDB (upsert to handle duplicates)
+            result = self.pages_collection.replace_one(
+                {'url': url},  # Filter
+                document,      # Replacement document
+                upsert=True    # Insert if not exists
+            )
             
             self.logger.info(f"Saved page: {url} -> {html_path}")
             return True
             
+        except DuplicateKeyError as e:
+            self.logger.warning(f"Duplicate key error for {url}: {e}")
+            return False
         except Exception as e:
             self.logger.error(f"Error saving page {url}: {e}")
             return False
@@ -163,31 +163,51 @@ class ContentStorage:
         except Exception:
             return None
     
+    def _generate_content_hash(self, html_content: str) -> str:
+        """Generate SHA-256 hash of HTML content"""
+        return hashlib.sha256(html_content.encode('utf-8')).hexdigest()
+    
+    def has_content_hash(self, content_hash: str) -> bool:
+        """Check if content hash already exists in database"""
+        try:
+            count = self.pages_collection.count_documents({'content_hash': content_hash}, limit=1)
+            return count > 0
+        except Exception as e:
+            self.logger.error(f"Error checking content hash: {e}")
+            return False
+    
+    def get_urls_by_content_hash(self, content_hash: str) -> List[str]:
+        """Get all URLs that have the same content hash"""
+        try:
+            cursor = self.pages_collection.find(
+                {'content_hash': content_hash}, 
+                {'url': 1, '_id': 0}
+            )
+            return [doc['url'] for doc in cursor]
+        except Exception as e:
+            self.logger.error(f"Error getting URLs by content hash: {e}")
+            return []
+    
+    def get_all_urls(self) -> List[str]:
+        """Get all URLs from database for URL Seen initialization"""
+        try:
+            cursor = self.pages_collection.find({}, {'url': 1, '_id': 0})
+            return [doc['url'] for doc in cursor]
+        except Exception as e:
+            self.logger.error(f"Error getting all URLs: {e}")
+            return []
+    
     def get_page(self, url: str) -> Optional[Dict[str, Any]]:
         """Retrieve page data from database"""
         try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    SELECT url, html_path, status_code, content_length, title, 
-                           domain, metadata, timestamp, crawl_duration
-                    FROM pages WHERE url = ?
-                ''', (url,))
-                
-                row = cursor.fetchone()
-                if row:
-                    return {
-                        'url': row[0],
-                        'html_path': row[1],
-                        'status_code': row[2],
-                        'content_length': row[3],
-                        'title': row[4],
-                        'domain': row[5],
-                        'metadata': json.loads(row[6]) if row[6] else {},
-                        'timestamp': row[7],
-                        'crawl_duration': row[8]
-                    }
-                return None
+            document = self.pages_collection.find_one({'url': url})
+            if document:
+                # Convert ObjectId to string and handle datetime
+                document['_id'] = str(document['_id'])
+                if 'timestamp' in document and document['timestamp']:
+                    document['timestamp'] = document['timestamp'].isoformat()
+                return document
+            return None
                 
         except Exception as e:
             self.logger.error(f"Error retrieving page {url}: {e}")
@@ -196,36 +216,29 @@ class ContentStorage:
     def get_stats(self) -> Dict[str, Any]:
         """Get crawling statistics"""
         try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                
-                # Get page counts
-                cursor.execute('SELECT COUNT(*) FROM pages')
-                total_pages = cursor.fetchone()[0]
-                
-                cursor.execute('SELECT COUNT(*) FROM pages WHERE status_code = 200')
-                successful_pages = cursor.fetchone()[0]
-                
-                cursor.execute('SELECT COUNT(*) FROM pages WHERE status_code != 200')
-                failed_pages = cursor.fetchone()[0]
-                
-                # Get domain distribution
-                cursor.execute('''
-                    SELECT domain, COUNT(*) as count 
-                    FROM pages 
-                    GROUP BY domain 
-                    ORDER BY count DESC 
-                    LIMIT 10
-                ''')
-                domain_stats = dict(cursor.fetchall())
-                
-                return {
-                    'total_pages': total_pages,
-                    'successful_pages': successful_pages,
-                    'failed_pages': failed_pages,
-                    'success_rate': (successful_pages / total_pages * 100) if total_pages > 0 else 0,
-                    'domain_distribution': domain_stats
-                }
+            # Get page counts
+            total_pages = self.pages_collection.count_documents({})
+            successful_pages = self.pages_collection.count_documents({'status_code': 200})
+            failed_pages = self.pages_collection.count_documents({'status_code': {'$ne': 200}})
+            
+            # Get domain distribution using aggregation
+            pipeline = [
+                {'$group': {'_id': '$domain', 'count': {'$sum': 1}}},
+                {'$sort': {'count': -1}},
+                {'$limit': 10}
+            ]
+            
+            domain_stats = {}
+            for doc in self.pages_collection.aggregate(pipeline):
+                domain_stats[doc['_id']] = doc['count']
+            
+            return {
+                'total_pages': total_pages,
+                'successful_pages': successful_pages,
+                'failed_pages': failed_pages,
+                'success_rate': (successful_pages / total_pages * 100) if total_pages > 0 else 0,
+                'domain_distribution': domain_stats
+            }
                 
         except Exception as e:
             self.logger.error(f"Error getting stats: {e}")
@@ -235,14 +248,16 @@ class ContentStorage:
                         failed_pages: int, total_links: int, queue_size: int):
         """Save current crawl statistics"""
         try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    INSERT INTO crawl_stats 
-                    (total_pages, successful_pages, failed_pages, total_links_found, queue_size)
-                    VALUES (?, ?, ?, ?, ?)
-                ''', (total_pages, successful_pages, failed_pages, total_links, queue_size))
-                conn.commit()
+            stats_document = {
+                'total_pages': total_pages,
+                'successful_pages': successful_pages,
+                'failed_pages': failed_pages,
+                'total_links_found': total_links,
+                'queue_size': queue_size,
+                'timestamp': datetime.utcnow()
+            }
+            
+            self.crawl_stats_collection.insert_one(stats_document)
                 
         except Exception as e:
             self.logger.error(f"Error saving crawl stats: {e}")
@@ -250,28 +265,36 @@ class ContentStorage:
     def get_recent_pages(self, limit: int = 10) -> List[Dict[str, Any]]:
         """Get recently crawled pages"""
         try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute('''
-                    SELECT url, status_code, title, domain, timestamp, crawl_duration
-                    FROM pages 
-                    ORDER BY timestamp DESC 
-                    LIMIT ?
-                ''', (limit,))
-                
-                pages = []
-                for row in cursor.fetchall():
-                    pages.append({
-                        'url': row[0],
-                        'status_code': row[1],
-                        'title': row[2],
-                        'domain': row[3],
-                        'timestamp': row[4],
-                        'crawl_duration': row[5]
-                    })
-                
-                return pages
+            cursor = self.pages_collection.find(
+                {},
+                {
+                    'url': 1, 'status_code': 1, 'title': 1, 
+                    'domain': 1, 'timestamp': 1, 'crawl_duration': 1, '_id': 0
+                }
+            ).sort('timestamp', -1).limit(limit)
+            
+            pages = []
+            for doc in cursor:
+                # Convert datetime to string for JSON serialization
+                if 'timestamp' in doc and doc['timestamp']:
+                    doc['timestamp'] = doc['timestamp'].isoformat()
+                pages.append(doc)
+            
+            return pages
                 
         except Exception as e:
             self.logger.error(f"Error getting recent pages: {e}")
             return []
+    
+    def close_connection(self):
+        """Close MongoDB connection"""
+        try:
+            if hasattr(self, 'client'):
+                self.client.close()
+                self.logger.info("MongoDB connection closed")
+        except Exception as e:
+            self.logger.error(f"Error closing MongoDB connection: {e}")
+    
+    def __del__(self):
+        """Destructor to ensure connection is closed"""
+        self.close_connection()
