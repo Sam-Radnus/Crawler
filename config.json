@@ -1,6 +1,6 @@
 {
     "seed_urls": [
-        "https://www.agora.io/en/"
+        "https://tbpn.com"
     ],
     "max_pages": 50,
     "max_workers": 3,

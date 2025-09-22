@@ -7,14 +7,13 @@ import logging
 import argparse
 from typing import Dict, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from url_frontier import URLFrontier
-from html_downloader import HTMLDownloader
-from robots_parser import RobotsParser
-from link_extractor import LinkExtractor
-from url_seen import URLSeen
-from content_storage import ContentStorage
-
-from logger import CrawlerLogger
+from src.crawler.core.url_frontier import URLFrontier
+from src.crawler.core.html_downloader import HTMLDownloader
+from src.crawler.parsing.robots_parser import RobotsParser
+from src.crawler.parsing.link_extractor import LinkExtractor
+from src.crawler.core.url_seen import URLSeen
+from src.crawler.storage.content_storage import ContentStorage
+from src.crawler.utils.logger import CrawlerLogger
 
 
 class WebCrawler:

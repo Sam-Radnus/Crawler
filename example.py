@@ -4,7 +4,13 @@ Example usage of the web crawler
 """
 import json
 import time
-from web_crawler import WebCrawler
+import sys
+import os
+
+# Add current directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from main import WebCrawler
 
 def create_example_config():
     """Create an example configuration file"""

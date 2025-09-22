@@ -118,4 +118,5 @@ class RobotsParser:
         robots_content = self.fetch_robots_txt(base_url)
         if robots_content:
             self.parse_robots_txt(robots_content, base_url)
-            self.logger.info(f"Updated robots.txt rules for {urlparse(base_url).netloc}")
+            domain = urlparse(base_url).netloc
+            self.logger.info(f"Updated robots.txt rules for {domain}")

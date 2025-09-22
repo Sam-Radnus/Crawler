@@ -69,13 +69,13 @@ Edit `config.json` to customize crawler behavior:
 ### Basic Usage
 
 ```bash
-python web_crawler.py
+python main.py
 ```
 
 ### Programmatic Usage
 
 ```python
-from web_crawler import WebCrawler
+from main import WebCrawler
 
 # Initialize crawler
 crawler = WebCrawler('config.json')
@@ -93,73 +93,99 @@ crawler.stop_crawling()
 
 ## Architecture
 
+### Project Structure
+
+```
+crawler/
+├── main.py                     # Main entry point
+├── config.json                 # Configuration file
+├── requirements.txt            # Dependencies
+├── src/
+│   └── crawler/
+│       ├── core/              # Core crawler components
+│       │   ├── web_crawler.py # Main crawler orchestrator
+│       │   ├── url_frontier.py # URL queue management
+│       │   ├── url_seen.py    # URL deduplication
+│       │   └── html_downloader.py # HTML downloading
+│       ├── storage/           # Storage components
+│       │   └── content_storage.py # MongoDB storage
+│       ├── parsing/           # Parsing components
+│       │   ├── robots_parser.py # Robots.txt compliance
+│       │   └── link_extractor.py # Link extraction
+│       └── utils/             # Utility components
+│           └── logger.py      # Logging and metrics
+├── tests/                     # Test files
+└── crawled_data/             # Output directory
+```
+
 ### Core Components
 
-1. **URLFrontier** (`url_frontier.py`)
+1. **URLFrontier** (`src/crawler/core/url_frontier.py`)
    - Thread-safe FIFO queue
    - Configurable maximum size
    - Queue management operations
 
-2. **HTMLDownloader** (`html_downloader.py`)
+2. **HTMLDownloader** (`src/crawler/core/html_downloader.py`)
    - HTTP requests with retry logic
    - Configurable timeout and delays
    - Error handling and logging
 
-3. **RobotsParser** (`robots_parser.py`)
+3. **RobotsParser** (`src/crawler/parsing/robots_parser.py`)
    - Fetches and parses robots.txt files
    - Enforces crawl delays and disallowed paths
    - Domain-specific rule management
 
-4. **LinkExtractor** (`link_extractor.py`)
+4. **LinkExtractor** (`src/crawler/parsing/link_extractor.py`)
    - Extracts `<a href>` links from HTML
    - URL normalization and validation
    - Filters unwanted file types
 
-5. **URLSeen** (`url_seen.py`)
+5. **URLSeen** (`src/crawler/core/url_seen.py`)
    - HashSet for exact deduplication
    - Bloom filter for quick negative checks
    - Memory-efficient URL tracking
 
-6. **ContentStorage** (`content_storage.py`)
-   - SQLite database for metadata
+6. **ContentStorage** (`src/crawler/storage/content_storage.py`)
+   - MongoDB database for metadata
    - HTML file storage
    - Statistics and reporting
 
-7. **CrawlerLogger** (`logger.py`)
+7. **CrawlerLogger** (`src/crawler/utils/logger.py`)
    - Centralized logging
    - Real-time statistics
    - Performance metrics
 
 ### Database Schema
 
-The SQLite database includes two main tables:
+The MongoDB database includes two main collections:
 
-#### `pages` table
-- `id`: Primary key
-- `url`: Page URL (unique)
+#### `pages` collection
+- `_id`: MongoDB ObjectId (auto-generated)
+- `url`: Page URL (unique index)
 - `html_path`: Path to stored HTML file
 - `status_code`: HTTP response code
 - `content_length`: Size of HTML content
 - `title`: Page title
-- `domain`: Domain name
-- `metadata`: JSON metadata (headers, etc.)
-- `timestamp`: Crawl timestamp
+- `domain`: Domain name (indexed)
+- `metadata`: Object containing headers and other metadata
+- `content_hash`: SHA-256 hash of content (indexed)
+- `timestamp`: Crawl timestamp (indexed)
 - `crawl_duration`: Time taken to crawl
 
-#### `crawl_stats` table
-- `id`: Primary key
+#### `crawl_stats` collection
+- `_id`: MongoDB ObjectId (auto-generated)
 - `total_pages`: Total pages crawled
 - `successful_pages`: Successfully crawled pages
 - `failed_pages`: Failed pages
 - `total_links_found`: Total links discovered
 - `queue_size`: Current queue size
-- `timestamp`: Statistics timestamp
+- `timestamp`: Statistics timestamp (indexed)
 
 ## Output
 
 ### Files
 - **HTML Files**: Stored in `crawled_data/` directory
-- **Database**: SQLite database at `crawler.db`
+- **Database**: MongoDB database (configurable connection)
 - **Logs**: Console output and `crawler.log` file
 
 ### Statistics
