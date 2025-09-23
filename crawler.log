@@ -1,358 +1,549 @@
-2025-09-12 22:37:06,069 - web_crawler - INFO - Web crawler initialized successfully in hard mode with 0 existing URLs
-2025-09-12 22:37:06,069 - web_crawler - INFO - Starting web crawler...
-2025-09-12 22:37:06,542 - web_crawler - INFO - Begin crawling URL: https://tbpn.com
-2025-09-12 22:37:06,543 - web_crawler - INFO - Downloading page: https://tbpn.com
-2025-09-12 22:37:07,702 - web_crawler - INFO - Begin crawling URL: https://ramp.com
-2025-09-12 22:37:07,703 - web_crawler - INFO - Downloading page: https://ramp.com
-2025-09-12 22:37:11,103 - web_crawler - WARNING - Queue full, cannot add: https://accountants.ramp.com/
-2025-09-12 22:37:12,109 - web_crawler - INFO - Begin crawling URL: https://open.spotify.com/show/2L6WMqY3GUPCGBD0dX6p00?si=d9f5b424754548c1
-2025-09-12 22:37:12,110 - web_crawler - INFO - Downloading page: https://open.spotify.com/show/2L6WMqY3GUPCGBD0dX6p00?si=d9f5b424754548c1
-2025-09-12 22:37:13,561 - web_crawler - INFO - Begin crawling URL: https://www.vanta.com/
-2025-09-12 22:37:13,562 - web_crawler - INFO - Downloading page: https://www.vanta.com/
-2025-09-12 22:37:13,955 - web_crawler - WARNING - Queue full, cannot add: https://www.vanta.com/collection/trust
-2025-09-12 22:37:14,961 - web_crawler - INFO - Begin crawling URL: https://dayjob.work
-2025-09-12 22:37:14,962 - web_crawler - INFO - Downloading page: https://dayjob.work
-2025-09-12 22:37:16,030 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:16,030 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:37:16,030 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:16,031 - web_crawler - INFO - Runtime: 10.0 seconds
-2025-09-12 22:37:16,031 - web_crawler - INFO - Pages crawled: 5
-2025-09-12 22:37:16,031 - web_crawler - INFO - Successful: 5
-2025-09-12 22:37:16,031 - web_crawler - INFO - Failed: 0
-2025-09-12 22:37:16,031 - web_crawler - INFO - Links found: 221
-2025-09-12 22:37:16,031 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:37:16,031 - web_crawler - INFO - Errors: 0
-2025-09-12 22:37:16,031 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:37:16,031 - web_crawler - INFO - Overall rate: 0.50 pages/sec
-2025-09-12 22:37:16,031 - web_crawler - INFO - Recent rate: 0.50 pages/sec
-2025-09-12 22:37:16,031 - web_crawler - INFO - Success rate: 100.0%
-2025-09-12 22:37:16,031 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:16,528 - web_crawler - INFO - Begin crawling URL: http://jordihays.com
-2025-09-12 22:37:16,529 - web_crawler - INFO - Downloading page: http://jordihays.com
-2025-09-12 22:37:17,571 - web_crawler - WARNING - Queue full, cannot add: https://www.x.com/tbpn
-2025-09-12 22:37:18,577 - web_crawler - INFO - Begin crawling URL: http://johncoogan.com
-2025-09-12 22:37:18,578 - web_crawler - INFO - Downloading page: http://johncoogan.com
-2025-09-12 22:37:19,849 - web_crawler - WARNING - Queue full, cannot add: http://johncoogan.com/boom-supersonic
-2025-09-12 22:37:20,854 - web_crawler - INFO - Begin crawling URL: https://www.linkedin.com/in/jordi-hays-559199113
-2025-09-12 22:37:20,854 - web_crawler - INFO - Downloading page: https://www.linkedin.com/in/jordi-hays-559199113
-2025-09-12 22:37:22,287 - web_crawler - WARNING - Queue full, cannot add: https://www.linkedin.com/in/jordi-hays-559199113?trk=public_profile_actor-name
-2025-09-12 22:37:23,292 - web_crawler - INFO - Begin crawling URL: http://youtube.com/@tbpnlive
-2025-09-12 22:37:23,292 - web_crawler - INFO - Downloading page: http://youtube.com/@tbpnlive
-2025-09-12 22:37:24,019 - web_crawler - WARNING - Queue full, cannot add: https://www.youtube.com/about
-2025-09-12 22:37:25,024 - web_crawler - INFO - Begin crawling URL: https://shop.getbezel.com
-2025-09-12 22:37:25,024 - web_crawler - INFO - Downloading page: https://shop.getbezel.com
-2025-09-12 22:37:26,032 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:26,032 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:37:26,032 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:26,032 - web_crawler - INFO - Runtime: 20.0 seconds
-2025-09-12 22:37:26,032 - web_crawler - INFO - Pages crawled: 9
-2025-09-12 22:37:26,032 - web_crawler - INFO - Successful: 9
-2025-09-12 22:37:26,032 - web_crawler - INFO - Failed: 0
-2025-09-12 22:37:26,032 - web_crawler - INFO - Links found: 366
-2025-09-12 22:37:26,033 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:37:26,033 - web_crawler - INFO - Errors: 0
-2025-09-12 22:37:26,033 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:37:26,033 - web_crawler - INFO - Overall rate: 0.45 pages/sec
-2025-09-12 22:37:26,033 - web_crawler - INFO - Recent rate: 0.40 pages/sec
-2025-09-12 22:37:26,033 - web_crawler - INFO - Success rate: 100.0%
-2025-09-12 22:37:26,034 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:27,230 - web_crawler - INFO - Begin crawling URL: https://www.instagram.com/jordihays?hl=en
-2025-09-12 22:37:27,231 - web_crawler - INFO - Downloading page: https://www.instagram.com/jordihays?hl=en
-2025-09-12 22:37:29,527 - web_crawler - INFO - Begin crawling URL: https://www.figma.com/
-2025-09-12 22:37:29,528 - web_crawler - INFO - Downloading page: https://www.figma.com/
-2025-09-12 22:37:30,638 - web_crawler - WARNING - Queue full, cannot add: https://www.figma.com/es-es?context=localeChange
-2025-09-12 22:37:31,644 - web_crawler - INFO - Begin crawling URL: https://polymarket.com/
-2025-09-12 22:37:31,644 - web_crawler - INFO - Downloading page: https://polymarket.com/
-2025-09-12 22:37:32,180 - web_crawler - WARNING - Queue full, cannot add: https://polymarket.com/search/ai
-2025-09-12 22:37:33,185 - web_crawler - INFO - Begin crawling URL: https://www.linkedin.com/company/tbpn
-2025-09-12 22:37:33,186 - web_crawler - INFO - Downloading page: https://www.linkedin.com/company/tbpn
-2025-09-12 22:37:36,039 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:36,039 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:37:36,039 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:36,039 - web_crawler - INFO - Runtime: 30.0 seconds
-2025-09-12 22:37:36,040 - web_crawler - INFO - Pages crawled: 13
-2025-09-12 22:37:36,040 - web_crawler - INFO - Successful: 13
-2025-09-12 22:37:36,040 - web_crawler - INFO - Failed: 0
-2025-09-12 22:37:36,040 - web_crawler - INFO - Links found: 619
-2025-09-12 22:37:36,040 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:37:36,040 - web_crawler - INFO - Errors: 0
-2025-09-12 22:37:36,040 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:37:36,040 - web_crawler - INFO - Overall rate: 0.43 pages/sec
-2025-09-12 22:37:36,040 - web_crawler - INFO - Recent rate: 0.40 pages/sec
-2025-09-12 22:37:36,040 - web_crawler - INFO - Success rate: 100.0%
-2025-09-12 22:37:36,040 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:41,126 - web_crawler - ERROR - Failed to download: https://www.linkedin.com/company/tbpn
-2025-09-12 22:37:42,131 - web_crawler - INFO - Begin crawling URL: https://www.eightsleep.com/
-2025-09-12 22:37:42,132 - web_crawler - INFO - Downloading page: https://www.eightsleep.com/
-2025-09-12 22:37:42,539 - web_crawler - WARNING - Queue full, cannot add: https://x.com/tryjasononline/status/1825864812980552098
-2025-09-12 22:37:43,541 - web_crawler - INFO - Begin crawling URL: https://www.instagram.com/tbpnlive
-2025-09-12 22:37:43,541 - web_crawler - INFO - Downloading page: https://www.instagram.com/tbpnlive
-2025-09-12 22:37:45,589 - web_crawler - INFO - Begin crawling URL: https://www.tiktok.com/@tbpn
-2025-09-12 22:37:45,589 - web_crawler - INFO - Downloading page: https://www.tiktok.com/@tbpn
-2025-09-12 22:37:46,045 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:46,046 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:37:46,046 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:46,046 - web_crawler - INFO - Runtime: 40.0 seconds
-2025-09-12 22:37:46,046 - web_crawler - INFO - Pages crawled: 16
-2025-09-12 22:37:46,047 - web_crawler - INFO - Successful: 15
-2025-09-12 22:37:46,047 - web_crawler - INFO - Failed: 1
-2025-09-12 22:37:46,047 - web_crawler - INFO - Links found: 631
-2025-09-12 22:37:46,047 - web_crawler - INFO - Queue size: 98
-2025-09-12 22:37:46,047 - web_crawler - INFO - Errors: 1
-2025-09-12 22:37:46,048 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:37:46,048 - web_crawler - INFO - Overall rate: 0.40 pages/sec
-2025-09-12 22:37:46,048 - web_crawler - INFO - Recent rate: 0.30 pages/sec
-2025-09-12 22:37:46,048 - web_crawler - INFO - Success rate: 93.8%
-2025-09-12 22:37:46,048 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:46,100 - web_crawler - WARNING - Queue full, cannot add: https://www.tiktok.com/legal/privacy-policy
-2025-09-12 22:37:47,103 - web_crawler - INFO - Begin crawling URL: https://www.linkedin.com/in/jacoogan
-2025-09-12 22:37:47,103 - web_crawler - INFO - Downloading page: https://www.linkedin.com/in/jacoogan
-2025-09-12 22:37:54,993 - web_crawler - ERROR - Failed to download: https://www.linkedin.com/in/jacoogan
-2025-09-12 22:37:55,996 - web_crawler - INFO - Begin crawling URL: https://www.instagram.com/johncoogan
-2025-09-12 22:37:55,997 - web_crawler - INFO - Downloading page: https://www.instagram.com/johncoogan
-2025-09-12 22:37:56,050 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:56,051 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:37:56,051 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:56,051 - web_crawler - INFO - Runtime: 50.0 seconds
-2025-09-12 22:37:56,052 - web_crawler - INFO - Pages crawled: 18
-2025-09-12 22:37:56,052 - web_crawler - INFO - Successful: 16
-2025-09-12 22:37:56,052 - web_crawler - INFO - Failed: 2
-2025-09-12 22:37:56,052 - web_crawler - INFO - Links found: 636
-2025-09-12 22:37:56,052 - web_crawler - INFO - Queue size: 98
-2025-09-12 22:37:56,052 - web_crawler - INFO - Errors: 2
-2025-09-12 22:37:56,053 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:37:56,053 - web_crawler - INFO - Overall rate: 0.36 pages/sec
-2025-09-12 22:37:56,053 - web_crawler - INFO - Recent rate: 0.20 pages/sec
-2025-09-12 22:37:56,053 - web_crawler - INFO - Success rate: 88.9%
-2025-09-12 22:37:56,053 - web_crawler - INFO - ============================================================
-2025-09-12 22:37:58,088 - web_crawler - INFO - Begin crawling URL: https://podcasts.apple.com/us/podcast/tbpn-live/id1772360235
-2025-09-12 22:37:58,089 - web_crawler - INFO - Downloading page: https://podcasts.apple.com/us/podcast/tbpn-live/id1772360235
-2025-09-12 22:38:00,568 - web_crawler - WARNING - Queue full, cannot add: https://podcasts.apple.com/tw/browse
-2025-09-12 22:38:01,572 - web_crawler - INFO - Begin crawling URL: https://x.com/tbpn
-2025-09-12 22:38:01,573 - web_crawler - INFO - Downloading page: https://x.com/tbpn
-2025-09-12 22:38:02,051 - web_crawler - WARNING - Queue full, cannot add: https://help.x.com/using-x/x-supported-browsers
-2025-09-12 22:38:03,055 - web_crawler - INFO - Begin crawling URL: https://x.com/johncoogan?ref=johncoogan.com
-2025-09-12 22:38:03,056 - web_crawler - INFO - Downloading page: https://x.com/johncoogan?ref=johncoogan.com
-2025-09-12 22:38:03,436 - web_crawler - WARNING - Queue full, cannot add: https://help.x.com/using-x/x-supported-browsers
-2025-09-12 22:38:04,438 - web_crawler - INFO - Begin crawling URL: https://www.wander.com
-2025-09-12 22:38:04,439 - web_crawler - INFO - Downloading page: https://www.wander.com
-2025-09-12 22:38:05,834 - web_crawler - WARNING - Queue full, cannot add: https://www.wander.com/store
-2025-09-12 22:38:06,058 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:06,059 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:38:06,059 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:06,059 - web_crawler - INFO - Runtime: 60.0 seconds
-2025-09-12 22:38:06,059 - web_crawler - INFO - Pages crawled: 23
-2025-09-12 22:38:06,059 - web_crawler - INFO - Successful: 21
-2025-09-12 22:38:06,059 - web_crawler - INFO - Failed: 2
-2025-09-12 22:38:06,059 - web_crawler - INFO - Links found: 884
-2025-09-12 22:38:06,059 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:38:06,060 - web_crawler - INFO - Errors: 2
-2025-09-12 22:38:06,060 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:38:06,060 - web_crawler - INFO - Overall rate: 0.38 pages/sec
-2025-09-12 22:38:06,060 - web_crawler - INFO - Recent rate: 0.50 pages/sec
-2025-09-12 22:38:06,060 - web_crawler - INFO - Success rate: 91.3%
-2025-09-12 22:38:06,060 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:06,837 - web_crawler - INFO - Begin crawling URL: https://linear.app/
-2025-09-12 22:38:06,838 - web_crawler - INFO - Downloading page: https://linear.app/
-2025-09-12 22:38:07,691 - web_crawler - WARNING - Queue full, cannot add: https://linear.app/customer-requests
-2025-09-12 22:38:08,697 - web_crawler - INFO - Begin crawling URL: https://www.adquick.com
-2025-09-12 22:38:08,698 - web_crawler - INFO - Downloading page: https://www.adquick.com
-2025-09-12 22:38:10,632 - web_crawler - WARNING - Queue full, cannot add: https://www.adquick.com/media/place-based/college-university-campus-advertising
-2025-09-12 22:38:11,638 - web_crawler - INFO - Begin crawling URL: https://x.com/jordihays
-2025-09-12 22:38:11,639 - web_crawler - INFO - Downloading page: https://x.com/jordihays
-2025-09-12 22:38:11,985 - web_crawler - WARNING - Queue full, cannot add: https://help.x.com/using-x/x-supported-browsers
-2025-09-12 22:38:12,990 - web_crawler - INFO - Begin crawling URL: https://www.numeralhq.com/
-2025-09-12 22:38:12,990 - web_crawler - INFO - Downloading page: https://www.numeralhq.com/
-2025-09-12 22:38:13,654 - web_crawler - WARNING - Queue full, cannot add: https://dashboard.numeralhq.com/users/sign-in
-2025-09-12 22:38:14,660 - web_crawler - INFO - Begin crawling URL: https://public.com
-2025-09-12 22:38:14,661 - web_crawler - INFO - Downloading page: https://public.com
-2025-09-12 22:38:15,814 - web_crawler - WARNING - Queue full, cannot add: https://public.com/options-rebate-program
-2025-09-12 22:38:16,064 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:16,065 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:38:16,065 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:16,065 - web_crawler - INFO - Runtime: 70.0 seconds
-2025-09-12 22:38:16,065 - web_crawler - INFO - Pages crawled: 28
-2025-09-12 22:38:16,065 - web_crawler - INFO - Successful: 26
-2025-09-12 22:38:16,065 - web_crawler - INFO - Failed: 2
-2025-09-12 22:38:16,065 - web_crawler - INFO - Links found: 1178
-2025-09-12 22:38:16,065 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:38:16,065 - web_crawler - INFO - Errors: 2
-2025-09-12 22:38:16,065 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:38:16,066 - web_crawler - INFO - Overall rate: 0.40 pages/sec
-2025-09-12 22:38:16,066 - web_crawler - INFO - Recent rate: 0.50 pages/sec
-2025-09-12 22:38:16,066 - web_crawler - INFO - Success rate: 92.9%
-2025-09-12 22:38:16,066 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:16,820 - web_crawler - INFO - Begin crawling URL: https://overcast.fm/itunes1772360235
-2025-09-12 22:38:16,821 - web_crawler - INFO - Downloading page: https://overcast.fm/itunes1772360235
-2025-09-12 22:38:18,881 - web_crawler - WARNING - Queue full, cannot add: https://overcast.fm/
-2025-09-12 22:38:19,887 - web_crawler - INFO - Begin crawling URL: https://ramp.com/vc-database
-2025-09-12 22:38:19,887 - web_crawler - INFO - Downloading page: https://ramp.com/vc-database
-2025-09-12 22:38:20,813 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/vc-database/autism-impact-fund
-2025-09-12 22:38:21,819 - web_crawler - INFO - Begin crawling URL: https://ramp.com/startups
-2025-09-12 22:38:21,820 - web_crawler - INFO - Downloading page: https://ramp.com/startups
-2025-09-12 22:38:23,753 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/data-privacy-opt-out
-2025-09-12 22:38:24,759 - web_crawler - INFO - Begin crawling URL: https://ramp.com/savings
-2025-09-12 22:38:24,760 - web_crawler - INFO - Downloading page: https://ramp.com/savings
-2025-09-12 22:38:25,650 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/blog/business-credit-cards-with-ein-only
-2025-09-12 22:38:26,071 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:26,071 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:38:26,071 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:26,071 - web_crawler - INFO - Runtime: 80.0 seconds
-2025-09-12 22:38:26,071 - web_crawler - INFO - Pages crawled: 32
-2025-09-12 22:38:26,071 - web_crawler - INFO - Successful: 30
-2025-09-12 22:38:26,071 - web_crawler - INFO - Failed: 2
-2025-09-12 22:38:26,071 - web_crawler - INFO - Links found: 1483
-2025-09-12 22:38:26,072 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:38:26,072 - web_crawler - INFO - Errors: 2
-2025-09-12 22:38:26,072 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:38:26,072 - web_crawler - INFO - Overall rate: 0.40 pages/sec
-2025-09-12 22:38:26,072 - web_crawler - INFO - Recent rate: 0.40 pages/sec
-2025-09-12 22:38:26,072 - web_crawler - INFO - Success rate: 93.8%
-2025-09-12 22:38:26,072 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:26,651 - web_crawler - INFO - Begin crawling URL: https://ramp.com/data-privacy-opt-out
-2025-09-12 22:38:26,651 - web_crawler - INFO - Downloading page: https://ramp.com/data-privacy-opt-out
-2025-09-12 22:38:29,078 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/legal/platform-agreement
-2025-09-12 22:38:30,084 - web_crawler - INFO - Begin crawling URL: https://ramp.com/platform
-2025-09-12 22:38:30,085 - web_crawler - INFO - Downloading page: https://ramp.com/platform
-2025-09-12 22:38:32,186 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/global
-2025-09-12 22:38:33,189 - web_crawler - INFO - Begin crawling URL: https://ramp.com/perks
-2025-09-12 22:38:33,189 - web_crawler - INFO - Downloading page: https://ramp.com/perks
-2025-09-12 22:38:33,854 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/education
-2025-09-12 22:38:34,859 - web_crawler - INFO - Begin crawling URL: https://ramp.com/procurement
-2025-09-12 22:38:34,860 - web_crawler - INFO - Downloading page: https://ramp.com/procurement
-2025-09-12 22:38:36,077 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:36,078 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:38:36,078 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:36,078 - web_crawler - INFO - Runtime: 90.1 seconds
-2025-09-12 22:38:36,078 - web_crawler - INFO - Pages crawled: 35
-2025-09-12 22:38:36,079 - web_crawler - INFO - Successful: 33
-2025-09-12 22:38:36,079 - web_crawler - INFO - Failed: 2
-2025-09-12 22:38:36,079 - web_crawler - INFO - Links found: 1752
-2025-09-12 22:38:36,079 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:38:36,079 - web_crawler - INFO - Errors: 2
-2025-09-12 22:38:36,079 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:38:36,080 - web_crawler - INFO - Overall rate: 0.39 pages/sec
-2025-09-12 22:38:36,080 - web_crawler - INFO - Recent rate: 0.30 pages/sec
-2025-09-12 22:38:36,080 - web_crawler - INFO - Success rate: 94.3%
-2025-09-12 22:38:36,080 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:36,652 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/global
-2025-09-12 22:38:37,660 - web_crawler - INFO - Begin crawling URL: https://ramp.com/mid-market
-2025-09-12 22:38:37,661 - web_crawler - INFO - Downloading page: https://ramp.com/mid-market
-2025-09-12 22:38:39,857 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/global
-2025-09-12 22:38:40,863 - web_crawler - INFO - Begin crawling URL: https://ramp.com/pe-partnerships
-2025-09-12 22:38:40,864 - web_crawler - INFO - Downloading page: https://ramp.com/pe-partnerships
-2025-09-12 22:38:41,658 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/education
-2025-09-12 22:38:42,663 - web_crawler - INFO - Begin crawling URL: https://ramp.com/burn-rate-calculator
-2025-09-12 22:38:42,664 - web_crawler - INFO - Downloading page: https://ramp.com/burn-rate-calculator
-2025-09-12 22:38:43,925 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/blog/business-credit-cards-with-ein-only
-2025-09-12 22:38:44,929 - web_crawler - INFO - Begin crawling URL: https://ramp.com/customers/poshmark-customer-story
-2025-09-12 22:38:44,930 - web_crawler - INFO - Downloading page: https://ramp.com/customers/poshmark-customer-story
-2025-09-12 22:38:46,085 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:46,085 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:38:46,086 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:46,086 - web_crawler - INFO - Runtime: 100.1 seconds
-2025-09-12 22:38:46,086 - web_crawler - INFO - Pages crawled: 39
-2025-09-12 22:38:46,086 - web_crawler - INFO - Successful: 37
-2025-09-12 22:38:46,086 - web_crawler - INFO - Failed: 2
-2025-09-12 22:38:46,086 - web_crawler - INFO - Links found: 2109
-2025-09-12 22:38:46,087 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:38:46,087 - web_crawler - INFO - Errors: 2
-2025-09-12 22:38:46,087 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:38:46,087 - web_crawler - INFO - Overall rate: 0.39 pages/sec
-2025-09-12 22:38:46,087 - web_crawler - INFO - Recent rate: 0.40 pages/sec
-2025-09-12 22:38:46,087 - web_crawler - INFO - Success rate: 94.9%
-2025-09-12 22:38:46,087 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:46,856 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/customers/mix-talent
-2025-09-12 22:38:47,862 - web_crawler - INFO - Begin crawling URL: https://ramp.com/accounts-payable
-2025-09-12 22:38:47,863 - web_crawler - INFO - Downloading page: https://ramp.com/accounts-payable
-2025-09-12 22:38:50,021 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/global
-2025-09-12 22:38:51,027 - web_crawler - INFO - Begin crawling URL: https://docs.ramp.com
-2025-09-12 22:38:51,028 - web_crawler - INFO - Downloading page: https://docs.ramp.com
-2025-09-12 22:38:52,373 - web_crawler - INFO - Begin crawling URL: https://ramp.com/versus
-2025-09-12 22:38:52,373 - web_crawler - INFO - Downloading page: https://ramp.com/versus
-2025-09-12 22:38:53,490 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/customers/zola-customer-story
-2025-09-12 22:38:54,495 - web_crawler - INFO - Begin crawling URL: https://ramp.com/expense-category
-2025-09-12 22:38:54,496 - web_crawler - INFO - Downloading page: https://ramp.com/expense-category
-2025-09-12 22:38:55,508 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/global
-2025-09-12 22:38:56,089 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:56,089 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:38:56,089 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:56,089 - web_crawler - INFO - Runtime: 110.1 seconds
-2025-09-12 22:38:56,089 - web_crawler - INFO - Pages crawled: 44
-2025-09-12 22:38:56,089 - web_crawler - INFO - Successful: 42
-2025-09-12 22:38:56,089 - web_crawler - INFO - Failed: 2
-2025-09-12 22:38:56,089 - web_crawler - INFO - Links found: 2532
-2025-09-12 22:38:56,089 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:38:56,089 - web_crawler - INFO - Errors: 2
-2025-09-12 22:38:56,089 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:38:56,090 - web_crawler - INFO - Overall rate: 0.40 pages/sec
-2025-09-12 22:38:56,090 - web_crawler - INFO - Recent rate: 0.50 pages/sec
-2025-09-12 22:38:56,090 - web_crawler - INFO - Success rate: 95.5%
-2025-09-12 22:38:56,090 - web_crawler - INFO - ============================================================
-2025-09-12 22:38:56,514 - web_crawler - INFO - Begin crawling URL: https://www.linkedin.com/company/ramp
-2025-09-12 22:38:56,515 - web_crawler - INFO - Downloading page: https://www.linkedin.com/company/ramp
-2025-09-12 22:39:05,342 - web_crawler - WARNING - Queue full, cannot add: https://www.linkedin.com/legal/privacy-policy?trk=organization_guest_contextual-sign-in-modal_sign-in-modal_auth-button_privacy-policy
-2025-09-12 22:39:06,095 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:06,096 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:39:06,096 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:06,096 - web_crawler - INFO - Runtime: 120.1 seconds
-2025-09-12 22:39:06,096 - web_crawler - INFO - Pages crawled: 45
-2025-09-12 22:39:06,096 - web_crawler - INFO - Successful: 43
-2025-09-12 22:39:06,096 - web_crawler - INFO - Failed: 2
-2025-09-12 22:39:06,097 - web_crawler - INFO - Links found: 2706
-2025-09-12 22:39:06,097 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:39:06,097 - web_crawler - INFO - Errors: 2
-2025-09-12 22:39:06,097 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:39:06,097 - web_crawler - INFO - Overall rate: 0.37 pages/sec
-2025-09-12 22:39:06,097 - web_crawler - INFO - Recent rate: 0.10 pages/sec
-2025-09-12 22:39:06,097 - web_crawler - INFO - Success rate: 95.6%
-2025-09-12 22:39:06,098 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:06,348 - web_crawler - INFO - Begin crawling URL: https://ramp.com/streamlined-approvals
-2025-09-12 22:39:06,349 - web_crawler - INFO - Downloading page: https://ramp.com/streamlined-approvals
-2025-09-12 22:39:08,119 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/global
-2025-09-12 22:39:09,125 - web_crawler - INFO - Begin crawling URL: https://ramp.com/customers/8vc-customer-story
-2025-09-12 22:39:09,126 - web_crawler - INFO - Downloading page: https://ramp.com/customers/8vc-customer-story
-2025-09-12 22:39:11,019 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/customers/mix-talent
-2025-09-12 22:39:12,024 - web_crawler - INFO - Begin crawling URL: https://ramp.com/emerging-talent
-2025-09-12 22:39:12,025 - web_crawler - INFO - Downloading page: https://ramp.com/emerging-talent
-2025-09-12 22:39:12,726 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/blog/business-credit-cards-with-ein-only
-2025-09-12 22:39:13,731 - web_crawler - INFO - Begin crawling URL: https://trust.ramp.com/
-2025-09-12 22:39:13,732 - web_crawler - INFO - Downloading page: https://trust.ramp.com/
-2025-09-12 22:39:16,101 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:16,101 - web_crawler - INFO - CRAWLER STATISTICS
-2025-09-12 22:39:16,101 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:16,102 - web_crawler - INFO - Runtime: 130.1 seconds
-2025-09-12 22:39:16,102 - web_crawler - INFO - Pages crawled: 48
-2025-09-12 22:39:16,102 - web_crawler - INFO - Successful: 46
-2025-09-12 22:39:16,102 - web_crawler - INFO - Failed: 2
-2025-09-12 22:39:16,102 - web_crawler - INFO - Links found: 3032
-2025-09-12 22:39:16,102 - web_crawler - INFO - Queue size: 99
-2025-09-12 22:39:16,102 - web_crawler - INFO - Errors: 2
-2025-09-12 22:39:16,103 - web_crawler - INFO - Robots blocked: 0
-2025-09-12 22:39:16,103 - web_crawler - INFO - Overall rate: 0.37 pages/sec
-2025-09-12 22:39:16,103 - web_crawler - INFO - Recent rate: 0.30 pages/sec
-2025-09-12 22:39:16,103 - web_crawler - INFO - Success rate: 95.8%
-2025-09-12 22:39:16,103 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:21,582 - web_crawler - ERROR - Failed to download: https://trust.ramp.com/
-2025-09-12 22:39:22,586 - web_crawler - INFO - Begin crawling URL: https://www.facebook.com/rampcard
-2025-09-12 22:39:22,586 - web_crawler - INFO - Downloading page: https://www.facebook.com/rampcard
-2025-09-12 22:39:24,090 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:24,091 - web_crawler - INFO - FINAL CRAWLING STATISTICS
-2025-09-12 22:39:24,091 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:24,092 - web_crawler - INFO - pages_crawled: 50
-2025-09-12 22:39:24,092 - web_crawler - INFO - pages_successful: 47
-2025-09-12 22:39:24,092 - web_crawler - INFO - pages_failed: 3
-2025-09-12 22:39:24,092 - web_crawler - INFO - links_found: 3032
-2025-09-12 22:39:24,092 - web_crawler - INFO - queue_size: 98
-2025-09-12 22:39:24,093 - web_crawler - INFO - errors: 3
-2025-09-12 22:39:24,093 - web_crawler - INFO - robots_blocked: 0
-2025-09-12 22:39:24,093 - web_crawler - INFO - last_pages_crawled: 48
-2025-09-12 22:39:24,106 - web_crawler - INFO - Storage Statistics:
-2025-09-12 22:39:24,106 - web_crawler - INFO -   total_pages: 47
-2025-09-12 22:39:24,106 - web_crawler - INFO -   successful_pages: 47
-2025-09-12 22:39:24,106 - web_crawler - INFO -   failed_pages: 0
-2025-09-12 22:39:24,107 - web_crawler - INFO -   success_rate: 100.0
-2025-09-12 22:39:24,107 - web_crawler - INFO -   domain_distribution: {'ramp.com': 18, 'x.com': 3, 'www.instagram.com': 3, 'www.linkedin.com': 2, 'www.figma.com': 1, 'www.eightsleep.com': 1, 'www.tiktok.com': 1, 'jordihays.com': 1, 'open.spotify.com': 1, 'www.vanta.com': 1}
-2025-09-12 22:39:24,107 - web_crawler - INFO - ============================================================
-2025-09-12 22:39:24,107 - web_crawler - INFO - Crawling completed in 138.04 seconds
-2025-09-13 19:24:45,445 - web_crawler - INFO - Test message
+2025-09-22 20:28:47,954 - web_crawler - INFO - Web crawler initialized successfully in hard mode with 0 existing URLs
+2025-09-22 20:28:47,954 - web_crawler - INFO - Starting web crawler...
+2025-09-22 20:28:48,408 - web_crawler - INFO - Begin crawling URL: https://tbpn.com
+2025-09-22 20:28:48,408 - web_crawler - INFO - Downloading page: https://tbpn.com
+2025-09-22 20:28:48,643 - web_crawler - WARNING - Queue full, cannot add: https://overcast.fm/itunes1772360235
+2025-09-22 20:28:49,648 - web_crawler - INFO - Begin crawling URL: https://www.figma.com/
+2025-09-22 20:28:49,649 - web_crawler - INFO - Downloading page: https://www.figma.com/
+2025-09-22 20:28:50,603 - web_crawler - WARNING - Queue full, cannot add: https://www.figma.com/enterprise
+2025-09-22 20:28:51,608 - web_crawler - INFO - Begin crawling URL: https://x.com/johncoogan?ref=johncoogan.com
+2025-09-22 20:28:51,609 - web_crawler - INFO - Downloading page: https://x.com/johncoogan?ref=johncoogan.com
+2025-09-22 20:28:52,080 - web_crawler - WARNING - Queue full, cannot add: https://business.twitter.com/en/help/troubleshooting/how-twitter-ads-work.html?ref=web-twc-ao-gbl-adsinfo&utm_source=twc&utm_medium=web&utm_campaign=ao&utm_content=adsinfo
+2025-09-22 20:28:53,086 - web_crawler - INFO - Begin crawling URL: http://jordihays.com
+2025-09-22 20:28:53,087 - web_crawler - INFO - Downloading page: http://jordihays.com
+2025-09-22 20:28:53,997 - web_crawler - WARNING - Queue full, cannot add: http://jordihays.com/story
+2025-09-22 20:28:54,999 - web_crawler - INFO - Begin crawling URL: https://shop.getbezel.com
+2025-09-22 20:28:54,999 - web_crawler - INFO - Downloading page: https://shop.getbezel.com
+2025-09-22 20:28:56,843 - web_crawler - INFO - ============================================================
+2025-09-22 20:28:56,843 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-22 20:28:56,843 - web_crawler - INFO - ============================================================
+2025-09-22 20:28:56,844 - web_crawler - INFO - pages_crawled: 5
+2025-09-22 20:28:56,844 - web_crawler - INFO - pages_successful: 5
+2025-09-22 20:28:56,844 - web_crawler - INFO - pages_failed: 0
+2025-09-22 20:28:56,844 - web_crawler - INFO - links_found: 141
+2025-09-22 20:28:56,844 - web_crawler - INFO - queue_size: 9
+2025-09-22 20:28:56,844 - web_crawler - INFO - errors: 0
+2025-09-22 20:28:56,844 - web_crawler - INFO - robots_blocked: 0
+2025-09-22 20:28:56,859 - web_crawler - INFO - Storage Statistics:
+2025-09-22 20:28:56,860 - web_crawler - INFO -   total_pages: 5
+2025-09-22 20:28:56,860 - web_crawler - INFO -   successful_pages: 5
+2025-09-22 20:28:56,860 - web_crawler - INFO -   failed_pages: 0
+2025-09-22 20:28:56,860 - web_crawler - INFO -   success_rate: 100.0
+2025-09-22 20:28:56,860 - web_crawler - INFO -   domain_distribution: {'www.figma.com': 1, 'tbpn.com': 1, 'x.com': 1, 'jordihays.com': 1, 'shop.getbezel.com': 1}
+2025-09-22 20:28:56,860 - web_crawler - INFO - ============================================================
+2025-09-22 20:28:56,860 - web_crawler - INFO - Crawling completed in 8.91 seconds
+2025-09-22 20:29:22,883 - web_crawler - INFO - Web crawler initialized successfully in hard mode with 5 existing URLs
+2025-09-22 20:29:22,883 - web_crawler - INFO - Starting web crawler...
+2025-09-22 20:29:23,025 - web_crawler - INFO - Begin crawling URL: https://tbpn.com
+2025-09-22 20:29:23,026 - web_crawler - INFO - URL already seen: https://tbpn.com
+2025-09-22 20:29:24,031 - web_crawler - INFO - ============================================================
+2025-09-22 20:29:24,032 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-22 20:29:24,032 - web_crawler - INFO - ============================================================
+2025-09-22 20:29:24,032 - web_crawler - INFO - pages_crawled: 1
+2025-09-22 20:29:24,032 - web_crawler - INFO - pages_successful: 0
+2025-09-22 20:29:24,032 - web_crawler - INFO - pages_failed: 1
+2025-09-22 20:29:24,032 - web_crawler - INFO - links_found: 0
+2025-09-22 20:29:24,033 - web_crawler - INFO - queue_size: 0
+2025-09-22 20:29:24,033 - web_crawler - INFO - errors: 0
+2025-09-22 20:29:24,033 - web_crawler - INFO - robots_blocked: 0
+2025-09-22 20:29:24,043 - web_crawler - INFO - Storage Statistics:
+2025-09-22 20:29:24,043 - web_crawler - INFO -   total_pages: 5
+2025-09-22 20:29:24,044 - web_crawler - INFO -   successful_pages: 5
+2025-09-22 20:29:24,044 - web_crawler - INFO -   failed_pages: 0
+2025-09-22 20:29:24,044 - web_crawler - INFO -   success_rate: 100.0
+2025-09-22 20:29:24,044 - web_crawler - INFO -   domain_distribution: {'www.figma.com': 1, 'tbpn.com': 1, 'x.com': 1, 'jordihays.com': 1, 'shop.getbezel.com': 1}
+2025-09-22 20:29:24,044 - web_crawler - INFO - ============================================================
+2025-09-22 20:29:24,044 - web_crawler - INFO - Crawling completed in 1.16 seconds
+2025-09-22 20:29:52,851 - web_crawler - INFO - Web crawler initialized successfully in hard mode with 5 existing URLs
+2025-09-22 20:29:52,851 - web_crawler - INFO - Starting web crawler...
+2025-09-22 20:29:52,982 - web_crawler - INFO - Begin crawling URL: https://tbpn.com
+2025-09-22 20:29:52,982 - web_crawler - INFO - URL already seen: https://tbpn.com
+2025-09-22 20:29:53,988 - web_crawler - INFO - ============================================================
+2025-09-22 20:29:53,988 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-22 20:29:53,988 - web_crawler - INFO - ============================================================
+2025-09-22 20:29:53,989 - web_crawler - INFO - pages_crawled: 1
+2025-09-22 20:29:53,989 - web_crawler - INFO - pages_successful: 0
+2025-09-22 20:29:53,989 - web_crawler - INFO - pages_failed: 1
+2025-09-22 20:29:53,989 - web_crawler - INFO - links_found: 0
+2025-09-22 20:29:53,989 - web_crawler - INFO - queue_size: 0
+2025-09-22 20:29:53,989 - web_crawler - INFO - errors: 0
+2025-09-22 20:29:53,989 - web_crawler - INFO - robots_blocked: 0
+2025-09-22 20:29:53,999 - web_crawler - INFO - Storage Statistics:
+2025-09-22 20:29:53,999 - web_crawler - INFO -   total_pages: 5
+2025-09-22 20:29:53,999 - web_crawler - INFO -   successful_pages: 5
+2025-09-22 20:29:53,999 - web_crawler - INFO -   failed_pages: 0
+2025-09-22 20:29:53,999 - web_crawler - INFO -   success_rate: 100.0
+2025-09-22 20:29:54,000 - web_crawler - INFO -   domain_distribution: {'www.figma.com': 1, 'tbpn.com': 1, 'x.com': 1, 'jordihays.com': 1, 'shop.getbezel.com': 1}
+2025-09-22 20:29:54,000 - web_crawler - INFO - ============================================================
+2025-09-22 20:29:54,000 - web_crawler - INFO - Crawling completed in 1.15 seconds
+2025-09-22 20:33:59,751 - web_crawler - INFO - Web crawler initialized successfully in hard mode with 5 existing URLs
+2025-09-22 20:33:59,751 - web_crawler - INFO - Starting web crawler...
+2025-09-22 20:33:59,905 - web_crawler - INFO - Begin crawling URL: https://tbpn.com
+2025-09-22 20:33:59,905 - web_crawler - INFO - URL already seen: https://tbpn.com
+2025-09-22 20:33:59,908 - web_crawler - ERROR - Error processing stored links for https://tbpn.com: [Errno 2] No such file or directory: 'crawled_data/tbpn.com_index_20250922_202848.html'
+2025-09-22 20:34:00,913 - web_crawler - INFO - ============================================================
+2025-09-22 20:34:00,914 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-22 20:34:00,914 - web_crawler - INFO - ============================================================
+2025-09-22 20:34:00,914 - web_crawler - INFO - pages_crawled: 1
+2025-09-22 20:34:00,914 - web_crawler - INFO - pages_successful: 0
+2025-09-22 20:34:00,914 - web_crawler - INFO - pages_failed: 1
+2025-09-22 20:34:00,914 - web_crawler - INFO - links_found: 0
+2025-09-22 20:34:00,914 - web_crawler - INFO - queue_size: 0
+2025-09-22 20:34:00,914 - web_crawler - INFO - errors: 1
+2025-09-22 20:34:00,914 - web_crawler - INFO - robots_blocked: 0
+2025-09-22 20:34:00,924 - web_crawler - INFO - Storage Statistics:
+2025-09-22 20:34:00,924 - web_crawler - INFO -   total_pages: 5
+2025-09-22 20:34:00,924 - web_crawler - INFO -   successful_pages: 5
+2025-09-22 20:34:00,924 - web_crawler - INFO -   failed_pages: 0
+2025-09-22 20:34:00,924 - web_crawler - INFO -   success_rate: 100.0
+2025-09-22 20:34:00,924 - web_crawler - INFO -   domain_distribution: {'tbpn.com': 1, 'x.com': 1, 'jordihays.com': 1, 'shop.getbezel.com': 1, 'www.figma.com': 1}
+2025-09-22 20:34:00,924 - web_crawler - INFO - ============================================================
+2025-09-22 20:34:00,924 - web_crawler - INFO - Crawling completed in 1.17 seconds
+2025-09-22 20:34:31,647 - web_crawler - INFO - Web crawler initialized successfully in hard mode with 5 existing URLs
+2025-09-22 20:34:31,647 - web_crawler - INFO - Starting web crawler...
+2025-09-22 20:34:31,814 - web_crawler - INFO - Begin crawling URL: https://tbpn.com
+2025-09-22 20:34:31,814 - web_crawler - INFO - URL already seen: https://tbpn.com
+2025-09-22 20:34:31,818 - web_crawler - ERROR - Error processing stored links for https://tbpn.com: [Errno 2] No such file or directory: 'crawled_data/tbpn.com_index_20250922_202848.html'
+2025-09-22 20:34:32,823 - web_crawler - INFO - ============================================================
+2025-09-22 20:34:32,824 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-22 20:34:32,824 - web_crawler - INFO - ============================================================
+2025-09-22 20:34:32,824 - web_crawler - INFO - pages_crawled: 1
+2025-09-22 20:34:32,824 - web_crawler - INFO - pages_successful: 0
+2025-09-22 20:34:32,824 - web_crawler - INFO - pages_failed: 1
+2025-09-22 20:34:32,824 - web_crawler - INFO - links_found: 0
+2025-09-22 20:34:32,825 - web_crawler - INFO - queue_size: 0
+2025-09-22 20:34:32,825 - web_crawler - INFO - errors: 1
+2025-09-22 20:34:32,825 - web_crawler - INFO - robots_blocked: 0
+2025-09-22 20:34:32,835 - web_crawler - INFO - Storage Statistics:
+2025-09-22 20:34:32,835 - web_crawler - INFO -   total_pages: 5
+2025-09-22 20:34:32,835 - web_crawler - INFO -   successful_pages: 5
+2025-09-22 20:34:32,835 - web_crawler - INFO -   failed_pages: 0
+2025-09-22 20:34:32,835 - web_crawler - INFO -   success_rate: 100.0
+2025-09-22 20:34:32,836 - web_crawler - INFO -   domain_distribution: {'x.com': 1, 'tbpn.com': 1, 'jordihays.com': 1, 'shop.getbezel.com': 1, 'www.figma.com': 1}
+2025-09-22 20:34:32,836 - web_crawler - INFO - ============================================================
+2025-09-22 20:34:32,836 - web_crawler - INFO - Crawling completed in 1.19 seconds
+2025-09-22 20:35:32,564 - web_crawler - INFO - Web crawler initialized successfully in hard mode with 0 existing URLs
+2025-09-22 20:35:32,564 - web_crawler - INFO - Starting web crawler...
+2025-09-22 20:35:32,740 - web_crawler - INFO - Begin crawling URL: https://tbpn.com
+2025-09-22 20:35:32,740 - web_crawler - INFO - Downloading page: https://tbpn.com
+2025-09-22 20:35:33,963 - web_crawler - INFO - Begin crawling URL: https://www.figma.com/
+2025-09-22 20:35:33,964 - web_crawler - INFO - Downloading page: https://www.figma.com/
+2025-09-22 20:35:35,078 - web_crawler - WARNING - Queue full, cannot add: https://www.figma.com/gallery
+2025-09-22 20:35:36,084 - web_crawler - INFO - Begin crawling URL: https://shop.getbezel.com
+2025-09-22 20:35:36,085 - web_crawler - INFO - Downloading page: https://shop.getbezel.com
+2025-09-22 20:35:38,181 - web_crawler - INFO - Begin crawling URL: https://www.wander.com
+2025-09-22 20:35:38,181 - web_crawler - INFO - Downloading page: https://www.wander.com
+2025-09-22 20:35:39,175 - web_crawler - WARNING - Queue full, cannot add: https://www.linkedin.com/company/wandercom
+2025-09-22 20:35:40,180 - web_crawler - INFO - Begin crawling URL: https://www.numeralhq.com/
+2025-09-22 20:35:40,181 - web_crawler - INFO - Downloading page: https://www.numeralhq.com/
+2025-09-22 20:35:40,634 - web_crawler - WARNING - Queue full, cannot add: https://www.numeralhq.com/customers/fresh-sends
+2025-09-22 20:35:41,639 - web_crawler - INFO - Begin crawling URL: https://ramp.com
+2025-09-22 20:35:41,640 - web_crawler - INFO - Downloading page: https://ramp.com
+2025-09-22 20:35:42,553 - web_crawler - INFO - ============================================================
+2025-09-22 20:35:42,554 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:35:42,554 - web_crawler - INFO - ============================================================
+2025-09-22 20:35:42,554 - web_crawler - INFO - Runtime: 10.0 seconds
+2025-09-22 20:35:42,554 - web_crawler - INFO - Pages crawled: 5
+2025-09-22 20:35:42,554 - web_crawler - INFO - Successful: 5
+2025-09-22 20:35:42,554 - web_crawler - INFO - Failed: 0
+2025-09-22 20:35:42,555 - web_crawler - INFO - Links found: 178
+2025-09-22 20:35:42,555 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:35:42,555 - web_crawler - INFO - Errors: 0
+2025-09-22 20:35:42,555 - web_crawler - INFO - Robots blocked: 0
+2025-09-22 20:35:42,555 - web_crawler - INFO - Overall rate: 0.50 pages/sec
+2025-09-22 20:35:42,555 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-22 20:35:42,555 - web_crawler - INFO - Success rate: 100.0%
+2025-09-22 20:35:42,556 - web_crawler - INFO - ============================================================
+2025-09-22 20:35:43,965 - web_crawler - WARNING - Queue full, cannot add: https://ramp.com/expense-category
+2025-09-22 20:35:44,970 - web_crawler - INFO - Begin crawling URL: https://www.linkedin.com/in/jordi-hays-559199113
+2025-09-22 20:35:44,971 - web_crawler - INFO - Downloading page: https://www.linkedin.com/in/jordi-hays-559199113
+2025-09-22 20:35:45,895 - web_crawler - WARNING - Queue full, cannot add: https://www.linkedin.com/posts/tbpn_head-of-instagram-adam-mosseri-on-the-app-activity-7374253423463985153-ek0S
+2025-09-22 20:35:46,900 - web_crawler - INFO - Begin crawling URL: http://jordihays.com
+2025-09-22 20:35:46,901 - web_crawler - INFO - Downloading page: http://jordihays.com
+2025-09-22 20:35:47,301 - web_crawler - WARNING - Queue full, cannot add: https://www.rorra.com
+2025-09-22 20:35:48,306 - web_crawler - INFO - Begin crawling URL: http://johncoogan.com
+2025-09-22 20:35:48,306 - web_crawler - INFO - Downloading page: http://johncoogan.com
+2025-09-22 20:35:50,058 - web_crawler - WARNING - Queue full, cannot add: https://www.johncoogan.com/podcasts
+2025-09-22 20:35:51,063 - web_crawler - INFO - Begin crawling URL: https://www.eightsleep.com/
+2025-09-22 20:35:51,064 - web_crawler - INFO - Downloading page: https://www.eightsleep.com/
+2025-09-22 20:35:51,407 - web_crawler - WARNING - Queue full, cannot add: https://www.eightsleep.com/why-eight-sleep
+2025-09-22 20:35:52,413 - web_crawler - INFO - Begin crawling URL: https://linear.app/
+2025-09-22 20:35:52,413 - web_crawler - INFO - Downloading page: https://linear.app/
+2025-09-22 20:35:52,559 - web_crawler - INFO - ============================================================
+2025-09-22 20:35:52,559 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:35:52,559 - web_crawler - INFO - ============================================================
+2025-09-22 20:35:52,560 - web_crawler - INFO - Runtime: 20.0 seconds
+2025-09-22 20:35:52,560 - web_crawler - INFO - Pages crawled: 10
+2025-09-22 20:35:52,560 - web_crawler - INFO - Successful: 10
+2025-09-22 20:35:52,560 - web_crawler - INFO - Failed: 0
+2025-09-22 20:35:52,561 - web_crawler - INFO - Links found: 414
+2025-09-22 20:35:52,561 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:35:52,561 - web_crawler - INFO - Errors: 0
+2025-09-22 20:35:52,561 - web_crawler - INFO - Robots blocked: 0
+2025-09-22 20:35:52,561 - web_crawler - INFO - Overall rate: 0.50 pages/sec
+2025-09-22 20:35:52,561 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-22 20:35:52,562 - web_crawler - INFO - Success rate: 100.0%
+2025-09-22 20:35:52,562 - web_crawler - INFO - ============================================================
+2025-09-22 20:35:53,362 - web_crawler - WARNING - Queue full, cannot add: https://linear.app/build
+2025-09-22 20:35:54,368 - web_crawler - INFO - Begin crawling URL: https://overcast.fm/itunes1772360235
+2025-09-22 20:35:54,368 - web_crawler - INFO - Downloading page: https://overcast.fm/itunes1772360235
+2025-09-22 20:35:56,442 - web_crawler - WARNING - Queue full, cannot add: https://overcast.fm/privacy
+2025-09-22 20:35:57,447 - web_crawler - INFO - Begin crawling URL: http://youtube.com/@tbpnlive
+2025-09-22 20:35:57,448 - web_crawler - INFO - Downloading page: http://youtube.com/@tbpnlive
+2025-09-22 20:35:58,265 - web_crawler - WARNING - Queue full, cannot add: http://youtube.com/
+2025-09-22 20:35:59,271 - web_crawler - INFO - Begin crawling URL: https://open.spotify.com/show/2L6WMqY3GUPCGBD0dX6p00?si=d9f5b424754548c1
+2025-09-22 20:35:59,272 - web_crawler - INFO - Downloading page: https://open.spotify.com/show/2L6WMqY3GUPCGBD0dX6p00?si=d9f5b424754548c1
+2025-09-22 20:36:00,866 - web_crawler - INFO - Begin crawling URL: https://polymarket.com/
+2025-09-22 20:36:00,866 - web_crawler - INFO - Downloading page: https://polymarket.com/
+2025-09-22 20:36:01,733 - web_crawler - WARNING - Queue full, cannot add: https://polymarket.com/event/democratic-presidential-nominee-2028/will-josh-shapiro-win-the-2028-democratic-presidential-nomination-977
+2025-09-22 20:36:02,567 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:02,567 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:36:02,568 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:02,568 - web_crawler - INFO - Runtime: 30.0 seconds
+2025-09-22 20:36:02,568 - web_crawler - INFO - Pages crawled: 15
+2025-09-22 20:36:02,568 - web_crawler - INFO - Successful: 15
+2025-09-22 20:36:02,568 - web_crawler - INFO - Failed: 0
+2025-09-22 20:36:02,568 - web_crawler - INFO - Links found: 660
+2025-09-22 20:36:02,569 - web_crawler - INFO - Queue size: 98
+2025-09-22 20:36:02,569 - web_crawler - INFO - Errors: 0
+2025-09-22 20:36:02,569 - web_crawler - INFO - Robots blocked: 0
+2025-09-22 20:36:02,569 - web_crawler - INFO - Overall rate: 0.50 pages/sec
+2025-09-22 20:36:02,569 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-22 20:36:02,569 - web_crawler - INFO - Success rate: 100.0%
+2025-09-22 20:36:02,569 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:02,739 - web_crawler - INFO - Begin crawling URL: https://www.linkedin.com/in/jacoogan
+2025-09-22 20:36:02,740 - web_crawler - INFO - Downloading page: https://www.linkedin.com/in/jacoogan
+2025-09-22 20:36:10,700 - web_crawler - ERROR - Failed to download: https://www.linkedin.com/in/jacoogan
+2025-09-22 20:36:11,701 - web_crawler - INFO - Begin crawling URL: https://x.com/tbpn
+2025-09-22 20:36:11,702 - web_crawler - INFO - Downloading page: https://x.com/tbpn
+2025-09-22 20:36:12,193 - web_crawler - WARNING - Queue full, cannot add: https://help.x.com/using-x/x-supported-browsers
+2025-09-22 20:36:12,570 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:12,571 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:36:12,571 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:12,571 - web_crawler - INFO - Runtime: 40.0 seconds
+2025-09-22 20:36:12,571 - web_crawler - INFO - Pages crawled: 17
+2025-09-22 20:36:12,571 - web_crawler - INFO - Successful: 16
+2025-09-22 20:36:12,572 - web_crawler - INFO - Failed: 1
+2025-09-22 20:36:12,572 - web_crawler - INFO - Links found: 666
+2025-09-22 20:36:12,572 - web_crawler - INFO - Queue size: 98
+2025-09-22 20:36:12,572 - web_crawler - INFO - Errors: 1
+2025-09-22 20:36:12,572 - web_crawler - INFO - Robots blocked: 0
+2025-09-22 20:36:12,572 - web_crawler - INFO - Overall rate: 0.42 pages/sec
+2025-09-22 20:36:12,572 - web_crawler - INFO - Recent rate: 0.20 pages/sec
+2025-09-22 20:36:12,573 - web_crawler - INFO - Success rate: 94.1%
+2025-09-22 20:36:12,573 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:13,199 - web_crawler - INFO - Begin crawling URL: https://www.instagram.com/johncoogan
+2025-09-22 20:36:13,200 - web_crawler - INFO - Downloading page: https://www.instagram.com/johncoogan
+2025-09-22 20:36:15,175 - web_crawler - INFO - Begin crawling URL: https://www.adquick.com
+2025-09-22 20:36:15,175 - web_crawler - INFO - Downloading page: https://www.adquick.com
+2025-09-22 20:36:16,565 - web_crawler - WARNING - Queue full, cannot add: https://www.adquick.com/media/windowscape
+2025-09-22 20:36:17,571 - web_crawler - INFO - Begin crawling URL: https://www.instagram.com/tbpnlive
+2025-09-22 20:36:17,571 - web_crawler - INFO - Downloading page: https://www.instagram.com/tbpnlive
+2025-09-22 20:36:19,354 - web_crawler - INFO - Begin crawling URL: https://www.instagram.com/jordihays?hl=en
+2025-09-22 20:36:19,355 - web_crawler - INFO - Downloading page: https://www.instagram.com/jordihays?hl=en
+2025-09-22 20:36:21,271 - web_crawler - INFO - Begin crawling URL: https://x.com/johncoogan?ref=johncoogan.com
+2025-09-22 20:36:21,271 - web_crawler - INFO - Downloading page: https://x.com/johncoogan?ref=johncoogan.com
+2025-09-22 20:36:21,835 - web_crawler - WARNING - Queue full, cannot add: https://business.twitter.com/en/help/troubleshooting/how-twitter-ads-work.html?ref=web-twc-ao-gbl-adsinfo&utm_source=twc&utm_medium=web&utm_campaign=ao&utm_content=adsinfo
+2025-09-22 20:36:22,573 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:22,574 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:36:22,574 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:22,574 - web_crawler - INFO - Runtime: 50.0 seconds
+2025-09-22 20:36:22,574 - web_crawler - INFO - Pages crawled: 22
+2025-09-22 20:36:22,574 - web_crawler - INFO - Successful: 21
+2025-09-22 20:36:22,575 - web_crawler - INFO - Failed: 1
+2025-09-22 20:36:22,575 - web_crawler - INFO - Links found: 808
+2025-09-22 20:36:22,575 - web_crawler - INFO - Queue size: 97
+2025-09-22 20:36:22,575 - web_crawler - INFO - Errors: 1
+2025-09-22 20:36:22,575 - web_crawler - INFO - Robots blocked: 0
+2025-09-22 20:36:22,575 - web_crawler - INFO - Overall rate: 0.44 pages/sec
+2025-09-22 20:36:22,575 - web_crawler - INFO - Recent rate: 0.50 pages/sec
+2025-09-22 20:36:22,576 - web_crawler - INFO - Success rate: 95.5%
+2025-09-22 20:36:22,576 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:22,838 - web_crawler - INFO - Begin crawling URL: https://www.vanta.com/
+2025-09-22 20:36:22,838 - web_crawler - INFO - Downloading page: https://www.vanta.com/
+2025-09-22 20:36:23,365 - web_crawler - WARNING - Queue full, cannot add: https://twitter.com/TrustVanta
+2025-09-22 20:36:24,370 - web_crawler - INFO - Begin crawling URL: https://public.com
+2025-09-22 20:36:24,371 - web_crawler - INFO - Downloading page: https://public.com
+2025-09-22 20:36:25,538 - web_crawler - WARNING - Queue full, cannot add: https://public.com/invest/margin
+2025-09-22 20:36:26,543 - web_crawler - INFO - Begin crawling URL: https://www.tiktok.com/@tbpn
+2025-09-22 20:36:26,544 - web_crawler - INFO - Downloading page: https://www.tiktok.com/@tbpn
+2025-09-22 20:36:27,165 - web_crawler - WARNING - Queue full, cannot add: https://www.tiktok.com/legal/privacy-policy
+2025-09-22 20:36:28,169 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:28,169 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-22 20:36:28,170 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:28,170 - web_crawler - INFO - pages_crawled: 25
+2025-09-22 20:36:28,170 - web_crawler - INFO - pages_successful: 24
+2025-09-22 20:36:28,170 - web_crawler - INFO - pages_failed: 1
+2025-09-22 20:36:28,170 - web_crawler - INFO - links_found: 992
+2025-09-22 20:36:28,170 - web_crawler - INFO - queue_size: 99
+2025-09-22 20:36:28,171 - web_crawler - INFO - errors: 1
+2025-09-22 20:36:28,171 - web_crawler - INFO - robots_blocked: 0
+2025-09-22 20:36:28,171 - web_crawler - INFO - last_pages_crawled: 22
+2025-09-22 20:36:28,180 - web_crawler - INFO - Storage Statistics:
+2025-09-22 20:36:28,181 - web_crawler - INFO -   total_pages: 24
+2025-09-22 20:36:28,181 - web_crawler - INFO -   successful_pages: 24
+2025-09-22 20:36:28,181 - web_crawler - INFO -   failed_pages: 0
+2025-09-22 20:36:28,181 - web_crawler - INFO -   success_rate: 100.0
+2025-09-22 20:36:28,181 - web_crawler - INFO -   domain_distribution: {'www.instagram.com': 3, 'x.com': 2, 'polymarket.com': 1, 'www.wander.com': 1, 'johncoogan.com': 1, 'tbpn.com': 1, 'www.tiktok.com': 1, 'www.figma.com': 1, 'www.linkedin.com': 1, 'overcast.fm': 1}
+2025-09-22 20:36:28,181 - web_crawler - INFO - ============================================================
+2025-09-22 20:36:28,181 - web_crawler - INFO - Crawling completed in 55.62 seconds
+2025-09-22 20:42:52,667 - web_crawler - INFO - Web crawler initialized successfully in hard mode with 0 existing URLs
+2025-09-22 20:42:52,667 - web_crawler - INFO - Starting web crawler...
+2025-09-22 20:42:53,008 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/Apple-MacBook-13-inch-10-core-Unified/dp/B0DZDDQ429/ref=sr_1_1_sspa?crid=2155DLBWTA2EA&dib=eyJ2IjoiMSJ9.cxg64j71asHtIpoHuVSkM1Bu8EWVhGsiX0stiVKlhqsOP-n-f8Id06ZjG32XX2kkob_1Pw6NflZOaM_x3hUxgLFlRHzGInNl9dEMZGSRJREHXrb0JtwdT8yIbaEhIyFxscM92Sbhfg36dvaHFCItFw4qXKIStbxtyQm0uOC-cod8U_OqBm3LrSTMmnGHekF1KwMt9Ov2x9ha2F0MvwHe6zMUSXulvs5J7rAutDe0mzA.xMXxu6tOF62RSWzKBILLBPAkyrwYamcP6ej2OPWG7YE&dib_tag=se&keywords=macbook&qid=1758553944&sprefix=macbook%2Caps%2C273&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1
+2025-09-22 20:42:53,012 - web_crawler - INFO - Downloading page: https://www.amazon.in/Apple-MacBook-13-inch-10-core-Unified/dp/B0DZDDQ429/ref=sr_1_1_sspa?crid=2155DLBWTA2EA&dib=eyJ2IjoiMSJ9.cxg64j71asHtIpoHuVSkM1Bu8EWVhGsiX0stiVKlhqsOP-n-f8Id06ZjG32XX2kkob_1Pw6NflZOaM_x3hUxgLFlRHzGInNl9dEMZGSRJREHXrb0JtwdT8yIbaEhIyFxscM92Sbhfg36dvaHFCItFw4qXKIStbxtyQm0uOC-cod8U_OqBm3LrSTMmnGHekF1KwMt9Ov2x9ha2F0MvwHe6zMUSXulvs5J7rAutDe0mzA.xMXxu6tOF62RSWzKBILLBPAkyrwYamcP6ej2OPWG7YE&dib_tag=se&keywords=macbook&qid=1758553944&sprefix=macbook%2Caps%2C273&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1
+2025-09-22 20:42:55,568 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/Apple-MacBook-13-inch-10-core-Unified/dp/B0DZDDQ429/${sign-in-url}
+2025-09-22 20:42:56,574 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/product-reviews/B09X643Z2W/ref=pd_sbs_d_sccl_1_4_cr/000-0000000-0000000?pd_rd_w=oXlPU&content-id=amzn1.sym.6d240404-f8ea-42f5-98fe-bf3c8ec77086&pf_rd_p=6d240404-f8ea-42f5-98fe-bf3c8ec77086&pf_rd_r=RWRNGD8J953FNMQNHJW4&pd_rd_wg=lYrgu&pd_rd_r=cb74bf05-2597-4d0c-b1fb-563211fcb551&pd_rd_i=B09X643Z2W
+2025-09-22 20:42:56,578 - web_crawler - INFO - Downloading page: https://www.amazon.in/product-reviews/B09X643Z2W/ref=pd_sbs_d_sccl_1_4_cr/000-0000000-0000000?pd_rd_w=oXlPU&content-id=amzn1.sym.6d240404-f8ea-42f5-98fe-bf3c8ec77086&pf_rd_p=6d240404-f8ea-42f5-98fe-bf3c8ec77086&pf_rd_r=RWRNGD8J953FNMQNHJW4&pd_rd_wg=lYrgu&pd_rd_r=cb74bf05-2597-4d0c-b1fb-563211fcb551&pd_rd_i=B09X643Z2W
+2025-09-22 20:43:02,640 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:02,641 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:43:02,641 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:02,641 - web_crawler - INFO - Runtime: 10.0 seconds
+2025-09-22 20:43:02,641 - web_crawler - INFO - Pages crawled: 1
+2025-09-22 20:43:02,642 - web_crawler - INFO - Successful: 1
+2025-09-22 20:43:02,642 - web_crawler - INFO - Failed: 0
+2025-09-22 20:43:02,642 - web_crawler - INFO - Links found: 130
+2025-09-22 20:43:02,642 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:43:02,642 - web_crawler - INFO - Errors: 0
+2025-09-22 20:43:02,642 - web_crawler - INFO - Robots blocked: 4
+2025-09-22 20:43:02,642 - web_crawler - INFO - Overall rate: 0.10 pages/sec
+2025-09-22 20:43:02,643 - web_crawler - INFO - Recent rate: 0.10 pages/sec
+2025-09-22 20:43:02,643 - web_crawler - INFO - Success rate: 100.0%
+2025-09-22 20:43:02,643 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:04,690 - web_crawler - ERROR - Failed to download: https://www.amazon.in/product-reviews/B09X643Z2W/ref=pd_sbs_d_sccl_1_4_cr/000-0000000-0000000?pd_rd_w=oXlPU&content-id=amzn1.sym.6d240404-f8ea-42f5-98fe-bf3c8ec77086&pf_rd_p=6d240404-f8ea-42f5-98fe-bf3c8ec77086&pf_rd_r=RWRNGD8J953FNMQNHJW4&pd_rd_wg=lYrgu&pd_rd_r=cb74bf05-2597-4d0c-b1fb-563211fcb551&pd_rd_i=B09X643Z2W
+2025-09-22 20:43:05,691 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/gp/help/seller/at-a-glance.html/ref=dp_merchant_link?ie=UTF8&seller=AJ6SIZC8YQDZX&asin=B0DZDDQ429&ref_=dp_merchant_link&isAmazonFulfilled=1
+2025-09-22 20:43:05,696 - web_crawler - INFO - Downloading page: https://www.amazon.in/gp/help/seller/at-a-glance.html/ref=dp_merchant_link?ie=UTF8&seller=AJ6SIZC8YQDZX&asin=B0DZDDQ429&ref_=dp_merchant_link&isAmazonFulfilled=1
+2025-09-22 20:43:07,246 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/gp/help/customer/display.html?nodeId=200507590&ref_=footer_gw_m_b_he
+2025-09-22 20:43:07,250 - web_crawler - INFO - Downloading page: https://www.amazon.in/gp/help/customer/display.html?nodeId=200507590&ref_=footer_gw_m_b_he
+2025-09-22 20:43:12,645 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:12,646 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:43:12,646 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:12,646 - web_crawler - INFO - Runtime: 20.0 seconds
+2025-09-22 20:43:12,647 - web_crawler - INFO - Pages crawled: 3
+2025-09-22 20:43:12,647 - web_crawler - INFO - Successful: 2
+2025-09-22 20:43:12,647 - web_crawler - INFO - Failed: 1
+2025-09-22 20:43:12,647 - web_crawler - INFO - Links found: 130
+2025-09-22 20:43:12,647 - web_crawler - INFO - Queue size: 97
+2025-09-22 20:43:12,647 - web_crawler - INFO - Errors: 1
+2025-09-22 20:43:12,647 - web_crawler - INFO - Robots blocked: 4
+2025-09-22 20:43:12,647 - web_crawler - INFO - Overall rate: 0.15 pages/sec
+2025-09-22 20:43:12,647 - web_crawler - INFO - Recent rate: 0.20 pages/sec
+2025-09-22 20:43:12,648 - web_crawler - INFO - Success rate: 66.7%
+2025-09-22 20:43:12,648 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:15,468 - web_crawler - ERROR - Failed to download: https://www.amazon.in/gp/help/customer/display.html?nodeId=200507590&ref_=footer_gw_m_b_he
+2025-09-22 20:43:16,473 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/gp/help/customer/display.html?nodeId=201083470&ref_=footer_swc
+2025-09-22 20:43:16,478 - web_crawler - INFO - Downloading page: https://www.amazon.in/gp/help/customer/display.html?nodeId=201083470&ref_=footer_swc
+2025-09-22 20:43:22,651 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:22,652 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:43:22,652 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:22,652 - web_crawler - INFO - Runtime: 30.0 seconds
+2025-09-22 20:43:22,653 - web_crawler - INFO - Pages crawled: 4
+2025-09-22 20:43:22,653 - web_crawler - INFO - Successful: 2
+2025-09-22 20:43:22,653 - web_crawler - INFO - Failed: 2
+2025-09-22 20:43:22,653 - web_crawler - INFO - Links found: 130
+2025-09-22 20:43:22,653 - web_crawler - INFO - Queue size: 96
+2025-09-22 20:43:22,654 - web_crawler - INFO - Errors: 2
+2025-09-22 20:43:22,654 - web_crawler - INFO - Robots blocked: 4
+2025-09-22 20:43:22,654 - web_crawler - INFO - Overall rate: 0.13 pages/sec
+2025-09-22 20:43:22,654 - web_crawler - INFO - Recent rate: 0.10 pages/sec
+2025-09-22 20:43:22,654 - web_crawler - INFO - Success rate: 50.0%
+2025-09-22 20:43:22,654 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:24,773 - web_crawler - ERROR - Failed to download: https://www.amazon.in/gp/help/customer/display.html?nodeId=201083470&ref_=footer_swc
+2025-09-22 20:43:25,774 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/Pet-Supplies/b?ie=UTF8&node=2454181031&ref_=nav_cs_pets
+2025-09-22 20:43:25,779 - web_crawler - INFO - Downloading page: https://www.amazon.in/Pet-Supplies/b?ie=UTF8&node=2454181031&ref_=nav_cs_pets
+2025-09-22 20:43:28,076 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/s?rh=n%3A2454181031%2Cn%3A4771342031%2Cn%3A4771403031&ref_=PremiumEDit_AF Page_AF4.0_3&pf_rd_r=VCND1C95Z22P4C1AXDYR&pf_rd_p=742863a4-43ff-4338-8822-1f6daf678f76&pf_rd_m=A1VBAL9TL5WCBF&pf_rd_s=merchandised-search-8&pf_rd_t=&pf_rd_i=40000899
+2025-09-22 20:43:29,082 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/b?_encoding=UTF8&node=1389375031&ref_=sv_top_elec_mega_3
+2025-09-22 20:43:29,087 - web_crawler - INFO - Downloading page: https://www.amazon.in/b?_encoding=UTF8&node=1389375031&ref_=sv_top_elec_mega_3
+2025-09-22 20:43:30,972 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/s?rh=n%3A1389375031%2Cp_n_g-1004218864091%3A14354449031
+2025-09-22 20:43:31,978 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/dp/B0CM71B3VS/ref=psd_bb_lm1_B0DZDDQ429_B0CM71B3VS
+2025-09-22 20:43:31,983 - web_crawler - INFO - Downloading page: https://www.amazon.in/dp/B0CM71B3VS/ref=psd_bb_lm1_B0DZDDQ429_B0CM71B3VS
+2025-09-22 20:43:32,658 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:32,659 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:43:32,659 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:32,659 - web_crawler - INFO - Runtime: 40.0 seconds
+2025-09-22 20:43:32,659 - web_crawler - INFO - Pages crawled: 7
+2025-09-22 20:43:32,660 - web_crawler - INFO - Successful: 4
+2025-09-22 20:43:32,660 - web_crawler - INFO - Failed: 3
+2025-09-22 20:43:32,660 - web_crawler - INFO - Links found: 616
+2025-09-22 20:43:32,660 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:43:32,660 - web_crawler - INFO - Errors: 3
+2025-09-22 20:43:32,660 - web_crawler - INFO - Robots blocked: 4
+2025-09-22 20:43:32,660 - web_crawler - INFO - Overall rate: 0.17 pages/sec
+2025-09-22 20:43:32,661 - web_crawler - INFO - Recent rate: 0.30 pages/sec
+2025-09-22 20:43:32,661 - web_crawler - INFO - Success rate: 57.1%
+2025-09-22 20:43:32,661 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:34,133 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/gp/help/customer/display.html?nodeId=201083470&ref_=footer_swc
+2025-09-22 20:43:35,139 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/customer-preferences/edit?ie=UTF8&preferencesReturnUrl=%2F&ref_=topnav_lang
+2025-09-22 20:43:35,144 - web_crawler - INFO - Downloading page: https://www.amazon.in/customer-preferences/edit?ie=UTF8&preferencesReturnUrl=%2F&ref_=topnav_lang
+2025-09-22 20:43:36,023 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/b/32702023031?node=32702023031&ld=AZINSOANavDesktop_T3&ref_=nav_cs_sell_T3
+2025-09-22 20:43:37,029 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/dp/B0DZDDKTQZ/ref=twister_B0F47TL4Y2?_encoding=UTF8&psc=1
+2025-09-22 20:43:37,033 - web_crawler - INFO - Downloading page: https://www.amazon.in/dp/B0DZDDKTQZ/ref=twister_B0F47TL4Y2?_encoding=UTF8&psc=1
+2025-09-22 20:43:38,979 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/gp/help/customer/display.html?nodeId=201083470&ref_=footer_swc
+2025-09-22 20:43:39,985 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/gp/css/homepage.html?ref_=footer_ya
+2025-09-22 20:43:39,989 - web_crawler - INFO - Downloading page: https://www.amazon.in/gp/css/homepage.html?ref_=footer_ya
+2025-09-22 20:43:42,662 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:42,663 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:43:42,663 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:42,663 - web_crawler - INFO - Runtime: 50.0 seconds
+2025-09-22 20:43:42,663 - web_crawler - INFO - Pages crawled: 10
+2025-09-22 20:43:42,664 - web_crawler - INFO - Successful: 7
+2025-09-22 20:43:42,664 - web_crawler - INFO - Failed: 3
+2025-09-22 20:43:42,664 - web_crawler - INFO - Links found: 932
+2025-09-22 20:43:42,664 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:43:42,664 - web_crawler - INFO - Errors: 3
+2025-09-22 20:43:42,664 - web_crawler - INFO - Robots blocked: 4
+2025-09-22 20:43:42,665 - web_crawler - INFO - Overall rate: 0.20 pages/sec
+2025-09-22 20:43:42,665 - web_crawler - INFO - Recent rate: 0.30 pages/sec
+2025-09-22 20:43:42,665 - web_crawler - INFO - Success rate: 70.0%
+2025-09-22 20:43:42,665 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:48,260 - web_crawler - ERROR - Failed to download: https://www.amazon.in/gp/css/homepage.html?ref_=footer_ya
+2025-09-22 20:43:49,262 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/gp/b/ref=apay_upi_sopp?node=16179244031
+2025-09-22 20:43:49,267 - web_crawler - INFO - Downloading page: https://www.amazon.in/gp/b/ref=apay_upi_sopp?node=16179244031
+2025-09-22 20:43:50,421 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/gp/css/homepage.html?ref_=footer_ya
+2025-09-22 20:43:51,427 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/prime?clientId=PrimeExclusiveMario&ingressId=DetailPage&redirectURL=L2RwL0IwRFpERFE0Mjk&redirectQueryParams=cHNjPTE&cancelRedirectURL=L2RwL0IwRFpERFE0Mjk&cancelRedirectQueryParams=cHNjPTE&primeCampaignId=PrimeExclusiveMario_DetailPage_Desktop_PrimeSavings&asin=B0DZDDQ429&refAsin=B0DZDDQ429&benefitOptimizationId=PrimeExclusiveMario&wait=1
+2025-09-22 20:43:51,433 - web_crawler - INFO - Downloading page: https://www.amazon.in/prime?clientId=PrimeExclusiveMario&ingressId=DetailPage&redirectURL=L2RwL0IwRFpERFE0Mjk&redirectQueryParams=cHNjPTE&cancelRedirectURL=L2RwL0IwRFpERFE0Mjk&cancelRedirectQueryParams=cHNjPTE&primeCampaignId=PrimeExclusiveMario_DetailPage_Desktop_PrimeSavings&asin=B0DZDDQ429&refAsin=B0DZDDQ429&benefitOptimizationId=PrimeExclusiveMario&wait=1
+2025-09-22 20:43:52,668 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/gp/help/customer/display.html?nodeId=201083470&ref_=footer_swc
+2025-09-22 20:43:52,669 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:52,669 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:43:52,669 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:52,669 - web_crawler - INFO - Runtime: 60.0 seconds
+2025-09-22 20:43:52,669 - web_crawler - INFO - Pages crawled: 12
+2025-09-22 20:43:52,669 - web_crawler - INFO - Successful: 8
+2025-09-22 20:43:52,669 - web_crawler - INFO - Failed: 4
+2025-09-22 20:43:52,669 - web_crawler - INFO - Links found: 1091
+2025-09-22 20:43:52,669 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:43:52,669 - web_crawler - INFO - Errors: 4
+2025-09-22 20:43:52,669 - web_crawler - INFO - Robots blocked: 5
+2025-09-22 20:43:52,669 - web_crawler - INFO - Overall rate: 0.20 pages/sec
+2025-09-22 20:43:52,669 - web_crawler - INFO - Recent rate: 0.20 pages/sec
+2025-09-22 20:43:52,669 - web_crawler - INFO - Success rate: 66.7%
+2025-09-22 20:43:52,669 - web_crawler - INFO - ============================================================
+2025-09-22 20:43:53,675 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/Gourmet-Specialty-Foods/b?ie=UTF8&node=2454178031&ref_=nav_cs_grocery
+2025-09-22 20:43:53,680 - web_crawler - INFO - Downloading page: https://www.amazon.in/Gourmet-Specialty-Foods/b?ie=UTF8&node=2454178031&ref_=nav_cs_grocery
+2025-09-22 20:43:55,908 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/gp/help/customer/display.html?nodeId=200507590&ref_=footer_gw_m_b_he
+2025-09-22 20:43:56,914 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/dp//ref=dp_atch_dss_w_lm_B0DZDDQ429_
+2025-09-22 20:43:56,919 - web_crawler - INFO - Downloading page: https://www.amazon.in/dp//ref=dp_atch_dss_w_lm_B0DZDDQ429_
+2025-09-22 20:44:02,674 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:02,675 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:44:02,675 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:02,675 - web_crawler - INFO - Runtime: 70.0 seconds
+2025-09-22 20:44:02,675 - web_crawler - INFO - Pages crawled: 14
+2025-09-22 20:44:02,676 - web_crawler - INFO - Successful: 10
+2025-09-22 20:44:02,676 - web_crawler - INFO - Failed: 4
+2025-09-22 20:44:02,676 - web_crawler - INFO - Links found: 1488
+2025-09-22 20:44:02,676 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:44:02,676 - web_crawler - INFO - Errors: 4
+2025-09-22 20:44:02,676 - web_crawler - INFO - Robots blocked: 5
+2025-09-22 20:44:02,676 - web_crawler - INFO - Overall rate: 0.20 pages/sec
+2025-09-22 20:44:02,677 - web_crawler - INFO - Recent rate: 0.20 pages/sec
+2025-09-22 20:44:02,677 - web_crawler - INFO - Success rate: 71.4%
+2025-09-22 20:44:02,677 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:04,808 - web_crawler - ERROR - Failed to download: https://www.amazon.in/dp//ref=dp_atch_dss_w_lm_B0DZDDQ429_
+2025-09-22 20:44:05,814 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/gp/help/customer/display.html?ie=UTF8&nodeId=201149900
+2025-09-22 20:44:05,819 - web_crawler - INFO - Downloading page: https://www.amazon.in/gp/help/customer/display.html?ie=UTF8&nodeId=201149900
+2025-09-22 20:44:12,680 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:12,681 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:44:12,681 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:12,681 - web_crawler - INFO - Runtime: 80.0 seconds
+2025-09-22 20:44:12,682 - web_crawler - INFO - Pages crawled: 15
+2025-09-22 20:44:12,682 - web_crawler - INFO - Successful: 10
+2025-09-22 20:44:12,682 - web_crawler - INFO - Failed: 5
+2025-09-22 20:44:12,682 - web_crawler - INFO - Links found: 1488
+2025-09-22 20:44:12,682 - web_crawler - INFO - Queue size: 98
+2025-09-22 20:44:12,682 - web_crawler - INFO - Errors: 5
+2025-09-22 20:44:12,683 - web_crawler - INFO - Robots blocked: 5
+2025-09-22 20:44:12,683 - web_crawler - INFO - Overall rate: 0.19 pages/sec
+2025-09-22 20:44:12,683 - web_crawler - INFO - Recent rate: 0.10 pages/sec
+2025-09-22 20:44:12,683 - web_crawler - INFO - Success rate: 66.7%
+2025-09-22 20:44:12,683 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:14,474 - web_crawler - ERROR - Failed to download: https://www.amazon.in/gp/help/customer/display.html?ie=UTF8&nodeId=201149900
+2025-09-22 20:44:15,476 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/b?node=2838698031&ld=AZINSOANavDesktopFooter_C&ref_=nav_footer_sell_C
+2025-09-22 20:44:15,482 - web_crawler - INFO - Downloading page: https://www.amazon.in/b?node=2838698031&ld=AZINSOANavDesktopFooter_C&ref_=nav_footer_sell_C
+2025-09-22 20:44:16,711 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/beauty/b?ie=UTF8&node=1355016031&ref_=nav_cs_beauty
+2025-09-22 20:44:17,717 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/Sports/b?ie=UTF8&node=1984443031&ref_=nav_cs_sports
+2025-09-22 20:44:17,722 - web_crawler - INFO - Downloading page: https://www.amazon.in/Sports/b?ie=UTF8&node=1984443031&ref_=nav_cs_sports
+2025-09-22 20:44:19,959 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/Sports-Outdoor-Recreation-Accessories-Fitness-Outdoors/b?ie=UTF8&node=12780048031
+2025-09-22 20:44:20,965 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/beauty/b?ie=UTF8&node=1355016031&ref_=nav_cs_beauty
+2025-09-22 20:44:20,970 - web_crawler - INFO - Downloading page: https://www.amazon.in/beauty/b?ie=UTF8&node=1355016031&ref_=nav_cs_beauty
+2025-09-22 20:44:22,684 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:22,684 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:44:22,684 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:22,685 - web_crawler - INFO - Runtime: 90.0 seconds
+2025-09-22 20:44:22,685 - web_crawler - INFO - Pages crawled: 18
+2025-09-22 20:44:22,685 - web_crawler - INFO - Successful: 12
+2025-09-22 20:44:22,685 - web_crawler - INFO - Failed: 6
+2025-09-22 20:44:22,685 - web_crawler - INFO - Links found: 1964
+2025-09-22 20:44:22,685 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:44:22,686 - web_crawler - INFO - Errors: 6
+2025-09-22 20:44:22,686 - web_crawler - INFO - Robots blocked: 6
+2025-09-22 20:44:22,686 - web_crawler - INFO - Overall rate: 0.20 pages/sec
+2025-09-22 20:44:22,686 - web_crawler - INFO - Recent rate: 0.30 pages/sec
+2025-09-22 20:44:22,686 - web_crawler - INFO - Success rate: 66.7%
+2025-09-22 20:44:22,686 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:23,112 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/gp/browse.html?rw_useCurrentProtocol=1&node=1374642031&ref_=amb_link_YESistthQA2jaHQKKZvokQ_30
+2025-09-22 20:44:24,118 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/customer-preferences/country?ie=UTF8&preferencesReturnUrl=%2F&ref_=footer_icp_cp
+2025-09-22 20:44:24,123 - web_crawler - INFO - Downloading page: https://www.amazon.in/customer-preferences/country?ie=UTF8&preferencesReturnUrl=%2F&ref_=footer_icp_cp
+2025-09-22 20:44:24,800 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/b/32702023031?node=32702023031&ld=AZINSOANavDesktop_T3&ref_=nav_cs_sell_T3
+2025-09-22 20:44:25,805 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/product-reviews/B0CM71B3VS/ref=psd_bb_r1_B0DZDDQ429_B0CM71B3VS?ie=UTF8&showViewpoints=1
+2025-09-22 20:44:25,810 - web_crawler - INFO - Downloading page: https://www.amazon.in/product-reviews/B0CM71B3VS/ref=psd_bb_r1_B0DZDDQ429_B0CM71B3VS?ie=UTF8&showViewpoints=1
+2025-09-22 20:44:32,687 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:32,688 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:44:32,688 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:32,689 - web_crawler - INFO - Runtime: 100.1 seconds
+2025-09-22 20:44:32,689 - web_crawler - INFO - Pages crawled: 20
+2025-09-22 20:44:32,689 - web_crawler - INFO - Successful: 14
+2025-09-22 20:44:32,689 - web_crawler - INFO - Failed: 6
+2025-09-22 20:44:32,689 - web_crawler - INFO - Links found: 2261
+2025-09-22 20:44:32,689 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:44:32,690 - web_crawler - INFO - Errors: 6
+2025-09-22 20:44:32,690 - web_crawler - INFO - Robots blocked: 6
+2025-09-22 20:44:32,690 - web_crawler - INFO - Overall rate: 0.20 pages/sec
+2025-09-22 20:44:32,690 - web_crawler - INFO - Recent rate: 0.20 pages/sec
+2025-09-22 20:44:32,690 - web_crawler - INFO - Success rate: 70.0%
+2025-09-22 20:44:32,690 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:33,928 - web_crawler - ERROR - Failed to download: https://www.amazon.in/product-reviews/B0CM71B3VS/ref=psd_bb_r1_B0DZDDQ429_B0CM71B3VS?ie=UTF8&showViewpoints=1
+2025-09-22 20:44:34,935 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/b?_encoding=UTF8&node=1389335031&ref_=sv_top_elec_mega_4
+2025-09-22 20:44:34,940 - web_crawler - INFO - Downloading page: https://www.amazon.in/b?_encoding=UTF8&node=1389335031&ref_=sv_top_elec_mega_4
+2025-09-22 20:44:36,798 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/gp/help/customer/display.html?nodeId=200507590&ref_=footer_gw_m_b_he
+2025-09-22 20:44:37,804 - web_crawler - INFO - Begin crawling URL: https://www.aboutamazon.in/?utm_source=gateway&utm_medium=footer
+2025-09-22 20:44:37,809 - web_crawler - INFO - Downloading page: https://www.aboutamazon.in/?utm_source=gateway&utm_medium=footer
+2025-09-22 20:44:38,081 - web_crawler - WARNING - Queue full, cannot add: https://policies.google.com/privacy
+2025-09-22 20:44:39,087 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/gp/bestsellers/computers/ref=zg_b_bs_computers_1
+2025-09-22 20:44:39,090 - web_crawler - INFO - Downloading page: https://www.amazon.in/gp/bestsellers/computers/ref=zg_b_bs_computers_1
+2025-09-22 20:44:40,292 - web_crawler - WARNING - Queue full, cannot add: https://www.amazon.in/Wayona-Charging-Charger-Compatible-Samsung/dp/B09QGZFBPM/ref=zg_bs_g_computers_d_sccl_19/000-0000000-0000000?psc=1
+2025-09-22 20:44:41,298 - web_crawler - INFO - Begin crawling URL: https://www.amazon.in/product-reviews/B0CM71B3VS/ref=dp_atch_dss_w_r_B0DZDDQ429_B0CM71B3VS?ie=UTF8&showViewpoints=1
+2025-09-22 20:44:41,303 - web_crawler - INFO - Downloading page: https://www.amazon.in/product-reviews/B0CM71B3VS/ref=dp_atch_dss_w_r_B0DZDDQ429_B0CM71B3VS?ie=UTF8&showViewpoints=1
+2025-09-22 20:44:42,694 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:42,695 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-22 20:44:42,695 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:42,695 - web_crawler - INFO - Runtime: 110.1 seconds
+2025-09-22 20:44:42,695 - web_crawler - INFO - Pages crawled: 24
+2025-09-22 20:44:42,696 - web_crawler - INFO - Successful: 17
+2025-09-22 20:44:42,696 - web_crawler - INFO - Failed: 7
+2025-09-22 20:44:42,696 - web_crawler - INFO - Links found: 2708
+2025-09-22 20:44:42,696 - web_crawler - INFO - Queue size: 99
+2025-09-22 20:44:42,696 - web_crawler - INFO - Errors: 7
+2025-09-22 20:44:42,696 - web_crawler - INFO - Robots blocked: 6
+2025-09-22 20:44:42,696 - web_crawler - INFO - Overall rate: 0.22 pages/sec
+2025-09-22 20:44:42,696 - web_crawler - INFO - Recent rate: 0.40 pages/sec
+2025-09-22 20:44:42,697 - web_crawler - INFO - Success rate: 70.8%
+2025-09-22 20:44:42,697 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:49,467 - web_crawler - ERROR - Failed to download: https://www.amazon.in/product-reviews/B0CM71B3VS/ref=dp_atch_dss_w_r_B0DZDDQ429_B0CM71B3VS?ie=UTF8&showViewpoints=1
+2025-09-22 20:44:50,473 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:50,474 - web_crawler - INFO - FINAL CRAWLING STATISTICS
+2025-09-22 20:44:50,474 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:50,474 - web_crawler - INFO - pages_crawled: 25
+2025-09-22 20:44:50,474 - web_crawler - INFO - pages_successful: 17
+2025-09-22 20:44:50,474 - web_crawler - INFO - pages_failed: 8
+2025-09-22 20:44:50,475 - web_crawler - INFO - links_found: 2708
+2025-09-22 20:44:50,475 - web_crawler - INFO - queue_size: 99
+2025-09-22 20:44:50,475 - web_crawler - INFO - errors: 8
+2025-09-22 20:44:50,475 - web_crawler - INFO - robots_blocked: 6
+2025-09-22 20:44:50,475 - web_crawler - INFO - last_pages_crawled: 24
+2025-09-22 20:44:50,485 - web_crawler - INFO - Storage Statistics:
+2025-09-22 20:44:50,486 - web_crawler - INFO -   total_pages: 17
+2025-09-22 20:44:50,486 - web_crawler - INFO -   successful_pages: 17
+2025-09-22 20:44:50,486 - web_crawler - INFO -   failed_pages: 0
+2025-09-22 20:44:50,486 - web_crawler - INFO -   success_rate: 100.0
+2025-09-22 20:44:50,486 - web_crawler - INFO -   domain_distribution: {'www.amazon.in': 16, 'www.aboutamazon.in': 1}
+2025-09-22 20:44:50,486 - web_crawler - INFO - ============================================================
+2025-09-22 20:44:50,486 - web_crawler - INFO - Crawling completed in 117.82 seconds

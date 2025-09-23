@@ -178,10 +178,17 @@ class WebCrawler:
         
         try:
             self.logger.log_info(f"Begin crawling URL: {url}")
+            # Record homepage as visited
+            self.content_storage.mark_homepage_visited(url)
             
             # Check if URL is already seen (both modes check URL)
             if self.url_seen.has_seen(url):
                 self.logger.log_info(f"URL already seen: {url}")
+                # Ensure homepage visit is recorded even on seen URL
+                self.content_storage.mark_homepage_visited(url)
+                # In hard mode, even if the page has been visited, process stored links to discover new ones
+                if self.mode == "hard":
+                    self._process_links_from_storage(url)
                 return False
             
             # Check robots.txt compliance
@@ -202,8 +209,12 @@ class WebCrawler:
                 content_hash = self.content_storage._generate_content_hash(result['content'])
                 if self.content_storage.has_content_hash(content_hash):
                     self.logger.log_info(f"Content already seen (hash match): {url}")
+                    # Record homepage as visited
+                    self.content_storage.mark_homepage_visited(url)
                     # Still add URL to seen set to avoid re-crawling
                     self.url_seen.add_url(url)
+                    # Even if duplicate content, extract links to discover any new URLs
+                    self._process_links(url, result['content'])
                     return False
             
             # Save content to storage
@@ -222,6 +233,8 @@ class WebCrawler:
             
             # Mark URL as seen
             self.url_seen.add_url(url)
+            # Record homepage as visited
+            self.content_storage.mark_homepage_visited(url)
             
             # Extract and process links
             self._process_links(url, result['content'])
@@ -231,6 +244,21 @@ class WebCrawler:
         except Exception as e:
             self.logger.log_error(f"Error crawling {url}: {e}")
             return False
+
+    def _process_links_from_storage(self, url: str) -> None:
+        """In hard mode, process links from previously saved HTML without re-downloading."""
+        try:
+            page_doc = self.content_storage.get_page(url)
+            if not page_doc:
+                return
+            html_path = page_doc.get('html_path')
+            if not html_path:
+                return
+            with open(html_path, 'r', encoding='utf-8') as f:
+                html_content = f.read()
+            self._process_links(url, html_content)
+        except Exception as e:
+            self.logger.log_error(f"Error processing stored links for {url}: {e}")
     
     def _process_links(self, base_url: str, html_content: str):
         """Extract and process links from HTML content"""

@@ -1,8 +1,8 @@
 {
     "seed_urls": [
-        "https://tbpn.com"
+        "https://www.amazon.in/Apple-MacBook-13-inch-10-core-Unified/dp/B0DZDDQ429/ref=sr_1_1_sspa?crid=2155DLBWTA2EA&dib=eyJ2IjoiMSJ9.cxg64j71asHtIpoHuVSkM1Bu8EWVhGsiX0stiVKlhqsOP-n-f8Id06ZjG32XX2kkob_1Pw6NflZOaM_x3hUxgLFlRHzGInNl9dEMZGSRJREHXrb0JtwdT8yIbaEhIyFxscM92Sbhfg36dvaHFCItFw4qXKIStbxtyQm0uOC-cod8U_OqBm3LrSTMmnGHekF1KwMt9Ov2x9ha2F0MvwHe6zMUSXulvs5J7rAutDe0mzA.xMXxu6tOF62RSWzKBILLBPAkyrwYamcP6ej2OPWG7YE&dib_tag=se&keywords=macbook&qid=1758553944&sprefix=macbook%2Caps%2C273&sr=8-1-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1"
     ],
-    "max_pages": 50,
+    "max_pages": 25,
     "max_workers": 3,
     "delay_between_requests": 1.0,
     "timeout": 10,
