@@ -14,10 +14,10 @@
     "stats_interval": 10,
     "output_dir": "crawled_data",
     "database": {
-        "connection_string": "mongodb://localhost:27017/",
+        "connection_string": "mongodb://mongodb:27017/",
         "database_name": "web_crawler"
     },
     "kafka": {
-        "bootstrap_servers": ["localhost:9092"]
+        "bootstrap_servers": ["kafka:29092"]
     }
 }

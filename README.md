@@ -46,7 +46,8 @@ Edit `config.json` to customize crawler behavior:
     "max_queue_size": 1000,
     "stats_interval": 10,
     "output_dir": "crawled_data",
-    "db_path": "crawler.db"
+    "db_path": "crawler.db",
+    "kafka": { "bootstrap_servers": ["localhost:9092"] }
 }
 ```
 
@@ -63,6 +64,7 @@ Edit `config.json` to customize crawler behavior:
 - `stats_interval`: Interval for printing statistics (seconds)
 - `output_dir`: Directory to store crawled HTML files
 - `db_path`: Path to SQLite database file
+- `kafka.bootstrap_servers`: Kafka brokers for priority mode
 
 ## Usage
 
@@ -104,6 +106,8 @@ crawler/
 │   └── crawler/
 │       ├── core/              # Core crawler components
 │       │   ├── web_crawler.py # Main crawler orchestrator
+│       │   ├── master.py      # Master dispatcher to Kafka topics
+│       │   ├── worker.py      # Worker consumes from priority topic
 │       │   ├── url_frontier.py # URL queue management
 │       │   ├── url_seen.py    # URL deduplication
 │       │   └── html_downloader.py # HTML downloading
@@ -112,8 +116,9 @@ crawler/
 │       ├── parsing/           # Parsing components
 │       │   ├── robots_parser.py # Robots.txt compliance
 │       │   └── link_extractor.py # Link extraction
-│       └── utils/             # Utility components
-│           └── logger.py      # Logging and metrics
+│       ├── utils/             # Utility components
+│       │   └── logger.py      # Logging and metrics
+│       └── prioritizer.py     # URL priority assignment (random 1-5)
 ├── tests/                     # Test files
 └── crawled_data/             # Output directory
 ```
@@ -155,7 +160,24 @@ crawler/
    - Real-time statistics
    - Performance metrics
 
-### Database Schema
+### Priority Queue Mode (Kafka)
+
+- Master publishes URLs to 5 Kafka topics: `urls_priority_1` ... `urls_priority_5` (5 = highest).
+- Prioritizer returns an integer priority 1-5 for each URL.
+- Five workers each consume from a dedicated topic and process URLs independently.
+
+Run with Kafka (ensure Kafka at `localhost:9092` or set `kafka.bootstrap_servers` in `config.json`):
+
+```
+python -m src.crawler.core.master
+python -m src.crawler.core.worker urls_priority_1
+python -m src.crawler.core.worker urls_priority_2
+python -m src.crawler.core.worker urls_priority_3
+python -m src.crawler.core.worker urls_priority_4
+python -m src.crawler.core.worker urls_priority_5
+```
+
+## Database Schema
 
 The MongoDB database includes two main collections:
 

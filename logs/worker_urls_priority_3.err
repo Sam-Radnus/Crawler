@@ -1,0 +1,62 @@
+/Users/samsundar/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2025-09-25 21:29:58,454 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-2.2.15, node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-09-25 21:29:58,457 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-2.2.15, node_id=bootstrap-0 host=localhost:9092 <checking_api_versions_recv> [IPv6 ('::1', 9092, 0, 0)]>: Broker version identified as 2.6
+2025-09-25 21:29:58,457 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-2.2.15, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-09-25 21:29:58,458 - kafka.consumer.subscription_state - INFO - Updating subscribed topics to: ('urls_priority_3',)
+2025-09-25 21:29:58,479 - src.crawler.storage.content_storage - INFO - MongoDB database initialized: web_crawler
+2025-09-25 21:29:58,484 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-2.2.15, node_id=1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-09-25 21:29:58,484 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-2.2.15, node_id=1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-09-25 21:29:58,484 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-2.2.15, node_id=bootstrap-0 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Closing connection. 
+2025-09-25 21:29:58,589 - kafka.cluster - INFO - Coordinator for group/crawler_workers is BrokerMetadata(nodeId='coordinator-1', host='localhost', port=9092, rack=None)
+2025-09-25 21:29:58,589 - kafka.coordinator - INFO - Discovered coordinator coordinator-1 for group crawler_workers
+2025-09-25 21:29:58,589 - kafka.coordinator.heartbeat - INFO - Starting new heartbeat thread
+2025-09-25 21:29:58,589 - kafka.coordinator.consumer - INFO - Revoking previously assigned partitions set() for group crawler_workers
+2025-09-25 21:29:58,589 - kafka.coordinator - INFO - Failed to join group crawler_workers: NodeNotReadyError: coordinator-1
+2025-09-25 21:29:58,590 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-2.2.15, node_id=coordinator-1 host=localhost:9092 <connecting> [IPv6 ('::1', 9092, 0, 0)]>: connecting to localhost:9092 [('::1', 9092, 0, 0) IPv6]
+2025-09-25 21:29:58,693 - kafka.coordinator - INFO - Failed to join group crawler_workers: NodeNotReadyError: coordinator-1
+2025-09-25 21:29:58,693 - kafka.conn - INFO - <BrokerConnection client_id=kafka-python-2.2.15, node_id=coordinator-1 host=localhost:9092 <connected> [IPv6 ('::1', 9092, 0, 0)]>: Connection complete.
+2025-09-25 21:29:58,799 - kafka.coordinator - INFO - (Re-)joining group crawler_workers
+2025-09-25 21:29:58,800 - kafka.coordinator - INFO - Received member id kafka-python-2.2.15-96edd8d5-500c-4ca1-ba5f-347ebf5a5bbf for group crawler_workers; will retry join-group
+2025-09-25 21:29:58,800 - kafka.coordinator - INFO - Failed to join group crawler_workers: [Error 79] MemberIdRequiredError
+2025-09-25 21:29:58,800 - kafka.coordinator - INFO - (Re-)joining group crawler_workers
+2025-09-25 21:30:04,652 - kafka.coordinator - INFO - Successfully joined group crawler_workers <Generation 3 (member_id: kafka-python-2.2.15-96edd8d5-500c-4ca1-ba5f-347ebf5a5bbf, protocol: range)>
+2025-09-25 21:30:04,661 - kafka.consumer.subscription_state - INFO - Updated partition assignment: []
+2025-09-25 21:30:04,661 - kafka.coordinator.consumer - INFO - Setting newly assigned partitions set() for group crawler_workers
+2025-09-25 21:30:07,667 - kafka.coordinator.heartbeat - WARNING - Heartbeat failed for group crawler_workers because it is rebalancing
+2025-09-25 21:30:07,669 - kafka.coordinator.consumer - INFO - Revoking previously assigned partitions set() for group crawler_workers
+2025-09-25 21:30:07,669 - kafka.coordinator - INFO - (Re-)joining group crawler_workers
+2025-09-25 21:30:07,676 - kafka.coordinator - INFO - Successfully joined group crawler_workers <Generation 4 (member_id: kafka-python-2.2.15-96edd8d5-500c-4ca1-ba5f-347ebf5a5bbf, protocol: range)>
+2025-09-25 21:30:07,702 - kafka.consumer.subscription_state - INFO - Updated partition assignment: [TopicPartition(topic='urls_priority_3', partition=0), TopicPartition(topic='urls_priority_3', partition=1), TopicPartition(topic='urls_priority_3', partition=2)]
+2025-09-25 21:30:07,703 - kafka.coordinator.consumer - INFO - Setting newly assigned partitions {TopicPartition(topic='urls_priority_3', partition=0), TopicPartition(topic='urls_priority_3', partition=1), TopicPartition(topic='urls_priority_3', partition=2)} for group crawler_workers
+2025-09-25 21:30:07,709 - kafka.consumer.fetcher - INFO - Resetting offset for partition TopicPartition(topic='urls_priority_3', partition=0) to offset 0.
+2025-09-25 21:30:07,709 - kafka.consumer.fetcher - INFO - Resetting offset for partition TopicPartition(topic='urls_priority_3', partition=2) to offset 0.
+2025-09-25 21:30:07,709 - kafka.consumer.fetcher - INFO - Resetting offset for partition TopicPartition(topic='urls_priority_3', partition=1) to offset 0.
+2025-09-25 21:30:08,451 - web_crawler - INFO - ============================================================
+2025-09-25 21:30:08,451 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-25 21:30:08,451 - web_crawler - INFO - ============================================================
+2025-09-25 21:30:08,452 - web_crawler - INFO - Runtime: 10.0 seconds
+2025-09-25 21:30:08,452 - web_crawler - INFO - Pages crawled: 0
+2025-09-25 21:30:08,452 - web_crawler - INFO - Successful: 0
+2025-09-25 21:30:08,452 - web_crawler - INFO - Failed: 0
+2025-09-25 21:30:08,452 - web_crawler - INFO - Links found: 0
+2025-09-25 21:30:08,452 - web_crawler - INFO - Queue size: 0
+2025-09-25 21:30:08,452 - web_crawler - INFO - Errors: 0
+2025-09-25 21:30:08,452 - web_crawler - INFO - Robots blocked: 0
+2025-09-25 21:30:08,452 - web_crawler - INFO - Overall rate: 0.00 pages/sec
+2025-09-25 21:30:08,452 - web_crawler - INFO - Recent rate: 0.00 pages/sec
+2025-09-25 21:30:08,452 - web_crawler - INFO - ============================================================
+2025-09-25 21:30:18,457 - web_crawler - INFO - ============================================================
+2025-09-25 21:30:18,458 - web_crawler - INFO - CRAWLER STATISTICS
+2025-09-25 21:30:18,458 - web_crawler - INFO - ============================================================
+2025-09-25 21:30:18,458 - web_crawler - INFO - Runtime: 20.0 seconds
+2025-09-25 21:30:18,458 - web_crawler - INFO - Pages crawled: 0
+2025-09-25 21:30:18,458 - web_crawler - INFO - Successful: 0
+2025-09-25 21:30:18,458 - web_crawler - INFO - Failed: 0
+2025-09-25 21:30:18,458 - web_crawler - INFO - Links found: 0
+2025-09-25 21:30:18,458 - web_crawler - INFO - Queue size: 0
+2025-09-25 21:30:18,458 - web_crawler - INFO - Errors: 0
+2025-09-25 21:30:18,458 - web_crawler - INFO - Robots blocked: 0
+2025-09-25 21:30:18,458 - web_crawler - INFO - Overall rate: 0.00 pages/sec
+2025-09-25 21:30:18,459 - web_crawler - INFO - Recent rate: 0.00 pages/sec
+2025-09-25 21:30:18,459 - web_crawler - INFO - ============================================================

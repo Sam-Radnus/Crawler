@@ -7,14 +7,14 @@ import logging
 import argparse
 from typing import Dict, Any
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from url_frontier import URLFrontier
-from html_downloader import HTMLDownloader
-from robots_parser import RobotsParser
-from link_extractor import LinkExtractor
-from url_seen import URLSeen
-from content_storage import ContentStorage
+from src.crawler.core.url_frontier import URLFrontier
+from src.crawler.core.html_downloader import HTMLDownloader
+from src.crawler.parsing.robots_parser import RobotsParser
+from src.crawler.parsing.link_extractor import LinkExtractor
+from src.crawler.core.url_seen import URLSeen
+from src.crawler.storage.content_storage import ContentStorage
 
-from logger import CrawlerLogger
+from src.crawler.utils.logger import CrawlerLogger
 
 
 class WebCrawler:
@@ -177,6 +177,8 @@ class WebCrawler:
         start_time = time.time()
         
         try:
+            # Set URL context for logging
+            self.logger.set_current_url(url)
             self.logger.log_info(f"Begin crawling URL: {url}")
             # Record homepage as visited
             self.content_storage.mark_homepage_visited(url)
@@ -244,6 +246,9 @@ class WebCrawler:
         except Exception as e:
             self.logger.log_error(f"Error crawling {url}: {e}")
             return False
+        finally:
+            # Clear URL context after processing
+            self.logger.clear_current_url()
 
     def _process_links_from_storage(self, url: str) -> None:
         """In hard mode, process links from previously saved HTML without re-downloading."""

@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - crawler-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+    networks:
+      - crawler-network
+
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: web_crawler
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - crawler-network
+
+  master:
+    build:
+      context: ./master
+      dockerfile: Dockerfile
+    container_name: crawler-master
+    depends_on:
+      - kafka
+      - mongodb
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - crawler-network
+    restart: unless-stopped
+
+  worker-1:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: crawler-worker-1
+    depends_on:
+      - kafka
+      - mongodb
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "-m", "src.crawler.core.worker", "urls_priority_1"]
+    networks:
+      - crawler-network
+    restart: unless-stopped
+
+  worker-2:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: crawler-worker-2
+    depends_on:
+      - kafka
+      - mongodb
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "-m", "src.crawler.core.worker", "urls_priority_2"]
+    networks:
+      - crawler-network
+    restart: unless-stopped
+
+  worker-3:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: crawler-worker-3
+    depends_on:
+      - kafka
+      - mongodb
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "-m", "src.crawler.core.worker", "urls_priority_3"]
+    networks:
+      - crawler-network
+    restart: unless-stopped
+
+  worker-4:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: crawler-worker-4
+    depends_on:
+      - kafka
+      - mongodb
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "-m", "src.crawler.core.worker", "urls_priority_4"]
+    networks:
+      - crawler-network
+    restart: unless-stopped
+
+  worker-5:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    container_name: crawler-worker-5
+    depends_on:
+      - kafka
+      - mongodb
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["python", "-m", "src.crawler.core.worker", "urls_priority_5"]
+    networks:
+      - crawler-network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  crawler-network:
+    driver: bridge

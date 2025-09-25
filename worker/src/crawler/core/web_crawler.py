@@ -13,6 +13,7 @@ from src.crawler.parsing.robots_parser import RobotsParser
 from src.crawler.parsing.link_extractor import LinkExtractor
 from src.crawler.core.url_seen import URLSeen
 from src.crawler.storage.content_storage import ContentStorage
+
 from src.crawler.utils.logger import CrawlerLogger
 
 
@@ -176,6 +177,8 @@ class WebCrawler:
         start_time = time.time()
         
         try:
+            # Set URL context for logging
+            self.logger.set_current_url(url)
             self.logger.log_info(f"Begin crawling URL: {url}")
             # Record homepage as visited
             self.content_storage.mark_homepage_visited(url)
@@ -185,7 +188,7 @@ class WebCrawler:
                 self.logger.log_info(f"URL already seen: {url}")
                 # Ensure homepage visit is recorded even on seen URL
                 self.content_storage.mark_homepage_visited(url)
-                # In hard mode, still process stored links to discover new ones
+                # In hard mode, even if the page has been visited, process stored links to discover new ones
                 if self.mode == "hard":
                     self._process_links_from_storage(url)
                 return False
@@ -243,6 +246,9 @@ class WebCrawler:
         except Exception as e:
             self.logger.log_error(f"Error crawling {url}: {e}")
             return False
+        finally:
+            # Clear URL context after processing
+            self.logger.clear_current_url()
 
     def _process_links_from_storage(self, url: str) -> None:
         """In hard mode, process links from previously saved HTML without re-downloading."""
