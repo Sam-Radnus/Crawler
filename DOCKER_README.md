@@ -4,12 +4,27 @@ This document explains how to run the web crawler using Docker containers.
 
 ## Architecture
 
-The application is split into the following containers:
+The application follows a clean separation of concerns:
 
-- **Master Container**: Dispatches URLs to Kafka priority topics
-- **5 Worker Containers**: Each consumes from a specific priority topic (urls_priority_1 to urls_priority_5)
+### Master (URL Dispatcher)
+- **Purpose**: Fetches seed URLs and dispatches them to Kafka priority topics
+- **Minimal**: Only contains URL dispatching logic
+- **Files**: `master.py`, `prioritizer.py`
+- **Dependencies**: `kafka-python` only
+
+### Workers (URL Crawlers)
+- **Purpose**: Consumes URLs from Kafka topics and performs actual web crawling
+- **Complete**: Contains all crawling logic (HTML download, parsing, storage, etc.)
+- **Files**: Full crawler codebase
+- **Dependencies**: All crawler dependencies (requests, beautifulsoup4, pymongo, etc.)
+
+### Infrastructure
 - **Kafka + Zookeeper**: Message broker for URL distribution
 - **MongoDB**: Database for storing crawled content
+
+### Container Layout
+- **1 Master Container**: Dispatches URLs to Kafka priority topics
+- **5 Worker Containers**: Each consumes from a specific priority topic (urls_priority_1 to urls_priority_5)
 
 ## Quick Start
 
@@ -87,13 +102,15 @@ Located in `worker/config.json`:
 ### Master Container
 - **Image**: Built from `master/Dockerfile`
 - **Purpose**: Dispatches seed URLs to Kafka topics based on priority
-- **Dependencies**: Kafka, MongoDB
+- **Dependencies**: Kafka only
+- **Minimal**: Only contains URL dispatching logic (master.py, prioritizer.py)
 
 ### Worker Containers
 - **Image**: Built from `worker/Dockerfile`
 - **Purpose**: Consumes URLs from specific Kafka topics and crawls them
 - **Topics**: urls_priority_1, urls_priority_2, urls_priority_3, urls_priority_4, urls_priority_5
 - **Dependencies**: Kafka, MongoDB
+- **Complete**: Contains all crawling logic (HTML download, parsing, storage, etc.)
 
 ### Kafka + Zookeeper
 - **Image**: confluentinc/cp-kafka:7.4.0

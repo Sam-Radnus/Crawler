@@ -68,30 +68,37 @@ Edit `config.json` to customize crawler behavior:
 
 ## Usage
 
-### Basic Usage
+### Dockerized Usage (Recommended)
 
 ```bash
-python main.py
+# Start all services with one command
+./start.sh
+
+# View logs
+./logs.sh
+
+# Stop all services
+./stop.sh
 ```
 
-### Programmatic Usage
+### Manual Docker Commands
 
-```python
-from main import WebCrawler
+```bash
+# Start all services
+docker-compose up --build
 
-# Initialize crawler
-crawler = WebCrawler('config.json')
+# View logs from all services
+docker-compose logs -f
 
-# Start crawling
-crawler.start_crawling()
+# View logs from specific service
+docker-compose logs -f master
+docker-compose logs -f worker-1
 
-# Check status
-status = crawler.get_status()
-print(f"Pages crawled: {status['pages_crawled']}")
-
-# Stop crawling
-crawler.stop_crawling()
+# Stop all services
+docker-compose down
 ```
+
+For detailed Docker setup instructions, see [DOCKER_README.md](DOCKER_README.md).
 
 ## Architecture
 
