@@ -16,6 +16,7 @@ class MasterDispatcher:
         self.seed_urls: List[str] = self.config.get('seed_urls', [])
         self.producer = KafkaProducer(
             bootstrap_servers=self.bootstrap_servers,
+            api_version=(0,11,5),
             value_serializer=lambda v: json.dumps(v).encode('utf-8'),
         )
         self.prioritizer = Prioritizer()
