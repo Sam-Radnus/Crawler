@@ -22,7 +22,6 @@ class MasterDispatcher:
         self.prioritizer = Prioritizer()
 
     def _topic_for_priority(self, priority: int) -> str:
-        # Topic naming: urls_priority_{priority}
         return f"urls_priority_{priority}"
 
     def dispatch(self) -> None:
