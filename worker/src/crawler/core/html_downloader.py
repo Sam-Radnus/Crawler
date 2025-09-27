@@ -20,7 +20,6 @@ class HTMLDownloader:
         self.session = requests.Session()
         self.session.headers.update({'User-Agent': user_agent})
         
-        # Configure logging
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
     
