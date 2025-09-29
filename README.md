@@ -100,6 +100,10 @@ docker-compose down
 
 For detailed Docker setup instructions, see [DOCKER_README.md](DOCKER_README.md).
 
+## Getting Started Guide
+
+New to the project? Read the step-by-step guide: [GETTING_STARTED.md](GETTING_STARTED.md)
+
 ## Architecture
 
 ### Project Structure
@@ -112,11 +116,8 @@ crawler/
 ├── src/
 │   └── crawler/
 │       ├── core/              # Core crawler components
-│       │   ├── web_crawler.py # Main crawler orchestrator
 │       │   ├── master.py      # Master dispatcher to Kafka topics
 │       │   ├── worker.py      # Worker consumes from priority topic
-│       │   ├── url_frontier.py # URL queue management
-│       │   ├── url_seen.py    # URL deduplication
 │       │   └── html_downloader.py # HTML downloading
 │       ├── storage/           # Storage components
 │       │   └── content_storage.py # MongoDB storage
@@ -132,30 +133,28 @@ crawler/
 
 ### Core Components
 
-1. **URLFrontier** (`src/crawler/core/url_frontier.py`)
-   - Thread-safe FIFO queue
-   - Configurable maximum size
-   - Queue management operations
+1. **Kafka Worker** (`src/crawler/core/worker.py`)
+   - Consumes URLs from `urls_priority_*` topics
+   - Downloads, stores HTML, extracts links
+   - Re-enqueues discovered links by priority
 
 2. **HTMLDownloader** (`src/crawler/core/html_downloader.py`)
    - HTTP requests with retry logic
    - Configurable timeout and delays
    - Error handling and logging
 
-3. **RobotsParser** (`src/crawler/parsing/robots_parser.py`)
-   - Fetches and parses robots.txt files
-   - Enforces crawl delays and disallowed paths
-   - Domain-specific rule management
+3. **LinkExtractor** (`src/crawler/parsing/link_extractor.py`)
+   - Extracts `<a href>` links from HTML
+   - URL normalization and validation
 
 4. **LinkExtractor** (`src/crawler/parsing/link_extractor.py`)
    - Extracts `<a href>` links from HTML
    - URL normalization and validation
    - Filters unwanted file types
 
-5. **URLSeen** (`src/crawler/core/url_seen.py`)
-   - HashSet for exact deduplication
-   - Bloom filter for quick negative checks
-   - Memory-efficient URL tracking
+5. **ContentStorage** (`src/crawler/storage/content_storage.py`)
+   - MongoDB database for metadata
+   - HTML file storage
 
 6. **ContentStorage** (`src/crawler/storage/content_storage.py`)
    - MongoDB database for metadata

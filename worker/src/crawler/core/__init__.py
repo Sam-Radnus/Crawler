@@ -1,4 +1,2 @@
-# Core crawler components
+# Core crawler components (Kafka worker pipeline)
 from .html_downloader import HTMLDownloader
-from .url_frontier import URLFrontier
-from .url_seen import URLSeen

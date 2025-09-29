@@ -2,6 +2,9 @@ import json
 import time
 from typing import List
 from kafka import KafkaProducer
+from kafka.errors import NoBrokersAvailable
+import logging
+import os
 
 from src.crawler.prioritizer import Prioritizer
 
@@ -14,11 +17,25 @@ class MasterDispatcher:
             self.config = json.load(f)
         self.bootstrap_servers = self.config.get('kafka', {}).get('bootstrap_servers', ['localhost:9092'])
         self.seed_urls: List[str] = self.config.get('seed_urls', [])
-        self.producer = KafkaProducer(
-            bootstrap_servers=self.bootstrap_servers,
-            api_version=(0,11,5),
-            value_serializer=lambda v: json.dumps(v).encode('utf-8'),
-        )
+        # Initialize KafkaProducer with extended retry/backoff to allow broker readiness
+        logging.basicConfig(level=logging.INFO)
+        backoff_seconds = [1, 2, 4, 8, 15, 30, 45, 60]
+        last_error = None
+        for delay in backoff_seconds:
+            try:
+                self.producer = KafkaProducer(
+                    bootstrap_servers=self.bootstrap_servers,
+                    api_version=(0, 11, 5),
+                    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+                )
+                break
+            except NoBrokersAvailable as e:
+                last_error = e
+                logging.warning("Kafka broker not available yet at %s. Retrying in %s seconds...", self.bootstrap_servers, delay)
+                time.sleep(delay)
+        else:
+            # If loop didn't break, raise the last error
+            raise last_error
         self.prioritizer = Prioritizer()
 
     def _topic_for_priority(self, priority: int) -> str:
@@ -34,7 +51,23 @@ class MasterDispatcher:
 
 def main():
     dispatcher = MasterDispatcher()
-    dispatcher.dispatch()
+    interval_str = os.getenv("DISPATCH_INTERVAL_SECONDS", "0")
+    try:
+        interval = float(interval_str)
+    except ValueError:
+        interval = 0.0
+
+    if interval <= 0:
+        dispatcher.dispatch()
+        return
+
+    logging.info("Master dispatcher running in periodic mode every %s seconds", interval)
+    while True:
+        start = time.time()
+        dispatcher.dispatch()
+        elapsed = time.time() - start
+        sleep_for = max(0.0, interval - elapsed)
+        time.sleep(sleep_for)
 
 
 if __name__ == "__main__":

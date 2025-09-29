@@ -1,7 +1,6 @@
 {
     "seed_urls": [
-        "https://jobs.careers.microsoft.com/global/en/search",
-        "https://www.amazon.jobs/content/en/locations/india/hyderabad"
+        "https://www.amazon.in/s?k=macbook&crid=2UDWHEAAXM5TM&sprefix=macboo%2Caps%2C270&ref=nb_sb_noss_2"
     ],
     "max_pages": 25,
     "max_workers": 3,

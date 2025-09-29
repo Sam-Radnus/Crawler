@@ -2,12 +2,14 @@ import argparse
 import json
 import time
 from typing import Callable
-from kafka import KafkaConsumer
+from kafka import KafkaConsumer, KafkaProducer
+from kafka.errors import NoBrokersAvailable
 
 from src.crawler.utils.logger import CrawlerLogger
 from src.crawler.storage.content_storage import ContentStorage
 from src.crawler.core.html_downloader import HTMLDownloader
 from src.crawler.parsing.link_extractor import LinkExtractor
+from src.crawler.prioritizer import Prioritizer
 
 
 class Worker:
@@ -28,6 +30,26 @@ class Worker:
             auto_offset_reset='earliest',
         )
 
+        # Initialize producer with retry/backoff so workers can re-enqueue discovered links
+        self.bootstrap_servers = bootstrap_servers
+        backoff_seconds = [1, 2, 4, 8, 15, 30]
+        last_error = None
+        self.producer = None
+        for delay in backoff_seconds:
+            try:
+                self.producer = KafkaProducer(
+                    bootstrap_servers=self.bootstrap_servers,
+                    api_version=(0, 11, 5),
+                    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+                )
+                break
+            except NoBrokersAvailable as e:
+                last_error = e
+                self.logger.log_warning(f"Kafka broker not available for producer. Retrying in {delay}s...")
+                time.sleep(delay)
+        if self.producer is None:
+            raise last_error if last_error else RuntimeError("Failed to create KafkaProducer")
+
         # Reuse existing components for processing
         db_cfg = self.config.get('database', {})
         self.content_storage = ContentStorage(
@@ -42,6 +64,8 @@ class Worker:
             user_agent=self.config.get('user_agent', 'WebCrawler/1.0')
         )
         self.link_extractor = LinkExtractor()
+        self.prioritizer = Prioritizer()
+        self._topic_for_priority = lambda p: f"urls_priority_{p}"
 
     def process_url(self, url: str) -> bool:
         start = time.time()
@@ -62,8 +86,19 @@ class Worker:
             if not ok:
                 self.logger.log_error("Save failed")
                 return False
-            # Extract links (we don't enqueue further here; master handles URL discovery)
-            _ = self.link_extractor.extract_links(result['content'], url)
+            # Extract links and enqueue them back to appropriate priority topics
+            links = self.link_extractor.extract_links(result['content'], url)
+            enqueued = 0
+            for link in links:
+                priority = self.prioritizer.assign_priority(link)
+                topic = self._topic_for_priority(priority)
+                try:
+                    self.producer.send(topic, {"url": link, "priority": priority, "ts": time.time()})
+                    enqueued += 1
+                except Exception as e:
+                    self.logger.log_warning(f"Failed to enqueue link {link}: {e}")
+            if enqueued:
+                self.producer.flush()
             return True
         except Exception as e:
             self.logger.log_error(f"Worker error: {e}")
