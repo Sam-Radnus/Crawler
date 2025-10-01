@@ -1,6 +1,6 @@
 import json
 import time
-from typing import List
+from typing import List, Dict, Any, Optional
 from kafka import KafkaProducer
 from kafka.errors import NoBrokersAvailable
 import logging
@@ -14,16 +14,16 @@ class MasterDispatcher:
 
     def __init__(self, config_path: str = "config.json"):
         with open(config_path, 'r') as f:
-            self.config = json.load(f)
-        self.bootstrap_servers = self.config.get('kafka', {}).get('bootstrap_servers', ['localhost:9092'])
+            self.config: Dict[str, Any] = json.load(f)
+        self.bootstrap_servers: List[str] = self.config.get('kafka', {}).get('bootstrap_servers', ['localhost:9092'])
         self.seed_urls: List[str] = self.config.get('seed_urls', [])
         # Initialize KafkaProducer with extended retry/backoff to allow broker readiness
         logging.basicConfig(level=logging.INFO)
-        backoff_seconds = [1, 2, 4, 8, 15, 30, 45, 60]
-        last_error = None
+        backoff_seconds: List[int] = [1, 2, 4, 8, 15, 30, 45, 60]
+        last_error: Optional[Exception] = None
         for delay in backoff_seconds:
             try:
-                self.producer = KafkaProducer(
+                self.producer: KafkaProducer = KafkaProducer(
                     bootstrap_servers=self.bootstrap_servers,
                     api_version=(0, 11, 5),
                     value_serializer=lambda v: json.dumps(v).encode('utf-8'),
@@ -49,11 +49,11 @@ class MasterDispatcher:
         self.producer.flush()
 
 
-def main():
+def main() -> None:
     dispatcher = MasterDispatcher()
-    interval_str = os.getenv("DISPATCH_INTERVAL_SECONDS", "0")
+    interval_str: str = os.getenv("DISPATCH_INTERVAL_SECONDS", "0")
     try:
-        interval = float(interval_str)
+        interval: float = float(interval_str)
     except ValueError:
         interval = 0.0
 
@@ -63,10 +63,10 @@ def main():
 
     logging.info("Master dispatcher running in periodic mode every %s seconds", interval)
     while True:
-        start = time.time()
+        start: float = time.time()
         dispatcher.dispatch()
-        elapsed = time.time() - start
-        sleep_for = max(0.0, interval - elapsed)
+        elapsed: float = time.time() - start
+        sleep_for: float = max(0.0, interval - elapsed)
         time.sleep(sleep_for)
 
 
