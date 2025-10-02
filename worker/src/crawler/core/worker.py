@@ -73,6 +73,11 @@ class Worker:
             self.logger.set_current_url(url)
             self.logger.log_info(f"Processing URL from topic: {url}")
             result: Optional[Dict[str, Any]] = self.downloader.download(url)
+              
+            if self.content_storage.get_page(url) is not None:
+                self.logger.log_info(f"URL already visited: {url}")
+                return True
+
             if not result:
                 self.logger.log_error("Download failed")
                 return False
