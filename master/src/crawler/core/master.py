@@ -43,10 +43,10 @@ class MasterDispatcher:
 
     def dispatch(self) -> None:
         for url in self.seed_urls:
-            priority = self.prioritizer.assign_priority(url)
-            topic = self._topic_for_priority(priority)
+            priority: int = self.prioritizer.assign_priority(url)
+            topic: str = self._topic_for_priority(priority)
             self.producer.send(topic, {"url": url, "priority": priority, "ts": time.time()})
-        self.producer.flush()
+        self.producer.flush() # gurantees delivery of messages to kafka broker
 
 
 def main() -> None:
@@ -55,7 +55,7 @@ def main() -> None:
     try:
         interval: float = float(interval_str)
     except ValueError:
-        interval = 0.0
+        interval: float = 0.0
 
     if interval <= 0:
         dispatcher.dispatch()

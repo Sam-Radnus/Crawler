@@ -1,7 +1,7 @@
 import argparse
 import json
 import time
-from typing import Callable, Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List
 from kafka import KafkaConsumer, KafkaProducer
 from kafka.errors import NoBrokersAvailable
 
