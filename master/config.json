@@ -1,6 +1,6 @@
 {
     "seed_urls": [
-        "https://www.amazon.in/s?k=macbook&crid=2UDWHEAAXM5TM&sprefix=macboo%2Caps%2C270&ref=nb_sb_noss_2"
+        "https://crawler-test.com/mobile/separate_desktop_with_different_links_out"
     ],
     "max_pages": 25,
     "max_workers": 3,

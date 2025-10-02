@@ -1,7 +1,6 @@
 {
     "seed_urls": [
-        "https://jobs.careers.microsoft.com/global/en/search",
-        "https://www.amazon.jobs/content/en/locations/india/hyderabad"
+        "https://crawler-test.com/mobile/separate_desktop_with_different_links_out"
     ],
     "max_pages": 25,
     "max_workers": 3,
