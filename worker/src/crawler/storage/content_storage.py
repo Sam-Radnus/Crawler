@@ -49,10 +49,6 @@ class ContentStorage:
             
             # Create indexes for better performance
             self.pages_collection.create_index("url", unique=True)
-            self.pages_collection.create_index("domain")
-            self.pages_collection.create_index("timestamp")
-            self.pages_collection.create_index("content_hash")
-            self.pages_collection.create_index([("url", 1), ("content_hash", 1)])
             
             self.crawl_stats_collection.create_index("timestamp")
             self.visited_pages_collection.create_index("url", unique=True)
@@ -68,49 +64,6 @@ class ContentStorage:
             self.logger.error(f"Error initializing MongoDB database: {e}")
             raise
 
-    def mark_homepage_visited(self, url: str) -> bool:
-        """Mark a domain's homepage as visited in the visited_pages collection."""
-        try:
-            parsed = urlparse(url)
-            if not parsed.scheme or not parsed.netloc:
-                return False
-            homepage_url = f"{parsed.scheme}://{parsed.netloc}"
-            document = {
-                'url': homepage_url,
-                'domain': parsed.netloc,
-                'timestamp': datetime.utcnow()
-            }
-            self.visited_pages_collection.update_one(
-                {'url': homepage_url},
-                {'$setOnInsert': document},
-                upsert=True
-            )
-            return True
-        except Exception as e:
-            self.logger.error(f"Error marking homepage visited for {url}: {e}")
-            return False
-
-    def has_homepage_visited(self, url: str) -> bool:
-        """Check if a domain's homepage is already recorded as visited."""
-        try:
-            parsed = urlparse(url)
-            if not parsed.scheme or not parsed.netloc:
-                return False
-            homepage_url = f"{parsed.scheme}://{parsed.netloc}"
-            return self.visited_pages_collection.count_documents({'url': homepage_url}, limit=1) > 0
-        except Exception as e:
-            self.logger.error(f"Error checking visited homepage for {url}: {e}")
-            return False
-
-    def get_visited_homepages(self, limit: int = 100) -> List[str]:
-        """Return a list of visited homepage URLs (most recent first)."""
-        try:
-            cursor = self.visited_pages_collection.find({}, {'url': 1, '_id': 0}).sort('timestamp', -1).limit(limit)
-            return [doc['url'] for doc in cursor]
-        except Exception as e:
-            self.logger.error(f"Error fetching visited homepages: {e}")
-            return []
-    
     def save_page(self, url: str, html_content: str, status_code: int, 
                   headers: Dict[str, str], crawl_duration: float) -> bool:
         """
@@ -223,26 +176,6 @@ class ContentStorage:
             self.logger.error(f"Error checking content hash: {e}")
             return False
     
-    def get_urls_by_content_hash(self, content_hash: str) -> List[str]:
-        """Get all URLs that have the same content hash"""
-        try:
-            cursor = self.pages_collection.find(
-                {'content_hash': content_hash}, 
-                {'url': 1, '_id': 0}
-            )
-            return [doc['url'] for doc in cursor]
-        except Exception as e:
-            self.logger.error(f"Error getting URLs by content hash: {e}")
-            return []
-    
-    def get_all_urls(self) -> List[str]:
-        """Get all URLs from database for URL Seen initialization"""
-        try:
-            cursor = self.pages_collection.find({}, {'url': 1, '_id': 0})
-            return [doc['url'] for doc in cursor]
-        except Exception as e:
-            self.logger.error(f"Error getting all URLs: {e}")
-            return []
     
     def get_page(self, url: str) -> Optional[Dict[str, Any]]:
         """Retrieve page data from database"""
@@ -308,30 +241,6 @@ class ContentStorage:
                 
         except Exception as e:
             self.logger.error(f"Error saving crawl stats: {e}")
-    
-    def get_recent_pages(self, limit: int = 10) -> List[Dict[str, Any]]:
-        """Get recently crawled pages"""
-        try:
-            cursor = self.pages_collection.find(
-                {},
-                {
-                    'url': 1, 'status_code': 1, 'title': 1, 
-                    'domain': 1, 'timestamp': 1, 'crawl_duration': 1, '_id': 0
-                }
-            ).sort('timestamp', -1).limit(limit)
-            
-            pages = []
-            for doc in cursor:
-                # Convert datetime to string for JSON serialization
-                if 'timestamp' in doc and doc['timestamp']:
-                    doc['timestamp'] = doc['timestamp'].isoformat()
-                pages.append(doc)
-            
-            return pages
-                
-        except Exception as e:
-            self.logger.error(f"Error getting recent pages: {e}")
-            return []
     
     def close_connection(self):
         """Close MongoDB connection"""

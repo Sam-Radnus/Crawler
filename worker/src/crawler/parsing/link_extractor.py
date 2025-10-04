@@ -156,26 +156,3 @@ class LinkExtractor:
                 continue
         
         return domain_links
-    
-    def get_external_links(self, links: Set[str], current_domain: str) -> Set[str]:
-        """
-        Get links to external domains
-        
-        Args:
-            links: Set of URLs
-            current_domain: Current domain to exclude
-            
-        Returns:
-            Set of external URLs
-        """
-        external_links = set()
-        
-        for link in links:
-            try:
-                parsed = urlparse(link)
-                if parsed.netloc and parsed.netloc != current_domain:
-                    external_links.add(link)
-            except Exception:
-                continue
-        
-        return external_links

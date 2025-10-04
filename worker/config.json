@@ -1,6 +1,6 @@
 {
     "seed_urls": [
-        "https://crawler-test.com/mobile/separate_desktop_with_different_links_out"
+        "https://crawler-test.com/"
     ],
     "max_pages": 25,
     "max_workers": 3,
