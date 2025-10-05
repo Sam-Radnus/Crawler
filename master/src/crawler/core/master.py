@@ -50,12 +50,28 @@ class MasterDispatcher:
 
 
 def main() -> None:
+    """Main entry point for master dispatcher."""
     dispatcher = MasterDispatcher()
     interval_str: str = os.getenv("DISPATCH_INTERVAL_SECONDS", "0")
     try:
         interval: float = float(interval_str)
     except ValueError:
         interval: float = 0.0
+
+    # Check if running in controlled mode (no automatic dispatch)
+    controlled_mode = os.getenv("CONTROLLED_MODE", "false").lower() == "true"
+    
+    if controlled_mode:
+        logging.info("Master dispatcher running in controlled mode - waiting for external trigger")
+        # In controlled mode, just keep the process alive
+        # The CLI will trigger dispatch via direct instantiation
+        try:
+            while True:
+                time.sleep(60)  # Sleep for 1 minute intervals
+                logging.debug("Master dispatcher still alive in controlled mode")
+        except KeyboardInterrupt:
+            logging.info("Master dispatcher shutting down")
+            return
 
     if interval <= 0:
         dispatcher.dispatch()

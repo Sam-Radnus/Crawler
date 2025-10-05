@@ -1,6 +1,6 @@
 {
     "seed_urls": [
-        "https://crawler-test.com/"
+        "https://academybugs.com/types/"
     ],
     "max_pages": 25,
     "max_workers": 3,

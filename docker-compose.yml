@@ -46,23 +46,25 @@ services:
 
   master:
     build:
-      context: ./master
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./master/Dockerfile
     container_name: crawler-master
     depends_on:
       - kafka
       - mongodb
     environment:
       - PYTHONUNBUFFERED=1
-      - DISPATCH_INTERVAL_SECONDS=300
+      - CONTROLLED_MODE=true
     networks:
       - crawler-network
     restart: on-failure
+    stdin_open: true
+    tty: true
 
   worker-1:
     build:
-      context: ./worker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-1
     depends_on:
       - kafka
@@ -76,8 +78,8 @@ services:
 
   worker-2:
     build:
-      context: ./worker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-2
     depends_on:
       - kafka
@@ -91,8 +93,8 @@ services:
 
   worker-3:
     build:
-      context: ./worker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-3
     depends_on:
       - kafka
@@ -106,8 +108,8 @@ services:
 
   worker-4:
     build:
-      context: ./worker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-4
     depends_on:
       - kafka
@@ -121,8 +123,8 @@ services:
 
   worker-5:
     build:
-      context: ./worker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-5
     depends_on:
       - kafka

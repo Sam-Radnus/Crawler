@@ -68,7 +68,42 @@ Edit `config.json` to customize crawler behavior:
 
 ## Usage
 
-### Dockerized Usage (Recommended)
+### CLI-Controlled Crawling (New!)
+
+The crawler now runs in **controlled mode** where workers stay connected to Kafka queues but only process URLs when explicitly commanded via the CLI tool running inside the master container.
+
+```bash
+# 1. Start the crawler infrastructure (workers + Kafka + MongoDB)
+./start.sh
+
+# 2. Access the master container to run CLI commands
+docker exec -it crawler-master bash
+
+# 3. Inside the master container, check system health
+python3 main.py health_check
+
+# 4. Start crawling with seed URLs
+python3 main.py start
+
+# 5. Monitor progress with health checks
+python3 main.py health_check
+
+# 6. Get stop instructions
+python3 main.py stop
+
+# 7. Exit the container when done
+exit
+```
+
+**Alternative: Run CLI commands directly without entering container:**
+```bash
+# Run CLI commands directly from host
+docker exec -it crawler-master python3 main.py health_check
+docker exec -it crawler-master python3 main.py start
+docker exec -it crawler-master python3 main.py stop
+```
+
+### Dockerized Usage (Legacy)
 
 ```bash
 # Start all services with one command
@@ -97,6 +132,24 @@ docker-compose logs -f worker-1
 # Stop all services
 docker-compose down
 ```
+
+### CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `python3 main.py start` | Start crawling by dispatching seed URLs to Kafka queues |
+| `python3 main.py health_check` | Check status of all queues, workers, and services |
+| `python3 main.py stop` | Get instructions to stop crawling |
+
+### Health Check Details
+
+The health check command provides comprehensive status information:
+
+- **Kafka Connection**: Verifies Kafka brokers are accessible
+- **Kafka Topics**: Checks if priority topics (`urls_priority_1` to `urls_priority_5`) exist
+- **Worker Containers**: Shows status of all worker containers (running/stopped)
+- **Master Container**: Shows status of the master dispatcher
+- **MongoDB Connection**: Verifies database connectivity
 
 For detailed Docker setup instructions, see [DOCKER_README.md](DOCKER_README.md).
 
@@ -166,14 +219,22 @@ crawler/
    - Real-time statistics
    - Performance metrics
 
-### Priority Queue Mode (Kafka)
+### Controlled Priority Queue Mode (Kafka)
 
-- Master publishes URLs to 5 Kafka topics: `urls_priority_1` ... `urls_priority_5` (5 = highest).
-- Prioritizer returns an integer priority 1-5 for each URL.
-- Five workers each consume from a dedicated topic and process URLs independently.
+The crawler now operates in **controlled mode**:
 
-Run with Kafka (ensure Kafka at `localhost:9092` or set `kafka.bootstrap_servers` in `config.json`):
+- **Master Dispatcher**: Runs in standby mode, only dispatches seed URLs when commanded via CLI
+- **Workers**: Stay connected to Kafka topics but only process URLs when they arrive
+- **Priority Topics**: 5 Kafka topics (`urls_priority_1` to `urls_priority_5`) with priority 5 being highest
+- **CLI Control**: Use `python3 main.py start` to begin crawling, `health_check` to monitor
 
+#### Controlled Mode Benefits:
+- Workers stay connected and ready without consuming resources
+- Crawling only starts when explicitly commanded
+- Easy monitoring and control via CLI
+- Infrastructure can run independently of crawling operations
+
+#### Manual Mode (Legacy):
 ```
 python -m src.crawler.core.master
 python -m src.crawler.core.worker urls_priority_1

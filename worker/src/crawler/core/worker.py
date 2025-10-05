@@ -112,6 +112,10 @@ class Worker:
             self.logger.clear_current_url()
 
     def run(self) -> None:
+        """Run the worker in standby mode - connected but only processing when URLs are available."""
+        self.logger.log_info(f"Worker connected to topic and ready to process URLs")
+        self.logger.log_info("Worker is in standby mode - will process URLs as they arrive")
+        
         for msg in self.consumer:
             payload: Dict[str, Any] = msg.value
             url: Optional[str] = payload.get('url')

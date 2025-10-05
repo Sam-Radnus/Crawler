@@ -8,12 +8,12 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
-COPY requirements.txt .
+COPY worker/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy worker application
-COPY src/ ./src/
-COPY config.json .
+COPY worker/src/ ./src/
+COPY config.json ./config.json
 
 # Set Python path
 ENV PYTHONPATH=/app
