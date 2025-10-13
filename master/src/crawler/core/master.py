@@ -7,6 +7,7 @@ import logging
 import os
 
 from src.crawler.prioritizer import Prioritizer
+from src.crawler.robots_checker import RobotsChecker
 
 
 class MasterDispatcher:
@@ -37,16 +38,38 @@ class MasterDispatcher:
             # If loop didn't break, raise the last error
             raise last_error
         self.prioritizer = Prioritizer()
+        
+        # Initialize robots.txt checker
+        respect_robots = self.config.get('respect_robots', True)
+        self.robots_checker = RobotsChecker(user_agent="WebCrawler/1.0") if respect_robots else None
+        
+        if self.robots_checker:
+            logging.info("Robots.txt checking enabled")
+        else:
+            logging.info("Robots.txt checking disabled")
 
     def _topic_for_priority(self, priority: int) -> str:
         return f"urls_priority_{priority}"
 
     def dispatch(self) -> None:
         for url in self.seed_urls:
-            priority: int = self.prioritizer.assign_priority(url)
+            # Check robots.txt if enabled
+            if self.robots_checker and not self.robots_checker.can_fetch(url):
+                logging.info(f"Skipping URL (disallowed by robots.txt): {url}")
+                continue
+            
+            priority: Optional[int] = self.prioritizer.assign_priority(url)
+            
+            # Skip if URL is from non-target domain
+            if priority is None:
+                logging.info(f"Skipping URL (non-target domain): {url}")
+                continue
+            
             topic: str = self._topic_for_priority(priority)
             self.producer.send(topic, {"url": url, "priority": priority, "ts": time.time()})
-        self.producer.flush() # gurantees delivery of messages to kafka broker
+            logging.info(f"Dispatched {url} to {topic}")
+        
+        self.producer.flush() # guarantees delivery of messages to kafka broker
 
 
 def main() -> None:
