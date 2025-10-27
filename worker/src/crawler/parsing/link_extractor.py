@@ -1,12 +1,10 @@
 """
 Link Extractor - Extract and normalize <a href> links from HTML
 """
-import re
 import logging
 from urllib.parse import urljoin, urlparse, urlunparse
 from typing import Set, Optional
 from bs4 import BeautifulSoup
-
 
 class LinkExtractor:
     """Extract and normalize links from HTML content"""
@@ -51,7 +49,22 @@ class LinkExtractor:
                 if normalized_url and self._is_valid_link(normalized_url):
                     links.add(normalized_url)
             
-            self.logger.info(f"Extracted {len(links)} links from {base_url}")
+            # Debug: Log some sample links for debugging
+            if len(links) == 0:
+                self.logger.warning(f"No links extracted from {base_url}")
+                # Try to find any links at all
+                all_links = soup.find_all('a', href=True)
+                self.logger.warning(f"Found {len(all_links)} <a> tags total")
+                if all_links:
+                    sample_links = [link.get('href', '') for link in all_links[:5]]
+                    self.logger.warning(f"Sample hrefs: {sample_links}")
+            else:
+                self.logger.info(f"Extracted {len(links)} links from {base_url}")
+                # Log a few sample property links
+                property_links = [link for link in links if any(pattern in link.lower() for pattern in ['/property/', '/pad?', '/apartments/', 'oodle.com', 'americanlisted.com'])]
+                if property_links:
+                    self.logger.info(f"Found {len(property_links)} potential property links: {property_links[:3]}")
+            
             return links
             
         except Exception as e:

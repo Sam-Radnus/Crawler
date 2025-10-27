@@ -120,7 +120,7 @@ Located in `worker/config.json`:
 ### MongoDB
 - **Image**: mongo:7.0
 - **Port**: 27017
-- **Database**: web_crawler
+- **Database**: crawler
 - **Data persistence**: Yes (docker volume)
 
 ## Monitoring
@@ -138,8 +138,8 @@ All containers output statistics to console every 10 seconds:
 # Connect to MongoDB
 docker exec -it mongodb mongosh
 
-# Use web_crawler database
-use web_crawler
+# Use crawler database
+use crawler
 
 # View collections
 show collections

@@ -5,9 +5,6 @@ set -euo pipefail
 echo "🚀 Starting Web Crawler Infrastructure..."
 echo "========================================"
 
-# Create necessary directories
-mkdir -p crawled_data
-
 # Stop any existing containers
 echo "🛑 Stopping existing containers..."
 docker-compose down --remove-orphans
@@ -15,6 +12,16 @@ docker-compose down --remove-orphans
 # Build and start all services in detached mode
 echo "🔨 Building and starting services..."
 docker-compose up --build -d
+
+# Wait for Kafka brokers to be ready
+# echo "⏳ Waiting for Kafka brokers..."
+# for broker in kafka1:9092 kafka2:9093 kafka3:9094; do
+#     until docker exec kafka-init cub kafka-ready -b $broker 1 60; do
+#         echo "Waiting for $broker..."
+#         sleep 5
+#     done
+# done
+
 
 # Wait for services to be ready
 echo "⏳ Waiting for services to be ready..."

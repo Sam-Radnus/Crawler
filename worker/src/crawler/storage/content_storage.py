@@ -18,7 +18,7 @@ class ContentStorage:
     
     def __init__(self, output_dir: str = "crawled_data", 
                  connection_string: str = "mongodb://localhost:27017/", 
-                 database_name: str = "web_crawler"):
+                 database_name: str = "crawler"):
         self.output_dir = output_dir
         self.connection_string = connection_string
         self.database_name = database_name

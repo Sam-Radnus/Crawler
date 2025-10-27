@@ -9,15 +9,12 @@ Workers stay connected to Kafka queues but only process URLs when explicitly sta
 import argparse
 import json
 import sys
-import os
-import time
-import requests
+import psycopg2
 from typing import Dict, Any, List, Optional
 from kafka import KafkaAdminClient, KafkaConsumer
-from kafka.errors import NoBrokersAvailable, TopicAuthorizationFailedError
-from kafka.admin import ConfigResource, ConfigResourceType
-
+from kafka.errors import NoBrokersAvailable
 from src.crawler.core.master import MasterDispatcher
+from src.crawler.queue_manager import URLQueueManager
 
 
 class CrawlerCLI:
@@ -52,7 +49,6 @@ class CrawlerCLI:
         """Check if Kafka is accessible."""
         try:
             admin_client = self._get_kafka_admin_client()
-            # describe_cluster() doesn't accept timeout_ms parameter
             admin_client.describe_cluster()
             admin_client.close()
             return True
@@ -64,7 +60,6 @@ class CrawlerCLI:
         """Check if a Kafka topic exists."""
         try:
             admin_client = self._get_kafka_admin_client()
-            # describe_topics() doesn't accept timeout_ms parameter
             metadata = admin_client.describe_topics([topic])
             admin_client.close()
             return topic in metadata
@@ -173,18 +168,16 @@ class CrawlerCLI:
         if "error" in master:
             print(f"   Error: {master['error']}")
         
-        # Check MongoDB connection
-        print("\n🗄️  MongoDB Connection:")
+        # Check PostgreSQL connection
+        print("\n🗄️  PostgreSQL Connection:")
         try:
-            import pymongo
             db_config = self.config.get('database', {})
-            connection_string = db_config.get('connection_string', 'mongodb://localhost:27017/')
-            client = pymongo.MongoClient(connection_string, serverSelectionTimeoutMS=5000)
-            client.admin.command('ping')
-            client.close()
-            print("✅ MongoDB is accessible")
+            connection_string = db_config.get('connection_string', 'postgresql://samsundar:1327@host.docker.internal:5432/crawler')
+            conn = psycopg2.connect(connection_string)
+            conn.close()
+            print("✅ PostgreSQL is accessible")
         except Exception as e:
-            print(f"❌ MongoDB connection failed: {e}")
+            print(f"❌ PostgreSQL connection failed: {e}")
         
         print("\n" + "=" * 40)
         print("Health check completed!")
@@ -240,6 +233,52 @@ class CrawlerCLI:
         
         print("\n" + "=" * 30)
         print("Crawling stop instructions provided!")
+    
+    def add_url(self, urls: List[str], priority: Optional[int] = None, queue: Optional[str] = None) -> None:
+        """Add URLs to a specific queue."""
+        print("📤 Adding URLs to Queue")
+        print("=" * 30)
+        
+        try:
+            manager = URLQueueManager(config_path="config.json")
+            
+            if priority is not None and not 1 <= priority <= 5:
+                print("❌ Priority must be between 1 and 5")
+                return
+            
+            results = manager.add_urls_batch(urls, priority, queue)
+            success_count = sum(1 for success in results.values() if success)
+            
+            print(f"\n📊 Results: {success_count}/{len(results)} URLs added successfully")
+            
+            if success_count > 0:
+                print("✅ URLs are now in the queue and will be processed by workers")
+            else:
+                print("❌ No URLs were added. Check Kafka connection and queue names.")
+            
+            manager.close()
+            
+        except Exception as e:
+            print(f"❌ Failed to add URLs: {e}")
+    
+    def queue_info(self) -> None:
+        """Show queue information."""
+        print("🔍 Queue Information")
+        print("=" * 30)
+        
+        try:
+            manager = URLQueueManager(config_path="config.json")
+            info = manager.get_queue_info()
+            
+            print(f"Available queues: {', '.join(info['available_queues'])}")
+            print(f"Default priority: {info['default_priority']}")
+            print(f"Priority range: {info['priority_range']}")
+            print(f"Kafka servers: {', '.join(info['kafka_servers'])}")
+            
+            manager.close()
+            
+        except Exception as e:
+            print(f"❌ Failed to get queue info: {e}")
 
 
 def main():
@@ -257,8 +296,25 @@ Examples:
     
     parser.add_argument(
         'command',
-        choices=['start', 'health_check', 'stop'],
+        choices=['start', 'health_check', 'stop', 'add_url', 'queue_info'],
         help='Command to execute'
+    )
+    
+    # Arguments for add_url command
+    parser.add_argument(
+        '--urls', '-u',
+        nargs='+',
+        help='URL(s) to add to queue (required for add_url command)'
+    )
+    parser.add_argument(
+        '--priority', '-p',
+        type=int,
+        choices=range(1, 6),
+        help='Priority level (1-5) for URLs'
+    )
+    parser.add_argument(
+        '--queue', '-q',
+        help='Specific queue name (e.g., urls_priority_3)'
     )
     
     parser.add_argument(
@@ -278,6 +334,14 @@ Examples:
             cli.health_check()
         elif args.command == 'stop':
             cli.stop_crawling()
+        elif args.command == 'add_url':
+            if not args.urls:
+                print("❌ Error: --urls is required for add_url command")
+                print("Usage: python3 main.py add_url --urls <url1> [url2] ... [--priority N] [--queue QUEUE]")
+                sys.exit(1)
+            cli.add_url(args.urls, args.priority, args.queue)
+        elif args.command == 'queue_info':
+            cli.queue_info()
             
     except FileNotFoundError:
         print(f"❌ Configuration file not found: {args.config}")

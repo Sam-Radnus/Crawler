@@ -8,9 +8,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy only necessary files for master
 COPY master/src/crawler/core/master.py ./src/crawler/core/
-COPY master/src/crawler/prioritizer.py ./src/crawler/
+COPY master/src/crawler/queue_manager.py ./src/crawler/
+COPY master/src/crawler/robots_checker.py ./src/crawler/
 COPY master/src/crawler/__init__.py ./src/crawler/
+RUN mkdir -p ./src/crawler/utils
+COPY worker/src/crawler/utils/property_matcher.py ./src/crawler/utils/
+COPY worker/src/crawler/utils/__init__.py ./src/crawler/utils/
 COPY master/src/__init__.py ./src/
+# Copy geospatial module
+COPY geospatial/ ./geospatial/
 COPY config.json ./config.json
 COPY master/main.py .
 

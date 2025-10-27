@@ -76,10 +76,10 @@ class CrawlerLogger:
         root_logger.addHandler(console_handler)
         
         # Keep a named logger for crawler-specific calls
-        self.logger = logging.getLogger('web_crawler')
+        self.logger = logging.getLogger('crawler')
     
     def _start_stats_thread(self):
-        """Start background thread for periodic stats reporting"""
+        """Start background thread for periodic stats reporting
         def stats_reporter():
             while True:
                 time.sleep(self.stats_interval)
@@ -87,6 +87,8 @@ class CrawlerLogger:
         
         stats_thread = threading.Thread(target=stats_reporter, daemon=True)
         stats_thread.start()
+        """
+        pass
     
     def _print_stats(self):
         """Print current statistics"""
