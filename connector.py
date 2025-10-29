@@ -17,7 +17,6 @@ def get_nearby_pages(lat, lon, radius_km=10):
             %s
         );
     """
-    cities = set()
     data = []
     try:
         with psycopg2.connect(DB_CONFIG["connection_string"]) as conn:

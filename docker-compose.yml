@@ -12,7 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     networks:
       - crawler-network
-   
+
   master:
     build:
       context: .
@@ -384,6 +384,17 @@ services:
     command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_5"]
     networks:
       - crawler-network
+  
+  api:
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    container_name: crawler-api
+    ports:
+      - "8000:8000"
+    networks:
+      - crawler-network
+    restart: unless-stopped
 
 networks:
   crawler-network:
