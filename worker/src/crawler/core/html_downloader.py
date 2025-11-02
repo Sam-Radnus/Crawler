@@ -9,7 +9,7 @@ import time
 from typing import Optional, Dict, Any
 from urllib.parse import urlparse
 import ipaddress
-from playwright.sync_api import sync_playwright, Browser, BrowserContext, Page, TimeoutError as PlaywrightTimeout
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
 
 class HTMLDownloader:

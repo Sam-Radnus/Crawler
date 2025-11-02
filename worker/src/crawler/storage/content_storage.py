@@ -2,12 +2,11 @@
 Content Storage - MongoDB database for storing crawled content
 """
 import os
-import json
 import logging
 import re
 import hashlib
 from datetime import datetime
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any
 from urllib.parse import urlparse
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, DuplicateKeyError

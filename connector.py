@@ -1,7 +1,7 @@
 import psycopg2
 
 DB_CONFIG = {
-    "connection_string": "postgresql://samsundar:1327@localhost:5432/postgres"
+    "connection_string": ""
 }
 
 def get_nearby_pages(lat, lon, radius_km=10):

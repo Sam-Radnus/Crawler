@@ -91,7 +91,7 @@ class Worker:
         # Initialize database service
         db_cfg: Dict[str, Any] = self.config.get('database', {})
         self.database_service: DatabaseService = DatabaseService(
-            connection_string=db_cfg.get('connection_string', 'postgresql://samsundar:1327@host.docker.internal:5432/crawler'),
+            connection_string=db_cfg.get('connection_string', ''),
             database_name=db_cfg.get('database_name', 'crawler'),
             output_dir=self.config.get('output_dir', 'crawled_data')
         )
@@ -184,7 +184,6 @@ class Worker:
                     
                 priority: int = self.prioritizer.assign_priority(link)
                 
-                # Skip if priority is None (not from target domain)
                 if priority == -1:
                     self.logger.log_info(f"Skipping URL (non-target domain): {link}")
                     continue
@@ -247,37 +246,14 @@ class Worker:
             for msg in self.consumer:
                 payload: Dict[str, Any] = msg.value
                 url: Optional[str] = payload.get('url')
-                timestamp = payload.get('ts', 0)
-                source = payload.get('source', 'extracted')
 
-                domain = "unknown"
-                try:
-                    domain = urlparse(url).netloc.split('.')[0] if url else "none"
-                except:
-                    pass
-                
-                current_time = time.time()
-                message_age = current_time - timestamp
-                # depth = payload.get('depth', 0)
-                # self.logger.log_info(f"[FIFO] offset={msg.offset}, domain={domain}, source={source}, age={message_age:.1f}s, depth={depth}")
-                # self.logger.log_info(f"[FIFO] offset={msg.offset}, domain={domain}, source={source}, age={message_age:.1f}s")
-                
                 if not url:
                     # Commit even for invalid messages to move forward
                     self.consumer.commit()
                     continue
                 
-                # Skip URLs that exceed max depth
-                # if depth >= 3:
-                #     self.logger.log_info(f"Skipping URL at max depth {depth}: {url}")
-                #     self.consumer.commit()
-                #     continue
-                
-                # Process the URL (ALWAYS process in FIFO order - no skipping)
                 self.process_url(url, payload)
                 
-                # Always commit the offset after processing to ensure FIFO order
-                # This prevents re-consumption and ensures we move to the next message
                 try:
                     self.consumer.commit()
                     self.logger.log_info(f"[FIFO] Committed offset {msg.offset}")

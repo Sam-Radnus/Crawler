@@ -1,4 +1,3 @@
 # add crawled data to be ignored
 crawled_data/
 /.DS_Store
-storage/

@@ -172,7 +172,7 @@ class CrawlerCLI:
         print("\n🗄️  PostgreSQL Connection:")
         try:
             db_config = self.config.get('database', {})
-            connection_string = db_config.get('connection_string', 'postgresql://samsundar:1327@host.docker.internal:5432/crawler')
+            connection_string = db_config.get('connection_string', '')
             conn = psycopg2.connect(connection_string)
             conn.close()
             print("✅ PostgreSQL is accessible")

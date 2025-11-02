@@ -3,9 +3,8 @@ Craigslist Property Parser - Extract property data from Craigslist HTML
 """
 
 import re
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from bs4 import BeautifulSoup
-from urllib.parse import urlparse
 from datetime import datetime
 
 
