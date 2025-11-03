@@ -12,30 +12,19 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     networks:
       - crawler-network
-
-  master:
-    build:
-      context: .
-      dockerfile: ./master/Dockerfile
-    container_name: crawler-master
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - CONTROLLED_MODE=true
-    networks:
-      - crawler-network
-    restart: on-failure
-    stdin_open: true
-    tty: true
+    healthcheck:
+      test: echo stat | nc localhost 2181
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   kafka:
     image: confluentinc/cp-kafka:7.4.0
     hostname: kafka
     container_name: kafka
     depends_on:
-      - zookeeper
+      zookeeper:
+        condition: service_healthy
     ports:
       - "9092:9092"
     environment:
@@ -47,86 +36,102 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
     networks:
       - crawler-network
-
-  kafka-init:
-    image: confluentinc/cp-kafka:7.4.0
-    depends_on:
-      - kafka
+    healthcheck:
+      test: kafka-broker-api-versions --bootstrap-server localhost:9092
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
     entrypoint: ['/bin/sh', '-c']
     command: |
       "
-      cub kafka-ready -b kafka:9092 1 60
+      /etc/confluent/docker/run &
+      KAFKA_PID=$$!
       
-      for topic in urls_priority_1 urls_priority_2 urls_priority_3 urls_priority_4 urls_priority_5; do
-        kafka-topics --delete --if-exists --bootstrap-server kafka:9092 --topic $$topic || true
+      echo 'Waiting for Kafka to be ready...'
+      cub kafka-ready -b localhost:9092 1 60
+      
+      echo 'Creating topics...'
+      for topic in urls_priority_1 urls_priority_2; do
+        kafka-topics --create --if-not-exists --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1 --topic $$topic
       done
       
-      sleep 10
+      for topic in urls_priority_3 urls_priority_4 urls_priority_5; do
+        kafka-topics --create --if-not-exists --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1 --topic $$topic
+      done
       
-       # Create priority 1 and 2 topics with 1 partition each (single worker)
-       for topic in urls_priority_1 urls_priority_2; do
-         kafka-topics --create --bootstrap-server kafka:9092 --partitions 2 --replication-factor 1 --topic $$topic
-       done
-       
-       # Create priority 3, 4, and 5 topics with 3 partitions each (multiple workers)
-       for topic in urls_priority_3 urls_priority_4 urls_priority_5; do
-         kafka-topics --create --bootstrap-server kafka:9092 --partitions 6 --replication-factor 1 --topic $$topic
-       done
+      echo 'Topics created successfully'
+      kafka-topics --list --bootstrap-server localhost:9092
       
-      kafka-topics --describe --bootstrap-server kafka:9092
+      wait $$KAFKA_PID
       "
+
+  master:
+    build:
+      context: .
+      dockerfile: ./master/Dockerfile
+    container_name: crawler-master
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CONTROLLED_MODE=true
     networks:
       - crawler-network
+    restart: on-failure
+    stdin_open: true
+    tty: true
+
   worker-1:
     build:
       context: .
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-1
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=0
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_1"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_1"]
     volumes:
       - ./storage:/mnt/storage
     networks:
       - crawler-network
     restart: unless-stopped
-  
+
   worker-2:
-    build: 
+    build:
       context: .
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-2
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=0
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_2"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_2"]
     networks:
       - crawler-network
     restart: unless-stopped
 
-
-  # Workers for priority 3 (3 partitions)
   worker-3:
     build:
       context: .
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-3
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=0
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_3"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_3"]
     networks:
       - crawler-network
+    restart: unless-stopped
 
   worker-4:
     build:
@@ -134,14 +139,15 @@ services:
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-4
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=1
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_3"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_3"]
     networks:
       - crawler-network
+    restart: unless-stopped
 
   worker-5:
     build:
@@ -149,29 +155,31 @@ services:
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-5
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=2
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_3"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_3"]
     networks:
       - crawler-network
-  
+    restart: unless-stopped
+
   worker-6:
     build:
       context: .
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-6
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=0
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_3"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_4"]
     networks:
       - crawler-network
+    restart: unless-stopped
 
   worker-7:
     build:
@@ -179,14 +187,15 @@ services:
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-7
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=1
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_3"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_4"]
     networks:
       - crawler-network
+    restart: unless-stopped
 
   worker-8:
     build:
@@ -194,30 +203,31 @@ services:
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-8
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=2
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_3"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_4"]
     networks:
       - crawler-network
+    restart: unless-stopped
 
-  # Workers for priority 4
   worker-9:
     build:
       context: .
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-9
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=0
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_4"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_5"]
     networks:
       - crawler-network
+    restart: unless-stopped
 
   worker-10:
     build:
@@ -225,14 +235,15 @@ services:
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-10
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=1
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_4"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_5"]
     networks:
       - crawler-network
+    restart: unless-stopped
 
   worker-11:
     build:
@@ -240,151 +251,16 @@ services:
       dockerfile: ./worker/Dockerfile
     container_name: crawler-worker-11
     depends_on:
-      - kafka
-      - kafka-init
+      kafka:
+        condition: service_healthy
     environment:
       - PYTHONUNBUFFERED=1
       - WORKER_PARTITION=2
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_4"]
+    command: ["/bin/sh", "-c", "python -m src.crawler.core.worker urls_priority_5"]
     networks:
       - crawler-network
-    
-  worker-12:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-12
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=0
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_4"]
-    networks:
-      - crawler-network
+    restart: unless-stopped
 
-  worker-13:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-13
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=1
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_4"]
-    networks:
-      - crawler-network
-
-  worker-14:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-14
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=2
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_4"]
-    networks:
-      - crawler-network
-
-  # Workers for priority 5
-  worker-15:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-15
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=0
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_5"]
-    networks:
-      - crawler-network
-
-  worker-16:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-16
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=1
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_5"]
-    networks:
-      - crawler-network
-
-  worker-17:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-17
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=2
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_5"]
-    networks:
-      - crawler-network
-  
-  worker-18:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-18
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=0
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_5"]
-    networks:
-      - crawler-network
-
-  worker-19:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-19
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=1
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_5"]
-    networks:
-      - crawler-network
-
-  worker-20:
-    build:
-      context: .
-      dockerfile: ./worker/Dockerfile
-    container_name: crawler-worker-20
-    depends_on:
-      - kafka
-      - kafka-init
-    environment:
-      - PYTHONUNBUFFERED=1
-      - WORKER_PARTITION=2
-    command: ["/bin/sh", "-c", "sleep 15 && python -m src.crawler.core.worker urls_priority_5"]
-    networks:
-      - crawler-network
-  
   api:
     build:
       context: .

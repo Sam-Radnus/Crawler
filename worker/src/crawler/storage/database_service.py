@@ -93,17 +93,14 @@ class DatabaseService:
         with self._conn.cursor() as cur:
             cur.execute(
                 """
-                INSERT INTO public.pages (url, html_content, status_code, headers, crawl_duration)
-                VALUES (%s, %s, %s, %s, %s)
+                INSERT INTO public.pages (url, status_code, crawl_duration)
+                VALUES (%s, %s, %s)
                 ON CONFLICT (url) DO UPDATE SET
-                  html_content = EXCLUDED.html_content,
                   status_code = EXCLUDED.status_code,
-                  headers = EXCLUDED.headers,
-                  crawl_duration = EXCLUDED.crawl_duration,
-                  created_at = NOW()
+                  crawl_duration = EXCLUDED.crawl_duration
                 RETURNING id, url;
                 """,
-                (url, html_content, status_code, Json(headers), crawl_duration),
+                (url, status_code, crawl_duration),
             )
             return cur.fetchone() or {"url": url}
 
@@ -113,5 +110,4 @@ class DatabaseService:
                 self._conn.close()
         except Exception:
             pass
-
 

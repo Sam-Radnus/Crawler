@@ -14,7 +14,7 @@
     "stats_interval": 10,
     "output_dir": "/mnt/storage",
     "database": {
-        "connection_string": "your_connection_string",
+        "connection_string": "",
         "database_name": "postgres"
     },
     "kafka": {

@@ -1,31 +1,226 @@
 # Web Crawler
 
-A modular, extensible Python web crawler with comprehensive features for web scraping and data collection.
+A distributed, geospatially-aware web crawler system designed for property listings with priority-based URL processing, built on Kafka, PostgreSQL, and Docker.
+
+## System Design
+
+![System Design Diagram](diagram.png)
 
 ## Features
 
-- **Configurable Seed URLs** - Load starting URLs from JSON configuration
-- **URL Frontier** - Thread-safe FIFO queue for URL management
-- **HTML Downloader** - Robust downloading with retries, timeouts, and error handling
+- **Distributed Architecture** - Master-worker pattern with Kafka-based message queuing
+- **Priority-Based Processing** - 5-level priority system with geospatial awareness
+- **Geospatial Prioritization** - Automatically assigns priorities based on geographic regions and listing types
+- **Property-Specific Crawling** - Specialized parsing for property listings (Craigslist)
+- **PostgreSQL Storage** - PostGIS-enabled database for geospatial queries
+- **RESTful API** - FastAPI service for querying crawled property data
+- **CLI Control** - Command-line interface for controlling the crawler
 - **Robots.txt Compliance** - Respects robots.txt rules and crawl delays
-- **Link Extraction** - Extracts and normalizes `<a href>` links from HTML
-- **URL Deduplication** - Uses HashSet and Bloom filter for efficient deduplication
-- **Content Storage** - SQLite database with comprehensive metadata tracking
-- **Logging & Metrics** - Real-time statistics and comprehensive logging
-- **Modular Design** - Easy to extend and debug
+- **Bloom Filter Deduplication** - Efficient URL deduplication using Bloom filters
+- **Dockerized Deployment** - Complete containerized setup with Docker Compose
 
-## Installation
+## Architecture
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd crawler
+### System Overview
+
+The crawler follows a **distributed master-worker architecture** with the following components:
+
+1. **Master Service** - CLI-controlled URL dispatcher that sends seed URLs to Kafka priority queues
+2. **Worker Services** (11 workers) - Consume URLs from Kafka topics and perform web crawling
+3. **API Service** - FastAPI REST API for querying crawled property data
+4. **Kafka** - Message broker with 5 priority topics for URL distribution
+5. **Zookeeper** - Coordination service for Kafka
+6. **PostgreSQL** - Database with PostGIS extension for storing property data
+7. **Geospatial Prioritizer** - Assigns priorities based on geographic regions and URL patterns
+
+### Project Structure
+
+```
+Crawler/
+├── api/                          # API Service
+│   ├── Dockerfile
+│   └── main.py                   # FastAPI REST API for property queries
+├── master/                       # Master Service
+│   ├── Dockerfile
+│   ├── main.py                   # CLI interface (start, health_check, stop, add_url)
+│   ├── requirements.txt
+│   └── src/
+│       └── crawler/
+│           ├── core/
+│           │   └── master.py     # Master dispatcher to Kafka topics
+│           ├── queue_manager.py  # Manual URL queue management
+│           └── robots_checker.py # Robots.txt compliance checker
+├── worker/                       # Worker Service
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── src/
+│       └── crawler/
+│           ├── core/
+│           │   ├── worker.py           # Main worker (Kafka consumer)
+│           │   └── html_downloader.py  # HTML downloading with retries
+│           ├── parsing/
+│           │   ├── craigslist_parser.py # Property data extraction
+│           │   └── link_extractor.py   # Link extraction from HTML
+│           ├── storage/
+│           │   ├── content_storage.py   # Legacy storage interface
+│           │   └── database_service.py  # PostgreSQL storage service
+│           └── utils/
+│               ├── logger.py            # Logging and metrics
+│               └── property_matcher.py  # Property URL matching
+├── geospatial/                   # Geospatial Services
+│   ├── generate_coords.py       # Generate state coordinates
+│   ├── prioritizer.py           # Geographic priority assignment
+│   └── state_coords.json        # State coordinate cache
+├── config.json                   # Central configuration file
+├── docker-compose.yml           # Docker Compose orchestration
+├── start.sh                     # Start script
+├── stop.sh                      # Stop script
+├── requirements.txt             # Root dependencies
+└── storage/                     # Shared storage volume mount
 ```
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+## Services Explained
+
+### 1. Master Service (`master/`)
+
+**Purpose**: CLI-controlled URL dispatcher that manages crawling operations.
+
+**Components**:
+- **`main.py`**: Command-line interface providing:
+  - `start` - Dispatch seed URLs from config to Kafka topics
+  - `health_check` - Verify all services (Kafka, workers, PostgreSQL)
+  - `stop` - Get instructions to stop crawling
+  - `add_url` - Manually add URLs to specific priority queues
+  - `queue_info` - Display queue configuration information
+- **`master.py`**: Core dispatcher that reads seed URLs from config, assigns priorities using the geospatial prioritizer, and sends them to appropriate Kafka topics
+- **`queue_manager.py`**: Manages manual URL additions with validation and robots.txt checking
+- **`robots_checker.py`**: Validates URLs against robots.txt before enqueueing
+
+**Key Features**:
+- Controlled mode: Only dispatches when explicitly commanded
+- Priority assignment via geospatial prioritizer
+- Robots.txt validation before dispatch
+- Health monitoring of all services
+
+### 2. Worker Service (`worker/`)
+
+**Purpose**: Consume URLs from Kafka topics and perform web crawling operations.
+
+**Components**:
+- **`worker.py`**: Main worker process that:
+  - Subscribes to a specific Kafka priority topic
+  - Processes URLs in FIFO order
+  - Downloads HTML content
+  - Extracts property data using Craigslist parser
+  - Saves property pages to PostgreSQL
+  - Extracts links and re-enqueues them with appropriate priorities
+  - Uses Bloom filter for deduplication
+- **`html_downloader.py`**: Handles HTTP requests with:
+  - Configurable retries with exponential backoff
+  - Timeout management
+  - Request delays and minimum intervals
+  - Headless browser support (Selenium/Playwright)
+- **`craigslist_parser.py`**: Extracts property data from Craigslist HTML:
+  - Title, price, address
+  - Geographic coordinates (latitude/longitude)
+  - Property type, bedrooms, bathrooms, square footage
+  - City, posted date
+- **`link_extractor.py`**: Extracts and normalizes links from HTML
+- **`database_service.py`**: PostgreSQL storage interface:
+  - Saves property pages with full metadata
+  - Stores HTML content
+  - PostGIS geospatial indexing
+  - Deduplication checks
+- **`property_matcher.py`**: Determines if URLs are property listings or listing pages
+- **`logger.py`**: Centralized logging with metrics
+
+**Key Features**:
+- 11 workers distributed across 5 priority topics (1-2 partitions per topic)
+- Only saves property pages to database (skips listing pages)
+- Strict FIFO ordering within each partition
+- Automatic link discovery and priority assignment
+- Bloom filter for fast deduplication
+
+### 3. API Service (`api/`)
+
+**Purpose**: RESTful API for querying crawled property data.
+
+**Endpoints**:
+- `GET /` - API welcome message
+- `GET /properties` - List all properties with pagination
+- `GET /properties/{id}` - Get specific property by ID
+- `GET /properties/nearby` - Find properties within radius of coordinates
+- `GET /properties/similar/{property_id}` - Find similar properties (price, location, type)
+- `GET /properties/similar/nearby` - Find properties matching criteria within radius
+- `GET /properties/bbox` - Get properties within bounding box
+- `GET /properties/city/{city}` - Get properties by city name
+- `GET /properties/heatmap` - Get property density heatmap data
+- `GET /location/city/{city}` - Get coordinates for a city
+
+**Key Features**:
+- PostGIS-powered geospatial queries
+- CORS enabled for web frontends
+- Efficient pagination
+- Filtering by price, property type, location
+- Heatmap generation for visualization
+
+### 4. Geospatial Prioritizer (`geospatial/prioritizer.py`)
+
+**Purpose**: Assigns priorities to URLs based on geographic regions and URL patterns.
+
+**Priority Assignment Logic**:
+- **Priority 1-2**: Listing pages (`/search/apa`), alternated for load balancing
+- **Priority 3-5**: Property pages, assigned by geographic region:
+  - Priority 3: Eastern US states (lowest longitude)
+  - Priority 4: Central US states (medium longitude)
+  - Priority 5: Western US states (highest longitude)
+
+**Features**:
+- Maps Craigslist cities to US states
+- Caches state coordinates to avoid repeated geocoding
+- Divides US states into 3 geographic regions by longitude
+- Filters non-target domains (returns -1)
+- Uses round-robin for listing page priorities
+
+### 5. Kafka Message Broker
+
+**Topics**:
+- `urls_priority_1`: 1 partition (lowest priority - listing pages)
+- `urls_priority_2`: 1 partition (lowest priority - listing pages)
+- `urls_priority_3`: 3 partitions (eastern US - property pages)
+- `urls_priority_4`: 3 partitions (central US - property pages)
+- `urls_priority_5`: 3 partitions (western US - property pages)
+
+**Configuration**:
+- Partitions enable parallel processing within each priority level
+- Workers subscribe to specific topics
+- FIFO ordering guaranteed within each partition
+- Auto-commit disabled for manual offset management
+
+### 6. PostgreSQL Database
+
+**Schema** (`public.pages` table):
+- `id` - Primary key (SERIAL)
+- `url` - Unique URL (TEXT)
+- `title` - Property title
+- `price` - Property price (NUMERIC)
+- `property_type` - Type of property
+- `city` - City name
+- `latitude` / `longitude` - Geographic coordinates
+- `geohash` - PostGIS GEOGRAPHY(POINT) for spatial queries
+- `beds` / `baths` / `sqft` - Property details
+- `image_path` - Path to property image
+- `status_code` - HTTP response code
+- `headers` - JSONB metadata
+- `html_content` - Full HTML (TEXT)
+- `crawl_duration` - Time taken to crawl
+- `created_at` - Timestamp
+
+**Features**:
+- PostGIS extension enabled for geospatial queries
+- Unique constraint on URL for deduplication
+- Indexed columns for fast queries
+- JSONB for flexible metadata storage
 
 ## Configuration
 
@@ -33,308 +228,303 @@ Edit `config.json` to customize crawler behavior:
 
 ```json
 {
-    "seed_urls": [
-        "https://example.com",
-        "https://httpbin.org"
-    ],
-    "max_pages": 100,
-    "delay_between_requests": 1.0,
-    "timeout": 10,
+    "seed_urls": [],
+    "max_pages": 25,
+    "max_workers": 3,
+    "default_priority": 3,
+    "delay_between_requests": 3.0,
+    "min_request_interval": 8.0,
+    "timeout": 60,
     "max_retries": 3,
-    "user_agent": "WebCrawler/1.0",
+    "headless": true,
+    "use_proxy": false,
     "respect_robots": true,
-    "max_queue_size": 1000,
+    "max_queue_size": 100,
     "stats_interval": 10,
-    "output_dir": "crawled_data",
-    "db_path": "crawler.db",
-    "kafka": { "bootstrap_servers": ["localhost:9092"] }
+    "output_dir": "/mnt/storage",
+    "database": {
+        "connection_string": "postgresql://user:password@host:5432/postgres",
+        "database_name": "postgres"
+    },
+    "kafka": {
+        "bootstrap_servers": ["kafka:9092"]
+    }
 }
 ```
 
 ### Configuration Options
 
-- `seed_urls`: List of starting URLs to crawl
+- `seed_urls`: List of starting URLs to crawl (empty array uses manual URL addition)
 - `max_pages`: Maximum number of pages to crawl
+- `max_workers`: Maximum concurrent workers (informational)
+- `default_priority`: Default priority (1-5) for manually added URLs
 - `delay_between_requests`: Delay between requests in seconds
+- `min_request_interval`: Minimum time between requests to same domain
 - `timeout`: Request timeout in seconds
 - `max_retries`: Maximum retry attempts for failed requests
-- `user_agent`: User agent string for requests
+- `headless`: Use headless browser mode
+- `use_proxy`: Enable proxy support
 - `respect_robots`: Whether to respect robots.txt rules
-- `max_queue_size`: Maximum size of URL queue
+- `max_queue_size`: Maximum size of URL queue (informational for Kafka)
 - `stats_interval`: Interval for printing statistics (seconds)
 - `output_dir`: Directory to store crawled HTML files
-- `db_path`: Path to SQLite database file
-- `kafka.bootstrap_servers`: Kafka brokers for priority mode
+- `database.connection_string`: PostgreSQL connection string
+- `database.database_name`: Database name
+- `kafka.bootstrap_servers`: Kafka broker addresses
 
-## Usage
+## Installation & Usage
 
-### CLI-Controlled Crawling (New!)
+### Prerequisites
 
-The crawler now runs in **controlled mode** where workers stay connected to Kafka queues but only process URLs when explicitly commanded via the CLI tool running inside the master container.
+- Docker
+- Docker Compose
 
+### Quick Start
+
+1. **Start all services**:
 ```bash
-# 1. Start the crawler infrastructure (workers + Kafka + MongoDB)
 ./start.sh
-
-# 2. Access the master container to run CLI commands
-docker exec -it crawler-master bash
-
-# 3. Inside the master container, check system health
-python3 main.py health_check
-
-# 4. Start crawling with seed URLs
-python3 main.py start
-
-# 5. Monitor progress with health checks
-python3 main.py health_check
-
-# 6. Get stop instructions
-python3 main.py stop
-
-# 7. Exit the container when done
-exit
 ```
 
-**Alternative: Run CLI commands directly without entering container:**
+This starts:
+- Zookeeper
+- Kafka (with topics auto-created)
+- Master service (CLI container)
+- 11 Worker services
+- API service (port 8000)
+- PostgreSQL (external service required)
+
+2. **Control the crawler via CLI**:
 ```bash
-# Run CLI commands directly from host
+# Check system health
 docker exec -it crawler-master python3 main.py health_check
+
+# Start crawling (dispatches seed URLs from config.json)
 docker exec -it crawler-master python3 main.py start
+
+# Manually add URLs
+docker exec -it crawler-master python3 main.py add_url --urls "https://example.com" --priority 5
+
+# Get queue information
+docker exec -it crawler-master python3 main.py queue_info
+
+# Stop instructions
 docker exec -it crawler-master python3 main.py stop
 ```
 
-### Dockerized Usage (Legacy)
-
+3. **Access the API**:
 ```bash
-# Start all services with one command
-./start.sh
+# List properties
+curl http://localhost:8000/properties
 
-# View logs
-./logs.sh
+# Find nearby properties
+curl "http://localhost:8000/properties/nearby?lat=37.7749&lon=-122.4194&radius=5000"
 
-# Stop all services
-./stop.sh
-```
-
-### Manual Docker Commands
-
-```bash
-# Start all services
-docker-compose up --build
-
-# View logs from all services
-docker-compose logs -f
-
-# View logs from specific service
-docker-compose logs -f master
-docker-compose logs -f worker-1
-
-# Stop all services
-docker-compose down
+# Get property by ID
+curl http://localhost:8000/properties/1
 ```
 
 ### CLI Commands
 
 | Command | Description |
 |---------|-------------|
-| `python3 main.py start` | Start crawling by dispatching seed URLs to Kafka queues |
-| `python3 main.py health_check` | Check status of all queues, workers, and services |
+| `python3 main.py start` | Dispatch seed URLs from config.json to Kafka queues |
+| `python3 main.py health_check` | Check status of Kafka, workers, and PostgreSQL |
 | `python3 main.py stop` | Get instructions to stop crawling |
+| `python3 main.py add_url --urls <url1> [url2] ...` | Add URLs to queue (optional: `--priority N`, `--queue QUEUE`) |
+| `python3 main.py queue_info` | Display queue configuration |
+
+### Docker Management
+
+```bash
+# Start all services
+docker-compose up --build
+
+# Start in background
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# View specific service logs
+docker-compose logs -f master
+docker-compose logs -f worker-1
+docker-compose logs -f api
+docker-compose logs -f kafka
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes
+docker-compose down -v
+```
 
 ### Health Check Details
 
-The health check command provides comprehensive status information:
-
+The health check command verifies:
 - **Kafka Connection**: Verifies Kafka brokers are accessible
-- **Kafka Topics**: Checks if priority topics (`urls_priority_1` to `urls_priority_5`) exist
-- **Worker Containers**: Shows status of all worker containers (running/stopped)
+- **Kafka Topics**: Checks if priority topics exist and shows partition counts
+- **Worker Containers**: Shows status of all worker containers
 - **Master Container**: Shows status of the master dispatcher
-- **MongoDB Connection**: Verifies database connectivity
+- **PostgreSQL Connection**: Verifies database connectivity
 
-For detailed Docker setup instructions, see [DOCKER_README.md](DOCKER_README.md).
+## Priority System
 
-## Getting Started Guide
+The crawler uses a 5-level priority system:
 
-New to the project? Read the step-by-step guide: [GETTING_STARTED.md](GETTING_STARTED.md)
+1. **Priority 1-2** (Lowest): Listing pages (`/search/apa`) - used for discovering property URLs
+2. **Priority 3-5** (Higher): Property pages, assigned by geographic region:
+   - **Priority 3**: Eastern US states
+   - **Priority 4**: Central US states  
+   - **Priority 5**: Western US states (highest priority)
 
-## Architecture
+Priority assignment is automatic based on:
+- URL pattern (listing vs property page)
+- Geographic region (derived from Craigslist city → state → longitude)
+- Round-robin for listing pages (alternates between 1 and 2)
 
-### Project Structure
+## Workflow
 
-```
-crawler/
-├── main.py                     # Main entry point
-├── config.json                 # Configuration file
-├── requirements.txt            # Dependencies
-├── src/
-│   └── crawler/
-│       ├── core/              # Core crawler components
-│       │   ├── master.py      # Master dispatcher to Kafka topics
-│       │   ├── worker.py      # Worker consumes from priority topic
-│       │   └── html_downloader.py # HTML downloading
-│       ├── storage/           # Storage components
-│       │   └── content_storage.py # MongoDB storage
-│       ├── parsing/           # Parsing components
-│       │   ├── robots_parser.py # Robots.txt compliance
-│       │   └── link_extractor.py # Link extraction
-│       ├── utils/             # Utility components
-│       │   └── logger.py      # Logging and metrics
-│       └── prioritizer.py     # URL priority assignment (random 1-5)
-├── tests/                     # Test files
-└── crawled_data/             # Output directory
-```
-
-### Core Components
-
-1. **Kafka Worker** (`src/crawler/core/worker.py`)
-   - Consumes URLs from `urls_priority_*` topics
-   - Downloads, stores HTML, extracts links
-   - Re-enqueues discovered links by priority
-
-2. **HTMLDownloader** (`src/crawler/core/html_downloader.py`)
-   - HTTP requests with retry logic
-   - Configurable timeout and delays
-   - Error handling and logging
-
-3. **LinkExtractor** (`src/crawler/parsing/link_extractor.py`)
-   - Extracts `<a href>` links from HTML
-   - URL normalization and validation
-
-4. **LinkExtractor** (`src/crawler/parsing/link_extractor.py`)
-   - Extracts `<a href>` links from HTML
-   - URL normalization and validation
-   - Filters unwanted file types
-
-5. **ContentStorage** (`src/crawler/storage/content_storage.py`)
-   - MongoDB database for metadata
-   - HTML file storage
-
-6. **ContentStorage** (`src/crawler/storage/content_storage.py`)
-   - MongoDB database for metadata
-   - HTML file storage
-   - Statistics and reporting
-
-7. **CrawlerLogger** (`src/crawler/utils/logger.py`)
-   - Centralized logging
-   - Real-time statistics
-   - Performance metrics
-
-### Controlled Priority Queue Mode (Kafka)
-
-The crawler now operates in **controlled mode**:
-
-- **Master Dispatcher**: Runs in standby mode, only dispatches seed URLs when commanded via CLI
-- **Workers**: Stay connected to Kafka topics but only process URLs when they arrive
-- **Priority Topics**: 5 Kafka topics (`urls_priority_1` to `urls_priority_5`) with priority 5 being highest
-- **CLI Control**: Use `python3 main.py start` to begin crawling, `health_check` to monitor
-
-#### Controlled Mode Benefits:
-- Workers stay connected and ready without consuming resources
-- Crawling only starts when explicitly commanded
-- Easy monitoring and control via CLI
-- Infrastructure can run independently of crawling operations
-
-#### Manual Mode (Legacy):
-```
-python -m src.crawler.core.master
-python -m src.crawler.core.worker urls_priority_1
-python -m src.crawler.core.worker urls_priority_2
-python -m src.crawler.core.worker urls_priority_3
-python -m src.crawler.core.worker urls_priority_4
-python -m src.crawler.core.worker urls_priority_5
-```
+1. **Seed URLs** are configured in `config.json` or added via CLI
+2. **Master** dispatches URLs to Kafka topics based on priority
+3. **Workers** consume URLs from their assigned topics
+4. **HTML Downloader** fetches page content with retries and delays
+5. **Property Matcher** determines if URL is a property page
+6. **Craigslist Parser** extracts property data from property pages
+7. **Database Service** saves property pages to PostgreSQL
+8. **Link Extractor** finds new URLs from HTML
+9. **Prioritizer** assigns priorities to discovered URLs
+10. **Workers** re-enqueue discovered URLs to appropriate topics
+11. **API Service** provides RESTful access to crawled data
 
 ## Database Schema
 
-The MongoDB database includes two main collections:
+### `public.pages` Table
 
-#### `pages` collection
-- `_id`: MongoDB ObjectId (auto-generated)
-- `url`: Page URL (unique index)
-- `html_path`: Path to stored HTML file
-- `status_code`: HTTP response code
-- `content_length`: Size of HTML content
-- `title`: Page title
-- `domain`: Domain name (indexed)
-- `metadata`: Object containing headers and other metadata
-- `content_hash`: SHA-256 hash of content (indexed)
-- `timestamp`: Crawl timestamp (indexed)
-- `crawl_duration`: Time taken to crawl
+Stores all crawled property pages with full metadata:
 
-#### `crawl_stats` collection
-- `_id`: MongoDB ObjectId (auto-generated)
-- `total_pages`: Total pages crawled
-- `successful_pages`: Successfully crawled pages
-- `failed_pages`: Failed pages
-- `total_links_found`: Total links discovered
-- `queue_size`: Current queue size
-- `timestamp`: Statistics timestamp (indexed)
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | SERIAL | Primary key |
+| `url` | TEXT | Unique URL (indexed) |
+| `title` | TEXT | Property title |
+| `price` | NUMERIC | Property price |
+| `property_type` | TEXT | Type (apartment, house, etc.) |
+| `city` | TEXT | City name |
+| `latitude` | DOUBLE PRECISION | Latitude coordinate |
+| `longitude` | DOUBLE PRECISION | Longitude coordinate |
+| `geohash` | GEOGRAPHY(POINT) | PostGIS point for spatial queries |
+| `beds` | INTEGER | Number of bedrooms |
+| `baths` | INTEGER | Number of bathrooms |
+| `sqft` | INTEGER | Square footage |
+| `image_path` | TEXT | Path to property image |
+| `status_code` | INTEGER | HTTP response code |
+| `headers` | JSONB | Response headers |
+| `html_content` | TEXT | Full HTML content |
+| `crawl_duration` | DOUBLE PRECISION | Time taken to crawl |
+| `created_at` | TIMESTAMP | Crawl timestamp (indexed) |
 
-## Output
+**Indexes**:
+- Primary key on `id`
+- Unique constraint on `url`
+- Spatial index on `geohash` (PostGIS)
 
-### Files
-- **HTML Files**: Stored in `crawled_data/` directory
-- **Database**: MongoDB database (configurable connection)
-- **Logs**: Console output and `crawler.log` file
+## API Documentation
 
-### Statistics
-The crawler prints statistics every 10 seconds (configurable):
-- Runtime and crawl rates
-- Pages crawled, successful, and failed
-- Links found and queue size
-- Error counts and success rates
-
-## Extensibility
-
-### Adding New Components
-
-1. **Custom Downloaders**: Extend `HTMLDownloader` class
-2. **Custom Storage**: Implement new storage backends
-3. **Custom Filters**: Add URL or content filters
-4. **Custom Extractors**: Extract different types of data
-
-### Example: Custom URL Filter
-
-```python
-class CustomURLFilter:
-    def should_crawl(self, url):
-        # Add custom logic
-        return not url.endswith('.pdf')
-
-# Integrate into crawler
-crawler.url_filter = CustomURLFilter()
+### Base URL
 ```
+http://localhost:8000
+```
+
+### Key Endpoints
+
+#### List Properties
+```http
+GET /properties?limit=100&offset=0
+```
+
+#### Find Nearby Properties
+```http
+GET /properties/nearby?lat=37.7749&lon=-122.4194&radius=5000&limit=100
+```
+
+#### Find Similar Properties
+```http
+GET /properties/similar/123?price_diff=50000&radius=2000&limit=10
+```
+
+#### Properties by Bounding Box
+```http
+GET /properties/bbox?sw_lat=37.0&sw_lng=-123.0&ne_lat=38.0&ne_lng=-122.0&limit=1000
+```
+
+#### Property Heatmap
+```http
+GET /properties/heatmap?sw_lat=37.0&sw_lng=-123.0&ne_lat=38.0&ne_lng=-122.0&grid_size=0.01
+```
+
+See the API service code (`api/main.py`) for complete endpoint documentation.
+
+## Performance Considerations
+
+- **Bloom Filter**: Reduces memory footprint for URL deduplication
+- **Partitioning**: Kafka topics are partitioned for parallel processing
+- **PostGIS Indexing**: Spatial queries use indexed geohash column
+- **FIFO Ordering**: Strict ordering within partitions ensures consistent processing
+- **Rate Limiting**: Configurable delays prevent overwhelming target servers
+- **Connection Pooling**: Database connections are pooled and reused
 
 ## Error Handling
 
 - **Network Errors**: Automatic retries with exponential backoff
-- **Invalid URLs**: Validation and filtering
-- **Storage Errors**: Graceful degradation
-- **Robots.txt Errors**: Default to allowing access
-
-## Performance Considerations
-
-- **Memory Usage**: Bloom filter reduces memory footprint
-- **Database**: Indexed queries for fast lookups
-- **Concurrency**: Thread-safe operations
-- **Rate Limiting**: Respects crawl delays and robots.txt
+- **Invalid URLs**: Validation and filtering before processing
+- **Database Errors**: Graceful error handling with rollback
+- **Robots.txt Errors**: Defaults to allowing access if check fails
+- **Kafka Errors**: Retry logic with backoff for connection issues
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Queue Full**: Increase `max_queue_size` in config
-2. **Memory Issues**: Reduce `capacity` in URLSeen
-3. **Slow Crawling**: Check robots.txt delays
-4. **Database Locked**: Ensure only one crawler instance
+1. **Kafka Connection Failed**: Ensure Kafka service is running (`docker-compose ps`)
+2. **PostgreSQL Connection Failed**: Verify connection string in `config.json`
+3. **Workers Not Processing**: Check if URLs are in Kafka topics (`docker-compose logs worker-1`)
+4. **API Not Responding**: Verify API container is running (`docker-compose logs api`)
+5. **No Properties in Database**: Ensure seed URLs are Craigslist property listings
 
 ### Debug Mode
 
-Enable debug logging by modifying the logger initialization:
-
-```python
-self.logger = CrawlerLogger(log_level="DEBUG")
+Enable verbose logging by checking worker logs:
+```bash
+docker-compose logs -f worker-1
 ```
+
+### Viewing Kafka Topics
+
+```bash
+# Enter Kafka container
+docker exec -it kafka bash
+
+# List topics
+kafka-topics --list --bootstrap-server localhost:9092
+
+# View messages in topic
+kafka-console-consumer --bootstrap-server localhost:9092 --topic urls_priority_5 --from-beginning
+```
+
+## Extensibility
+
+### Adding New Parsers
+
+Create a new parser in `worker/src/crawler/parsing/` and integrate it into `worker.py`.
+
+### Custom Priority Logic
+
+Modify `geospatial/prioritizer.py` to implement custom priority assignment.
+
+### Additional API Endpoints
+
+Add new endpoints in `api/main.py` following the FastAPI pattern.
 
 ## License
 

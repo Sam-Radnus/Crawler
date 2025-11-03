@@ -11,8 +11,7 @@ from src.crawler.storage.database_service import DatabaseService
 from src.crawler.core.html_downloader import HTMLDownloader
 from src.crawler.parsing.link_extractor import LinkExtractor
 from geospatial.prioritizer import Prioritizer
-from src.crawler.utils.property_matcher import PropertyURLMatcher
-from urllib.parse import urlparse 
+from src.crawler.utils.property_matcher import PropertyURLMatcher 
 from pybloom_live import BloomFilter
 
 class Worker:
@@ -177,13 +176,14 @@ class Worker:
                     self.logger.log_info(f"Skipping URL (not relevant): {link}")
                     continue
 
-                self.logger.log_info(f"Checking bloom filter for link: {link in self.bloom}")
+                self.logger.log_info(f"Checking bloom filter for link {link} , Is Link in bloom? {link in self.bloom}")
                 if link in self.bloom:
                     self.logger.log_info(f"Skipping URL (already processed): {link}")
                     continue
-                    
-                priority: int = self.prioritizer.assign_priority(link)
                 
+                self.logger.log_info(f"Assigning priority to link {link}")
+                priority: int = self.prioritizer.assign_priority(link)
+                self.logger.log_info(f"Priority assigned to link {link}: {priority}")
                 if priority == -1:
                     self.logger.log_info(f"Skipping URL (non-target domain): {link}")
                     continue

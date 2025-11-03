@@ -26,6 +26,7 @@ class CrawlerCLI:
             self.config: Dict[str, Any] = json.load(f)
         self.bootstrap_servers: List[str] = self.config.get('kafka', {}).get('bootstrap_servers', ['localhost:9092'])
         self.health_check_timeout = 10
+        print(f"Initializing server with bootstrap servers: {self.bootstrap_servers}")
         
     def _get_kafka_admin_client(self) -> KafkaAdminClient:
         """Get Kafka admin client for health checks."""
@@ -294,6 +295,8 @@ Examples:
         """
     )
     
+
+
     parser.add_argument(
         'command',
         choices=['start', 'health_check', 'stop', 'add_url', 'queue_info'],

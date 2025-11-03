@@ -4,7 +4,23 @@ from psycopg2.extras import RealDictCursor
 import json
 from contextlib import contextmanager
 
+from fastapi.middleware.cors import CORSMiddleware
+from geospatial.prioritizer import Prioritizer
+
+state_coords = json.load(open("geospatial/state_coords.json"))
+
+prioritizer = Prioritizer()
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Lock down in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Load configuration
 try:
@@ -235,3 +251,9 @@ def get_property(id: int):
             if not result:
                 raise HTTPException(status_code=404, detail="Property not found")
             return result
+
+@app.get("/location/city/{city}")
+def get_ip_for_city(city: str):
+    if city not in state_coords:
+        raise HTTPException(status_code=404, detail="City not found")
+    return state_coords[city]

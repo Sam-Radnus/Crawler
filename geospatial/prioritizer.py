@@ -15,6 +15,7 @@ class Prioritizer:
     def __init__(self):
         self.listing_patterns = [r"/search/apa"]
         self.geolocator = Nominatim(user_agent="state_locator", timeout=10)
+        self.counter = 0 # in order to do round robin priority assignment
 
         # Get the directory where this file is located
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -110,7 +111,8 @@ class Prioritizer:
             state = self.map_cities_to_states[city]
             region = self.regions[state]
             if self.is_listing_page(url):
-                return 1 if region % 2 == 0 else 2
+                self.counter += 1
+                return 1 if self.counter % 2 == 0 else 2
             return region + 3
         except (IndexError, KeyError):
             return -1
