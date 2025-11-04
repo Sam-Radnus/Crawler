@@ -21,13 +21,17 @@ A distributed, geospatially-aware web crawler system designed for property listi
 
 ## Architecture
 
+### Workflow
+
+![Workflow](workflow.png)
+
 ### System Overview
 
 The crawler follows a **distributed master-worker architecture** with the following components:
 
 1. **Master Service** - CLI-controlled URL dispatcher that sends seed URLs to Kafka priority queues
 2. **Worker Services** (11 workers) - Consume URLs from Kafka topics and perform web crawling
-3. **API Service** - FastAPI REST API for querying crawled property data
+3. **API Service** - FastAPI for querying crawled property data
 4. **Kafka** - Message broker with 5 priority topics for URL distribution
 5. **Zookeeper** - Coordination service for Kafka
 6. **PostgreSQL** - Database with PostGIS extension for storing property data
@@ -37,46 +41,45 @@ The crawler follows a **distributed master-worker architecture** with the follow
 
 ```
 Crawler/
-├── api/                          # API Service
+├── api/                          
 │   ├── Dockerfile
-│   └── main.py                   # FastAPI REST API for property queries
-├── master/                       # Master Service
+│   └── main.py                   
+├── master/                      
 │   ├── Dockerfile
 │   ├── main.py                   # CLI interface (start, health_check, stop, add_url)
 │   ├── requirements.txt
 │   └── src/
 │       └── crawler/
 │           ├── core/
-│           │   └── master.py     # Master dispatcher to Kafka topics
-│           ├── queue_manager.py  # Manual URL queue management
-│           └── robots_checker.py # Robots.txt compliance checker
+│           │   └── master.py     
+│           ├── queue_manager.py 
+│           └── robots_checker.py
 ├── worker/                       # Worker Service
 │   ├── Dockerfile
 │   ├── requirements.txt
 │   └── src/
 │       └── crawler/
 │           ├── core/
-│           │   ├── worker.py           # Main worker (Kafka consumer)
-│           │   └── html_downloader.py  # HTML downloading with retries
+│           │   ├── worker.py           
+│           │   └── html_downloader.py  
 │           ├── parsing/
-│           │   ├── craigslist_parser.py # Property data extraction
-│           │   └── link_extractor.py   # Link extraction from HTML
+│           │   ├── craigslist_parser.py 
+│           │   └── link_extractor.py  
 │           ├── storage/
-│           │   ├── content_storage.py   # Legacy storage interface
-│           │   └── database_service.py  # PostgreSQL storage service
+│           │   ├── content_storage.py  
+│           │   └── database_service.py 
 │           └── utils/
-│               ├── logger.py            # Logging and metrics
-│               └── property_matcher.py  # Property URL matching
-├── geospatial/                   # Geospatial Services
-│   ├── generate_coords.py       # Generate state coordinates
-│   ├── prioritizer.py           # Geographic priority assignment
-│   └── state_coords.json        # State coordinate cache
-├── config.json                   # Central configuration file
-├── docker-compose.yml           # Docker Compose orchestration
-├── start.sh                     # Start script
-├── stop.sh                      # Stop script
-├── requirements.txt             # Root dependencies
-└── storage/                     # Shared storage volume mount
+│               ├── logger.py          
+│               └── property_matcher.py  
+├── geospatial/                   
+│   ├── generate_coords.py      
+│   ├── prioritizer.py        
+│   └── state_coords.json       
+├── config.json                 
+├── docker-compose.yml        
+├── start.sh                    
+├── stop.sh                             
+└── requirements.txt                      
 ```
 
 ## Services Explained
@@ -376,11 +379,11 @@ The crawler uses a 5-level priority system:
 2. **Priority 3-5** (Higher): Property pages, assigned by geographic region:
    - **Priority 3**: Eastern US states
    - **Priority 4**: Central US states  
-   - **Priority 5**: Western US states (highest priority)
+   - **Priority 5**: Western US states
 
 Priority assignment is automatic based on:
 - URL pattern (listing vs property page)
-- Geographic region (derived from Craigslist city → state → longitude)
+- Geographic region (derived from city → state → longitude)
 - Round-robin for listing pages (alternates between 1 and 2)
 
 ## Workflow
