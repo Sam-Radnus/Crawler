@@ -17,7 +17,7 @@ class RobotsChecker:
         self.user_agent = user_agent
         self.parsers: Dict[str, RobotFileParser] = {}
         self.last_fetch: Dict[str, float] = {}
-        self.cache_duration = 3600  # Cache robots.txt for 1 hour
+        self.cache_duration = 3600
         
         self.logger = logging.getLogger(__name__)
         self.client = httpx.Client(
@@ -49,24 +49,19 @@ class RobotsChecker:
             parser.set_url(robots_url)
             
             if response.status_code == 200:
-                # Parse the robots.txt content
                 parser.parse(response.text.splitlines())
                 self.logger.info(f"Successfully parsed robots.txt from {robots_url}")
             elif response.status_code == 404:
-                # No robots.txt means everything is allowed
                 self.logger.info(f"No robots.txt found at {robots_url} - allowing all")
-                # Empty parser allows everything
                 parser.parse([])
             else:
                 self.logger.warning(f"Failed to fetch robots.txt: HTTP {response.status_code}")
-                # On error, be conservative and allow
                 parser.parse([])
             
             return parser
             
         except Exception as e:
             self.logger.error(f"Error fetching robots.txt from {robots_url}: {e}")
-            # On error, create permissive parser
             parser = RobotFileParser()
             parser.set_url(robots_url)
             parser.parse([])
@@ -77,13 +72,11 @@ class RobotsChecker:
         domain_key = self._get_domain_key(url)
         current_time = time.time()
         
-        # Check if we have a cached parser that's still valid
         if domain_key in self.parsers:
             last_fetch = self.last_fetch.get(domain_key, 0)
             if current_time - last_fetch < self.cache_duration:
                 return self.parsers[domain_key]
         
-        # Fetch new robots.txt
         robots_url = self._get_robots_url(url)
         parser = self._fetch_robots_txt(robots_url)
         
@@ -107,7 +100,6 @@ class RobotsChecker:
             parser = self._get_parser(url)
             
             if not parser:
-                # If we can't get parser, be conservative and allow
                 self.logger.warning(f"No parser available for {url}, allowing by default")
                 return True
             
@@ -120,7 +112,6 @@ class RobotsChecker:
             
         except Exception as e:
             self.logger.error(f"Error checking robots.txt for {url}: {e}")
-            # On error, be conservative and allow
             return True
     
     def get_crawl_delay(self, url: str) -> Optional[float]:
