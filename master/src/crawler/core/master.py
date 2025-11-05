@@ -118,10 +118,10 @@ class MasterDispatcher:
         # Flush producer to ensure all messages are sent
         self.producer.flush()
         
-        print(f"\n📊 Dispatch Summary:")
-        print(f"   ✅ Dispatched: {dispatched}")
-        print(f"   ⚠️  Skipped: {skipped}")
-        print(f"   📋 Total: {len(seed_urls)}")
+        print(f"\n Dispatch Summary:")
+        print(f"   Dispatched: {dispatched}")
+        print(f"   Skipped: {skipped}")
+        print(f"   Total: {len(seed_urls)}")
     
     def close(self):
         """Close the producer."""
