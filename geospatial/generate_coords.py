@@ -26,7 +26,7 @@ def get_latitude(geolocator, state, retries=3):
         try:
             location = geolocator.geocode(f"{state}, USA", timeout=10)
             if location:
-                return location.latitude,location.longitude
+                return location.latitude, location.longitude
         except (GeocoderTimedOut, GeocoderUnavailable):
             time.sleep(2)  # backoff before retry
     return None
@@ -41,7 +41,8 @@ def main():
             try:
                 state_coords = json.load(f)
             except json.JSONDecodeError:
-                print(f"Warning: {CACHE_FILE} is empty or contains invalid JSON. Starting with an empty cache.")
+                print(
+                    f"Warning: {CACHE_FILE} is empty or contains invalid JSON. Starting with an empty cache.")
                 state_coords = {}
     else:
         state_coords = {}
@@ -49,9 +50,9 @@ def main():
     for state in US_STATES:
         if state not in state_coords:
             print(f"Fetching latitude for {state}...")
-            lat,lon = get_latitude(geolocator, state)
+            lat, lon = get_latitude(geolocator, state)
             if lat is not None:
-                state_coords[state] = [lat,lon]
+                state_coords[state] = [lat, lon]
                 print(f"→ {state}: {lat},{lon}")
             else:
                 print(f"Failed to fetch {state}")

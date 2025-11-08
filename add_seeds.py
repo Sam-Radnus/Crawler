@@ -4,6 +4,7 @@ import json
 from geopy.geocoders import Nominatim
 import random
 
+
 def get_state_lat_long(state_name):
     geolocator = Nominatim(user_agent="state_locator")
     location = geolocator.geocode(state_name + ", USA")
@@ -11,6 +12,7 @@ def get_state_lat_long(state_name):
         return (location.latitude, location.longitude)
     else:
         return None
+
 
 # Fetch Craigslist site URLs
 url = "https://www.craigslist.org/about/sites"
@@ -33,7 +35,8 @@ us_states = [
 sites = {}
 for state_h4 in soup.find_all("h4"):
     state = state_h4.text.strip()
-    sites[state] = [a['href'] for a in state_h4.find_next_sibling("ul").find_all("a")]
+    sites[state] = [a['href']
+                    for a in state_h4.find_next_sibling("ul").find_all("a")]
 
 sites = {k: v for k, v in sites.items() if k in us_states}
 

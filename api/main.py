@@ -34,39 +34,47 @@ except FileNotFoundError:
 except json.JSONDecodeError:
     raise RuntimeError("config.json is not valid JSON")
 
+
 @contextmanager
 def get_connection():
     conn = None
     try:
-        conn = psycopg2.connect(CONNECTION_STRING, cursor_factory=RealDictCursor)
+        conn = psycopg2.connect(
+            CONNECTION_STRING,
+            cursor_factory=RealDictCursor)
         yield conn
         conn.commit()
     except psycopg2.Error as e:
         if conn:
             conn.rollback()
-        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Database error: {str(e)}")
     finally:
         if conn:
             conn.close()
+
 
 @app.get("/")
 def root():
     return {"message": "Welcome to the Web Crawler API"}
 
+
 @app.get("/properties")
 def get_properties(
-    limit: int = Query(100, ge=1, le=5000), 
+    limit: int = Query(100, ge=1, le=5000),
     offset: int = Query(0, ge=0)
 ):
     query = """
-        SELECT id, url, title, price, geohash, property_type, city, image_path 
-        FROM public.pages 
+        SELECT id, url, title, price, geohash, property_type, city, image_path
+        FROM public.pages
         LIMIT %s OFFSET %s
     """
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (limit, offset))
             return cursor.fetchall()
+
 
 @app.get("/properties/nearby")
 def get_nearby_properties(
@@ -77,8 +85,8 @@ def get_nearby_properties(
     offset: int = Query(0, ge=0)
 ):
     query = """
-        SELECT id, url, title, price, geohash, property_type, city, image_path 
-        FROM public.pages 
+        SELECT id, url, title, price, geohash, property_type, city, image_path
+        FROM public.pages
         WHERE ST_DWithin(geohash, ST_SetSRID(ST_MakePoint(%s, %s), 4326), %s)
         LIMIT %s OFFSET %s
     """
@@ -86,6 +94,7 @@ def get_nearby_properties(
         with conn.cursor() as cursor:
             cursor.execute(query, (lon, lat, radius, limit, offset))
             return cursor.fetchall()
+
 
 @app.get("/properties/similar/nearby")
 def get_similar_properties_nearby(
@@ -99,34 +108,44 @@ def get_similar_properties_nearby(
     offset: int = Query(0, ge=0)
 ):
     if min_price > max_price:
-        raise HTTPException(status_code=400, detail="min_price cannot exceed max_price")
-    
+        raise HTTPException(status_code=400,
+                            detail="min_price cannot exceed max_price")
+
     property_types = property_type.split(',') if property_type else None
-    
+
     if property_types:
         query = """
-            SELECT id, url, title, price, geohash, property_type, city, image_path 
-            FROM public.pages 
+            SELECT id, url, title, price, geohash, property_type, city, image_path
+            FROM public.pages
             WHERE ST_DWithin(geohash, ST_SetSRID(ST_MakePoint(%s, %s), 4326), %s)
             AND price BETWEEN %s AND %s
             AND property_type = ANY(%s)
             LIMIT %s OFFSET %s
         """
-        params = (lon, lat, radius, min_price, max_price, property_types, limit, offset)
+        params = (
+            lon,
+            lat,
+            radius,
+            min_price,
+            max_price,
+            property_types,
+            limit,
+            offset)
     else:
         query = """
-            SELECT id, url, title, price, geohash, property_type, city, image_path 
-            FROM public.pages 
+            SELECT id, url, title, price, geohash, property_type, city, image_path
+            FROM public.pages
             WHERE ST_DWithin(geohash, ST_SetSRID(ST_MakePoint(%s, %s), 4326), %s)
             AND price BETWEEN %s AND %s
             LIMIT %s OFFSET %s
         """
         params = (lon, lat, radius, min_price, max_price, limit, offset)
-    
+
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, params)
             return cursor.fetchall()
+
 
 @app.get("/properties/similar/{property_id}")
 def get_similar_properties(
@@ -138,8 +157,8 @@ def get_similar_properties(
 ):
     query = """
         WITH base_property AS (
-            SELECT price, geohash, property_type 
-            FROM public.pages 
+            SELECT price, geohash, property_type
+            FROM public.pages
             WHERE id = %s
         )
         SELECT p.id, p.url, p.title, p.price, p.geohash, p.property_type, p.city, p.image_path
@@ -150,18 +169,29 @@ def get_similar_properties(
         AND p.property_type = bp.property_type
         LIMIT %s OFFSET %s
     """
-    
+
     with get_connection() as conn:
         with conn.cursor() as cursor:
-            cursor.execute(query, (property_id, property_id, radius, price_diff, price_diff, limit, offset))
+            cursor.execute(
+                query,
+                (property_id,
+                 property_id,
+                 radius,
+                 price_diff,
+                 price_diff,
+                 limit,
+                 offset))
             results = cursor.fetchall()
-            
+
             if not results:
-                cursor.execute("SELECT id FROM public.pages WHERE id = %s", (property_id,))
+                cursor.execute(
+                    "SELECT id FROM public.pages WHERE id = %s", (property_id,))
                 if not cursor.fetchone():
-                    raise HTTPException(status_code=404, detail="Property not found")
-            
+                    raise HTTPException(
+                        status_code=404, detail="Property not found")
+
             return results
+
 
 @app.get("/properties/heatmap")
 def get_properties_heatmap(
@@ -172,10 +202,11 @@ def get_properties_heatmap(
     grid_size: float = Query(0.01, ge=0.001, le=1.0)
 ):
     if sw_lat >= ne_lat or sw_lng >= ne_lng:
-        raise HTTPException(status_code=400, detail="Invalid bounding box coordinates")
-    
+        raise HTTPException(status_code=400,
+                            detail="Invalid bounding box coordinates")
+
     query = """
-        SELECT 
+        SELECT
             ROUND(CAST(latitude AS numeric) / %s) * %s as latitude,
             ROUND(CAST(longitude AS numeric) / %s) * %s as longitude,
             COUNT(*) as weight
@@ -186,7 +217,7 @@ def get_properties_heatmap(
         ORDER BY weight DESC
         LIMIT 10000
     """
-    
+
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (
@@ -195,6 +226,7 @@ def get_properties_heatmap(
                 grid_size, grid_size
             ))
             return cursor.fetchall()
+
 
 @app.get("/properties/bbox")
 def get_properties_by_bbox(
@@ -205,8 +237,9 @@ def get_properties_by_bbox(
     limit: int = Query(1000, ge=1, le=5000)
 ):
     if sw_lat >= ne_lat or sw_lng >= ne_lng:
-        raise HTTPException(status_code=400, detail="Invalid bounding box coordinates")
-    
+        raise HTTPException(status_code=400,
+                            detail="Invalid bounding box coordinates")
+
     query = """
         SELECT id, url, title, latitude, longitude, geohash, beds, baths, sqft, image_path
         FROM public.pages
@@ -214,11 +247,12 @@ def get_properties_by_bbox(
         AND longitude BETWEEN %s AND %s
         LIMIT %s
     """
-    
+
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (sw_lat, ne_lat, sw_lng, ne_lng, limit))
             return cursor.fetchall()
+
 
 @app.get("/properties/city/{city}")
 def get_properties_by_city(
@@ -227,9 +261,9 @@ def get_properties_by_city(
     offset: int = Query(0, ge=0)
 ):
     query = """
-        SELECT id, url, title, price, geohash, property_type, city, image_path 
-        FROM public.pages 
-        WHERE city = %s 
+        SELECT id, url, title, price, geohash, property_type, city, image_path
+        FROM public.pages
+        WHERE city = %s
         LIMIT %s OFFSET %s
     """
     with get_connection() as conn:
@@ -237,11 +271,12 @@ def get_properties_by_city(
             cursor.execute(query, (city, limit, offset))
             return cursor.fetchall()
 
+
 @app.get("/properties/{id}")
 def get_property(id: int):
     query = """
-        SELECT id, url, title, price, geohash, property_type, city, image_path  
-        FROM public.pages 
+        SELECT id, url, title, price, geohash, property_type, city, image_path
+        FROM public.pages
         WHERE id = %s
     """
     with get_connection() as conn:
@@ -249,8 +284,10 @@ def get_property(id: int):
             cursor.execute(query, (id,))
             result = cursor.fetchone()
             if not result:
-                raise HTTPException(status_code=404, detail="Property not found")
+                raise HTTPException(
+                    status_code=404, detail="Property not found")
             return result
+
 
 @app.get("/location/city/{city}")
 def get_ip_for_city(city: str):

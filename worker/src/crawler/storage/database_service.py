@@ -31,7 +31,9 @@ class DatabaseService:
 
     def _connect(self) -> None:
         if self._conn is None or self._conn.closed:
-            self._conn = psycopg2.connect(self.connection_string, cursor_factory=RealDictCursor)
+            self._conn = psycopg2.connect(
+                self.connection_string,
+                cursor_factory=RealDictCursor)
             self._conn.autocommit = True
 
     def _ensure_schema(self) -> None:
@@ -62,7 +64,8 @@ class DatabaseService:
             created_at TIMESTAMP DEFAULT NOW()
         );
         """
-        # Enable PostGIS if available; ignore errors if extension exists/missing perms
+        # Enable PostGIS if available; ignore errors if extension
+        # exists/missing perms
         enable_postgis = "CREATE EXTENSION IF NOT EXISTS postgis;"
         with self._conn.cursor() as cur:
             try:
@@ -76,7 +79,8 @@ class DatabaseService:
         """Return page row if exists; used by worker to dedupe."""
         self._connect()
         with self._conn.cursor() as cur:
-            cur.execute("SELECT id, url FROM public.pages WHERE url = %s LIMIT 1", (url,))
+            cur.execute(
+                "SELECT id, url FROM public.pages WHERE url = %s LIMIT 1", (url,))
             row = cur.fetchone()
             return row if row else None
 
@@ -110,4 +114,3 @@ class DatabaseService:
                 self._conn.close()
         except Exception:
             pass
-

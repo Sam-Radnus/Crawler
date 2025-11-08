@@ -15,7 +15,7 @@ class Prioritizer:
     def __init__(self):
         self.listing_patterns = [r"/search/apa"]
         self.geolocator = Nominatim(user_agent="state_locator", timeout=10)
-        self.counter = 0 # in order to do round robin priority assignment
+        self.counter = 0  # in order to do round robin priority assignment
 
         # Get the directory where this file is located
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,25 +29,64 @@ class Prioritizer:
         soup = BeautifulSoup(requests.get(url).text, "html.parser")
 
         us_states = [
-            "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado",
-            "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho",
-            "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
-            "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
-            "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada",
-            "New Hampshire", "New Jersey", "New Mexico", "New York",
-            "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
-            "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
-            "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
-            "West Virginia", "Wisconsin", "Wyoming",
+            "Alabama",
+            "Alaska",
+            "Arizona",
+            "Arkansas",
+            "California",
+            "Colorado",
+            "Connecticut",
+            "Delaware",
+            "Florida",
+            "Georgia",
+            "Hawaii",
+            "Idaho",
+            "Illinois",
+            "Indiana",
+            "Iowa",
+            "Kansas",
+            "Kentucky",
+            "Louisiana",
+            "Maine",
+            "Maryland",
+            "Massachusetts",
+            "Michigan",
+            "Minnesota",
+            "Mississippi",
+            "Missouri",
+            "Montana",
+            "Nebraska",
+            "Nevada",
+            "New Hampshire",
+            "New Jersey",
+            "New Mexico",
+            "New York",
+            "North Carolina",
+            "North Dakota",
+            "Ohio",
+            "Oklahoma",
+            "Oregon",
+            "Pennsylvania",
+            "Rhode Island",
+            "South Carolina",
+            "South Dakota",
+            "Tennessee",
+            "Texas",
+            "Utah",
+            "Vermont",
+            "Virginia",
+            "Washington",
+            "West Virginia",
+            "Wisconsin",
+            "Wyoming",
         ]
 
         # Step 3: extract city links per state
         sites = {}
         for state_h4 in soup.find_all("h4"):
             state = state_h4.text.strip()
-            sites[state] = [
-                a["href"] for a in state_h4.find_next_sibling("ul").find_all("a")
-            ]
+            sites[state] = [a["href"]
+                            for a in state_h4.find_next_sibling("ul").find_all("a")]
         sites = {k: v for k, v in sites.items() if k in us_states}
 
         # Step 4: build city→state map
@@ -72,12 +111,16 @@ class Prioritizer:
             with open(self.cache_file) as f:
                 data = json.load(f)
                 # Convert [lat, lon] arrays to just longitude values
-                return {k: v[1] if isinstance(v, list) else v for k, v in data.items()}
+                return {
+                    k: v[1] if isinstance(
+                        v,
+                        list) else v for k,
+                    v in data.items()}
         return {}
 
     def _save_cache(self):
         # Save as [lat, lon] arrays for compatibility
-        data_to_save = {k: [v, 0] if not isinstance(v, list) else v 
+        data_to_save = {k: [v, 0] if not isinstance(v, list) else v
                         for k, v in self.state_coords.items()}
         with open(self.cache_file, "w") as f:
             json.dump(data_to_save, f, indent=2)
@@ -101,7 +144,8 @@ class Prioritizer:
         return "craigslist.org" in url.lower()
 
     def is_listing_page(self, url: str) -> bool:
-        return any(re.search(p, url, re.IGNORECASE) for p in self.listing_patterns)
+        return any(re.search(p, url, re.IGNORECASE)
+                   for p in self.listing_patterns)
 
     def assign_priority(self, url: str) -> Optional[Priority]:
         if not self.is_target_domain(url):

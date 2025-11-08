@@ -11,8 +11,9 @@ from src.crawler.storage.database_service import DatabaseService
 from src.crawler.core.html_downloader import HTMLDownloader
 from src.crawler.parsing.link_extractor import LinkExtractor
 from geospatial.prioritizer import Prioritizer
-from src.crawler.utils.property_matcher import PropertyURLMatcher 
+from src.crawler.utils.property_matcher import PropertyURLMatcher
 from pybloom_live import BloomFilter
+
 
 class Worker:
     """Worker that consumes URLs from a Kafka topic and processes them."""
@@ -25,18 +26,19 @@ class Worker:
         with open(config_path, 'r') as f:
             self.config: Dict[str, Any] = json.load(f)
 
-        bootstrap_servers: List[str] = self.config.get('kafka', {}).get('bootstrap_servers', ['localhost:9092'])
-        
-        
+        bootstrap_servers: List[str] = self.config.get(
+            'kafka', {}).get(
+            'bootstrap_servers', ['localhost:9092'])
+
         self.logger.log_info(f"Bootstrap servers: {bootstrap_servers}")
 
         priority = topic.split('_')[-1]
         consumer_group = f"crawler-group-{priority}"
-        
+
         max_retries = 30
         retry_delay = 2
         last_error = None
-        
+
         for attempt in range(max_retries):
             try:
                 self.consumer: KafkaConsumer = KafkaConsumer(
@@ -50,22 +52,25 @@ class Worker:
                     max_poll_interval_ms=300000,
                     group_id=consumer_group
                 )
-                
-                #self.consumer.assign([partition])
-                self.logger.log_info(f"Connected to Kafka on attempt {attempt + 1}")
-                #self.logger.log_info(f"Assigned to partition {partition_num} of topic {topic}")
+
+                # self.consumer.assign([partition])
+                self.logger.log_info(
+                    f"Connected to Kafka on attempt {attempt + 1}")
+                # self.logger.log_info(f"Assigned to partition {partition_num} of topic {topic}")
                 self.logger.log_info(f"Consumer group: {consumer_group}")
                 break
-                
+
             except NoBrokersAvailable as e:
                 last_error = e
                 if attempt < max_retries - 1:
-                    self.logger.log_warning(f"Kafka not ready, retrying in {retry_delay}s... ({attempt + 1}/{max_retries})")
+                    self.logger.log_warning(
+                        f"Kafka not ready, retrying in {retry_delay}s... ({attempt + 1}/{max_retries})")
                     time.sleep(retry_delay)
                 else:
                     raise
 
-        # Initialize producer with retry/backoff so workers can re-enqueue discovered links
+        # Initialize producer with retry/backoff so workers can re-enqueue
+        # discovered links
         self.bootstrap_servers: List[str] = bootstrap_servers
         backoff_seconds: List[int] = [1, 2, 4, 8, 15, 30]
         last_error: Optional[Exception] = None
@@ -76,16 +81,20 @@ class Worker:
                     bootstrap_servers=self.bootstrap_servers,
                     api_version=(0, 11, 5),
                     value_serializer=lambda v: json.dumps(v).encode('utf-8'),
-                    max_in_flight_requests_per_connection=1,  # Critical: guarantees order per partition
-                    # Note: No key_serializer because we don't use keys (ensures single partition FIFO)
+                    # Critical: guarantees order per partition
+                    max_in_flight_requests_per_connection=1,
+                    # Note: No key_serializer because we don't use keys
+                    # (ensures single partition FIFO)
                 )
                 break
             except NoBrokersAvailable as e:
                 last_error = e
-                self.logger.log_warning(f"Kafka broker not available for producer. Retrying in {delay}s...")
+                self.logger.log_warning(
+                    f"Kafka broker not available for producer. Retrying in {delay}s...")
                 time.sleep(delay)
         if self.producer is None:
-            raise last_error if last_error else RuntimeError("Failed to create KafkaProducer")
+            raise last_error if last_error else RuntimeError(
+                "Failed to create KafkaProducer")
 
         # Initialize database service
         db_cfg: Dict[str, Any] = self.config.get('database', {})
@@ -106,17 +115,20 @@ class Worker:
         self.property_matcher: PropertyURLMatcher = PropertyURLMatcher()
         self._topic_for_priority = lambda p: f"urls_priority_{p}"
 
-    def process_url(self, url: str, payload: Optional[Dict[str, Any]] = None) -> bool:
+    def process_url(
+            self, url: str, payload: Optional[Dict[str, Any]] = None) -> bool:
         start: float = time.time()
-        self.logger.log_info(f"================================================")
+        self.logger.log_info(
+            f"================================================")
         self.logger.log_info(f"PROCESSING URL: {url}")
-        self.logger.log_info(f"================================================")
+        self.logger.log_info(
+            f"================================================")
 
         try:
             # Initialize payload if None
             if payload is None:
                 payload = {}
-            
+
             if url in self.bloom:
                 self.logger.log_info(f"URL already processed: {url}")
                 return True
@@ -132,13 +144,14 @@ class Worker:
             if not result:
                 self.logger.log_error("Download failed")
                 return False
-            
+
             # Check if this is a property page
             is_property = self.property_matcher.is_property_url(url)
-            
+
             # Only save property pages to database
             if is_property:
-                self.logger.log_info(f"Property page detected - saving to database: {url}")
+                self.logger.log_info(
+                    f"Property page detected - saving to database: {url}")
                 property_data: dict[str, Any] = self.database_service.save_page(
                     url=url,
                     html_content=result['content'],
@@ -148,44 +161,52 @@ class Worker:
                 )
 
                 if not property_data:
-                    self.logger.log_error("Failed to save property page to database")
+                    self.logger.log_error(
+                        "Failed to save property page to database")
                     return False
             else:
-                self.logger.log_info(f"Listing page detected - extracting links only (not saving): {url}")
-            
+                self.logger.log_info(
+                    f"Listing page detected - extracting links only (not saving): {url}")
+
             # Get current depth from payload
             self.bloom.add(url)
             self.logger.log_info(f"Added URL to bloom filter: {url}")
             # current_depth = payload.get('depth', 0)
             # max_depth = 3  # Limit crawl depth to prevent infinite loops
-            # 
+            #
             # self.logger.log_info(f"Current depth: {current_depth}, Max depth: {max_depth}")
-            # 
+            #
             # # Check if we've exceeded max depth BEFORE extracting links
             # if current_depth >= max_depth:
             #     self.logger.log_info(f"Max depth ({max_depth}) reached, not extracting links from {url}")
             #     return True
-            
-            # Extract links and enqueue them back to appropriate priority topics
+
+            # Extract links and enqueue them back to appropriate priority
+            # topics
             links = self.link_extractor.extract_links(result['content'], url)
             enqueued: int = 0
             self.logger.log_info(f"Extracted {len(links)} links from {url}")
 
             for link in links:
                 if not self.property_matcher.is_relevant_url(link):
-                    self.logger.log_info(f"Skipping URL (not relevant): {link}")
+                    self.logger.log_info(
+                        f"Skipping URL (not relevant): {link}")
                     continue
 
-                self.logger.log_info(f"Checking bloom filter for link {link} , Is Link in bloom? {link in self.bloom}")
+                self.logger.log_info(
+                    f"Checking bloom filter for link {link} , Is Link in bloom? {link in self.bloom}")
                 if link in self.bloom:
-                    self.logger.log_info(f"Skipping URL (already processed): {link}")
+                    self.logger.log_info(
+                        f"Skipping URL (already processed): {link}")
                     continue
-                
+
                 self.logger.log_info(f"Assigning priority to link {link}")
                 priority: int = self.prioritizer.assign_priority(link)
-                self.logger.log_info(f"Priority assigned to link {link}: {priority}")
+                self.logger.log_info(
+                    f"Priority assigned to link {link}: {priority}")
                 if priority == -1:
-                    self.logger.log_info(f"Skipping URL (non-target domain): {link}")
+                    self.logger.log_info(
+                        f"Skipping URL (non-target domain): {link}")
                     continue
 
                 topic: str = self._topic_for_priority(priority)
@@ -193,29 +214,33 @@ class Worker:
                 try:
                     try:
                         # Send extracted links back to the same queue
-                        # FIFO ordering ensures they're processed after current messages
-                        self.producer.send(topic, value = {
-                            "url": link, 
-                            "priority": priority, 
+                        # FIFO ordering ensures they're processed after current
+                        # messages
+                        self.producer.send(topic, value={
+                            "url": link,
+                            "priority": priority,
                             "ts": time.time(),
                             "source": "extracted"
                         })
                         self.logger.log_info(f"Sent link to topic: {topic}")
                         enqueued += 1
                     except Exception as e:
-                        self.logger.log_warning(f"Failed to enqueue link {link}: {e}")
+                        self.logger.log_warning(
+                            f"Failed to enqueue link {link}: {e}")
                         raise e
                     self.bloom.add(link)
                     self.logger.log_info(f"Added link to bloom filter: {link}")
                 except Exception as e:
-                    self.logger.log_warning(f"Error Occurred while processing link {link}: {e}")
-            
+                    self.logger.log_warning(
+                        f"Error Occurred while processing link {link}: {e}")
+
             if enqueued:
                 # Flush immediately - the age-based processing in the consumer
                 # will ensure proper FIFO ordering by waiting before processing
                 # newly extracted links
                 self.producer.flush()
-                self.logger.log_info(f"Enqueued {enqueued} links for further crawling (will be aged before processing)")
+                self.logger.log_info(
+                    f"Enqueued {enqueued} links for further crawling (will be aged before processing)")
             return True
         except Exception as e:
             self.logger.log_error(f"Worker error: {e}")
@@ -225,23 +250,30 @@ class Worker:
 
     def run(self) -> None:
         """Run the worker in standby mode - connected but only processing when URLs are available."""
-        self.logger.log_info(f"================================================")
+        self.logger.log_info(
+            f"================================================")
         self.logger.log_info(f"WORKER BOOTING UP...")
-        self.logger.log_info(f"================================================")
+        self.logger.log_info(
+            f"================================================")
         time.sleep(60)
         self.logger.log_info(f"WORKER BOOTED UP...")
-        self.logger.log_info(f"================================================")
-        self.logger.log_info(f"Worker connected to topic and ready to process URLs")
-        self.logger.log_info(f"================================================")
-        self.logger.log_info("Worker is in standby mode - will process URLs after subscribing to topic")
-        self.logger.log_info("Using STRICT FIFO ordering - processing messages in exact order received")
+        self.logger.log_info(
+            f"================================================")
+        self.logger.log_info(
+            f"Worker connected to topic and ready to process URLs")
+        self.logger.log_info(
+            f"================================================")
+        self.logger.log_info(
+            "Worker is in standby mode - will process URLs after subscribing to topic")
+        self.logger.log_info(
+            "Using STRICT FIFO ordering - processing messages in exact order received")
         self.logger.log_info(f"Topic: {self.topic}")
         self.logger.log_info(f"Subscribing to topic: {self.topic}")
         self.consumer.subscribe([self.topic])
         self.logger.log_info(f"Subscribed to topic: {self.topic}")
-        self.logger.log_info(f"================================================")
+        self.logger.log_info(
+            f"================================================")
 
-        
         try:
             for msg in self.consumer:
                 payload: Dict[str, Any] = msg.value
@@ -251,16 +283,17 @@ class Worker:
                     # Commit even for invalid messages to move forward
                     self.consumer.commit()
                     continue
-                
+
                 self.process_url(url, payload)
-                
+
                 try:
                     self.consumer.commit()
-                    self.logger.log_info(f"[FIFO] Committed offset {msg.offset}")
+                    self.logger.log_info(
+                        f"[FIFO] Committed offset {msg.offset}")
                 except Exception as e:
                     self.logger.log_error(f"Failed to commit offset: {e}")
                     # On commit failure, the message may be reprocessed
-                
+
         except KeyboardInterrupt:
             self.logger.log_info("Worker shutting down...")
         finally:
@@ -270,8 +303,13 @@ class Worker:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Priority worker')
-    parser.add_argument('topic', help='Kafka topic to consume (e.g., urls_priority_5)')
-    parser.add_argument('--config', default='config.json', help='Path to config.json')
+    parser.add_argument(
+        'topic',
+        help='Kafka topic to consume (e.g., urls_priority_5)')
+    parser.add_argument(
+        '--config',
+        default='config.json',
+        help='Path to config.json')
     args = parser.parse_args()
 
     worker = Worker(topic=args.topic, config_path=args.config)
@@ -280,5 +318,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
