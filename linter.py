@@ -1,7 +1,7 @@
 import subprocess
 import sys
 from pathlib import Path
-
+from _typeshed import StrOrBytesPath
 
 def lint_all_files(base_dir="."):
     base_path = Path(base_dir)
@@ -16,7 +16,7 @@ def lint_all_files(base_dir="."):
 
     print(f"Checking lint for {len(python_files)} files...")
     result = subprocess.run(
-        ["flake8", *map(str, python_files)],
+        ["flake8", *map[StrOrBytesPath](str, python_files)],
         capture_output=True,
         text=True,
     )
@@ -27,7 +27,6 @@ def lint_all_files(base_dir="."):
         print("⚠️ Linting issues detected:")
         print(result.stdout)
         print(result.stderr, file=sys.stderr)
-
 
 if __name__ == "__main__":
     lint_all_files(".")
