@@ -56,7 +56,6 @@ class Worker:
                 # self.consumer.assign([partition])
                 self.logger.log_info(
                     f"Connected to Kafka on attempt {attempt + 1}")
-                # self.logger.log_info(f"Assigned to partition {partition_num} of topic {topic}")
                 self.logger.log_info(f"Consumer group: {consumer_group}")
                 break
 
@@ -81,10 +80,7 @@ class Worker:
                     bootstrap_servers=self.bootstrap_servers,
                     api_version=(0, 11, 5),
                     value_serializer=lambda v: json.dumps(v).encode('utf-8'),
-                    # Critical: guarantees order per partition
-                    max_in_flight_requests_per_connection=1,
-                    # Note: No key_serializer because we don't use keys
-                    # (ensures single partition FIFO)
+                    max_in_flight_requests_per_connection=1
                 )
                 break
             except NoBrokersAvailable as e:
@@ -171,18 +167,6 @@ class Worker:
             # Get current depth from payload
             self.bloom.add(url)
             self.logger.log_info(f"Added URL to bloom filter: {url}")
-            # current_depth = payload.get('depth', 0)
-            # max_depth = 3  # Limit crawl depth to prevent infinite loops
-            #
-            # self.logger.log_info(f"Current depth: {current_depth}, Max depth: {max_depth}")
-            #
-            # # Check if we've exceeded max depth BEFORE extracting links
-            # if current_depth >= max_depth:
-            #     self.logger.log_info(f"Max depth ({max_depth}) reached, not extracting links from {url}")
-            #     return True
-
-            # Extract links and enqueue them back to appropriate priority
-            # topics
             links = self.link_extractor.extract_links(result['content'], url)
             enqueued: int = 0
             self.logger.log_info(f"Extracted {len(links)} links from {url}")
