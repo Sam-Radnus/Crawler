@@ -1,7 +1,6 @@
 import argparse
 import json
 import time
-import os
 from typing import Dict, Any, Optional, List
 from kafka import KafkaConsumer, KafkaProducer
 from kafka.errors import NoBrokersAvailable
@@ -10,7 +9,7 @@ from src.crawler.utils.logger import CrawlerLogger
 from src.crawler.storage.database_service import DatabaseService
 from src.crawler.core.html_downloader import HTMLDownloader
 from src.crawler.parsing.link_extractor import LinkExtractor
-from geospatial.prioritizer import Prioritizer
+from geospatial.prioritizer import Prioritizers
 from src.crawler.utils.property_matcher import PropertyURLMatcher
 from pybloom_live import BloomFilter
 
@@ -152,7 +151,6 @@ class Worker:
                     url=url,
                     html_content=result['content'],
                     status_code=result['status_code'],
-                    headers=result.get('headers', {}),
                     crawl_duration=time.time() - start,
                 )
 

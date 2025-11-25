@@ -1,10 +1,10 @@
-# Web Crawler
+# Distributed Real Estate Web Crawler
 
-A distributed, geospatially-aware web crawler system designed for property listings with priority-based URL processing, built on Kafka, PostgreSQL, and Docker.
+A distributed, geospatially-aware web crawler system designed for property listings with priority-based URL processing, built on Kafka, PostgreSQL and Docker.
 
 ## System Design
 
-![System Design Diagram](diagram.png)
+![System Design Diagram](./diagrams/diagram.png)
 
 ## Features
 
@@ -23,7 +23,7 @@ A distributed, geospatially-aware web crawler system designed for property listi
 
 ### Workflow
 
-![Workflow](workflow.png)
+![Workflow](./diagrams/workflow.png)
 
 ### System Overview
 

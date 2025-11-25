@@ -2,7 +2,7 @@ import logging
 from typing import Any, Dict, Optional
 
 import psycopg2
-from psycopg2.extras import RealDictCursor, Json
+from psycopg2.extras import RealDictCursor
 
 
 class DatabaseService:
@@ -89,7 +89,6 @@ class DatabaseService:
         url: str,
         html_content: str,
         status_code: int,
-        headers: Dict[str, Any],
         crawl_duration: float,
     ) -> Dict[str, Any]:
         """Upsert a page record. Returns minimal info for logging."""
