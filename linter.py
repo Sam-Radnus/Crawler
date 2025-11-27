@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from _typeshed import StrOrBytesPath
 
+
 def lint_all_files(base_dir="."):
     base_path = Path(base_dir)
     python_files = [
@@ -27,6 +28,7 @@ def lint_all_files(base_dir="."):
         print("⚠️ Linting issues detected:")
         print(result.stdout)
         print(result.stderr, file=sys.stderr)
+
 
 if __name__ == "__main__":
     lint_all_files(".")
