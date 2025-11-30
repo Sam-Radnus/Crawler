@@ -9,7 +9,6 @@ from src.crawler.utils.logger import CrawlerLogger
 from src.crawler.storage.database_service import DatabaseService
 from src.crawler.core.html_downloader import HTMLDownloader
 from src.crawler.parsing.link_extractor import LinkExtractor
-from geospatial.prioritizer import Prioritizers
 from src.crawler.utils.property_matcher import PropertyURLMatcher
 from pybloom_live import BloomFilter
 
