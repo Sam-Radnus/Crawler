@@ -6,11 +6,21 @@ from kafka import KafkaConsumer, KafkaProducer
 from kafka.errors import NoBrokersAvailable
 
 from src.crawler.utils.logger import CrawlerLogger
+from geospatial.prioritizer import Prioritizer
 from src.crawler.storage.database_service import DatabaseService
 from src.crawler.core.html_downloader import HTMLDownloader
 from src.crawler.parsing.link_extractor import LinkExtractor
 from src.crawler.utils.property_matcher import PropertyURLMatcher
 from pybloom_live import BloomFilter
+
+import os
+from src.crawler.storage.file_storage import (
+    extract_property_id,
+    ensure_dirs,
+    save_html,
+    extract_image_urls,
+    download_images,
+)
 
 
 class Worker:
@@ -60,8 +70,7 @@ class Worker:
             except NoBrokersAvailable as e:
                 last_error = e
                 if attempt < max_retries - 1:
-                    self.logger.log_warning(
-                        f"Kafka not ready, retrying in {retry_delay}s... ({attempt + 1}/{max_retries})")
+                    self.logger.log_warning(                        f"Kafka not ready, retrying in {retry_delay}s... ({attempt + 1}/{max_retries})")
                     time.sleep(retry_delay)
                 else:
                     raise
@@ -146,12 +155,30 @@ class Worker:
             if is_property:
                 self.logger.log_info(
                     f"Property page detected - saving to database: {url}")
+                
+                property_id = extract_property_id(url)
+                base_path = os.path.join("/mnt/storage", property_id)
+                os.makedirs(base_path, exist_ok = True)
+                images_path = ensure_dirs(base_path)
+
+                save_html(base_path, result["content"])
+                self.logger.log_info(f"Saved HTML to {base_path}/index.html")
+
                 property_data: dict[str, Any] = self.database_service.save_page(
-                    url=url,
-                    html_content=result['content'],
-                    status_code=result['status_code'],
-                    crawl_duration=time.time() - start,
+                    url = url,
+                    html_content = result['content'],
+                    status_code = result['status_code'],
+                    storage_path = base_path,
+                    crawl_duration = time.time() - start,
                 )
+
+                image_urls = extract_image_urls(result["content"], url)
+                self.logger.log_info(f"Found {len(image_urls)} images")
+            
+                download_images(image_urls, images_path)
+                self.logger.log_info(
+                    f"Downloaded images to {base_path}/images")
+
 
                 if not property_data:
                     self.logger.log_error(

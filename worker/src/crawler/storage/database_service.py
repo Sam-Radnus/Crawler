@@ -88,6 +88,7 @@ class DatabaseService:
         self,
         url: str,
         html_content: str,
+        storage_path: str,
         status_code: int,
         crawl_duration: float,
     ) -> Dict[str, Any]:
@@ -96,14 +97,14 @@ class DatabaseService:
         with self._conn.cursor() as cur:
             cur.execute(
                 """
-                INSERT INTO public.pages (url, status_code, crawl_duration)
-                VALUES (%s, %s, %s)
+                INSERT INTO public.pages (url, status_code, crawl_duration, storage_path)
+                VALUES (%s, %s, %s, %s)
                 ON CONFLICT (url) DO UPDATE SET
                   status_code = EXCLUDED.status_code,
                   crawl_duration = EXCLUDED.crawl_duration
                 RETURNING id, url;
                 """,
-                (url, status_code, crawl_duration),
+                (url, status_code, crawl_duration, storage_path),
             )
             return cur.fetchone() or {"url": url}
 
