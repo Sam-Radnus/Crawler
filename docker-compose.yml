@@ -59,6 +59,8 @@ services:
       for topic in urls_priority_3 urls_priority_4 urls_priority_5; do
         kafka-topics --create --if-not-exists --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1 --topic $$topic
       done
+
+      kafka-topics --create --if-not-exists --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1 --topic dlq
       
       echo 'Topics created successfully'
       kafka-topics --list --bootstrap-server localhost:9092
