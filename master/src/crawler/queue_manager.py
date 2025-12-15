@@ -4,6 +4,7 @@ URL Queue Manager - Manages manual URL additions to specific queues
 
 import json
 import time
+import os
 from typing import Dict, Any, List, Optional
 from kafka import KafkaProducer
 from kafka.errors import NoBrokersAvailable
@@ -21,8 +22,7 @@ class URLQueueManager:
         with open(config_path, 'r') as f:
             self.config: Dict[str, Any] = json.load(f)
 
-        self.bootstrap_servers: List[str] = self.config.get(
-            'kafka', {}).get('bootstrap_servers', ['localhost:9092'])
+        self.bootstrap_servers: List[str] = [os.environ.get('KAFKA_SERVERS', 'localhost:9092')]
         self.default_priority = self.config.get(
             'default_priority', 3)  # Default queue priority
 

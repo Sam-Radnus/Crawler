@@ -10,6 +10,7 @@ import argparse
 import json
 import sys
 import psycopg2
+import os
 from typing import Dict, Any, List, Optional
 from kafka import KafkaAdminClient, KafkaConsumer
 from kafka.errors import NoBrokersAvailable
@@ -24,8 +25,7 @@ class CrawlerCLI:
         """Initialize CLI with configuration."""
         with open(config_path, 'r') as f:
             self.config: Dict[str, Any] = json.load(f)
-        self.bootstrap_servers: List[str] = self.config.get(
-            'kafka', {}).get('bootstrap_servers', ['localhost:9092'])
+        self.bootstrap_servers: List[str] = os.environ.get("KAFKA_SERVERS", "localhost:9092")
         self.health_check_timeout = 10
         print(
             f"Initializing server with bootstrap servers: {self.bootstrap_servers}")
@@ -176,8 +176,7 @@ class CrawlerCLI:
         # Check PostgreSQL connection
         print("\n🗄️  PostgreSQL Connection:")
         try:
-            db_config = self.config.get('database', {})
-            connection_string = db_config.get('connection_string', '')
+            connection_string = os.environ['CONNECTION_STRING']
             conn = psycopg2.connect(connection_string)
             conn.close()
             print("✅ PostgreSQL is accessible")

@@ -228,9 +228,7 @@ class Worker:
         with open(config_path, 'r') as f:
             self.config: Dict[str, Any] = json.load(f)
 
-        bootstrap_servers: List[str] = self.config.get(
-            'kafka', {}).get(
-            'bootstrap_servers', ['localhost:9092'])
+        bootstrap_servers: List[str] = [os.environ.get('KAFKA_SERVERS', 'localhost:9092')]
 
         self.logger.log_info(f"Bootstrap servers: {bootstrap_servers}")
 
@@ -293,12 +291,12 @@ class Worker:
                 "Failed to create KafkaProducer")
 
         # Initialize database service
-        db_cfg: Dict[str, Any] = self.config.get('database', {})
         self.database_service: DatabaseService = DatabaseService(
-            connection_string=db_cfg.get('connection_string', ''),
-            database_name=db_cfg.get('database_name', 'crawler'),
-            output_dir=self.config.get('output_dir', 'crawled_data')
+            connection_string = os.environ['CONNECTION_STRING'],
+            database_name = os.environ.get('DATABASE_NAME', ''),
+            output_dir = os.environ.get('OUTPUT_DIR','/mnt/storage')
         )
+        
         self.downloader: HTMLDownloader = HTMLDownloader(
             timeout=self.config.get('timeout', 30),
             max_retries=self.config.get('max_retries', 3),

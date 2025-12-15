@@ -4,6 +4,7 @@ Master Dispatcher - Dispatches seed URLs to Kafka priority queues
 
 import json
 import time
+import os
 from typing import Dict, Any, List
 from kafka import KafkaProducer
 from kafka.errors import NoBrokersAvailable
@@ -21,8 +22,7 @@ class MasterDispatcher:
         with open(config_path, 'r') as f:
             self.config: Dict[str, Any] = json.load(f)
 
-        self.bootstrap_servers: List[str] = self.config.get(
-            'kafka', {}).get('bootstrap_servers', ['localhost:9092'])
+        self.bootstrap_servers: List[str] = [os.environ.get('KAFKA_SERVERS','localhost:9092')]
 
         # Initialize Kafka producer
         self.producer: KafkaProducer = self._create_producer()

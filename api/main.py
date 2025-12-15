@@ -3,6 +3,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import json
 from contextlib import contextmanager
+import os
 
 from fastapi.middleware.cors import CORSMiddleware
 from geospatial.prioritizer import Prioritizer
@@ -24,16 +25,9 @@ app.add_middleware(
 
 # Load configuration
 try:
-    with open("config.json", "r") as f:
-        config = json.load(f)
-    CONNECTION_STRING = config.get("database", {}).get("connection_string")
-    if not CONNECTION_STRING:
-        raise ValueError("Database connection string not found in config.json")
-except FileNotFoundError:
-    raise RuntimeError("config.json file not found")
-except json.JSONDecodeError:
-    raise RuntimeError("config.json is not valid JSON")
-
+    CONNECTION_STRING = os.environ['CONNECTION_STRING']
+except KeyError as e:
+    raise Exception(str(e))
 
 @contextmanager
 def get_connection():
