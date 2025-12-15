@@ -1,11 +1,5 @@
 {
     "seed_urls": [
-        "https://bigbend.craigslist.org/search/apa#search=2~gallery~0",
-        "https://orangecounty.craigslist.org/search/apa#search=2~gallery~0",
-        "https://santabarbara.craigslist.org/search/apa#search=2~gallery~0",
-        "https://grandisland.craigslist.org/search/apa#search=2~gallery~0",
-        "https://norfolk.craigslist.org/search/apa#search=2~gallery~0",
-        "https://tucson.craigslist.org/search/apa#search=2~gallery~0"
     ],
     "max_pages": 25,
     "max_workers": 3,

@@ -25,7 +25,7 @@ class CrawlerCLI:
         """Initialize CLI with configuration."""
         with open(config_path, 'r') as f:
             self.config: Dict[str, Any] = json.load(f)
-        self.bootstrap_servers: List[str] = os.environ.get("KAFKA_SERVERS", "localhost:9092")
+        self.bootstrap_servers: List[str] = [os.environ.get("KAFKA_SERVERS", "localhost:9092")]
         self.health_check_timeout = 10
         print(
             f"Initializing server with bootstrap servers: {self.bootstrap_servers}")
