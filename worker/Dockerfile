@@ -42,9 +42,11 @@ RUN playwright install-deps chromium
 
 # Copy source
 COPY worker/src/ ./src/
+
 # Copy geospatial module
 COPY geospatial/ ./geospatial/
 COPY config.json ./config.json
+
 
 ENV PYTHONPATH=/app
 
