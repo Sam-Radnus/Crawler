@@ -95,6 +95,22 @@ class S3Storage(StorageBackend):
             )
         else:
             self.s3 = boto3.client('s3', region_name=region)
+        
+        self._verify_connection()
+    
+    def _verify_connection(self) -> None:
+        """Verify S3 connection and bucket access"""
+        try:
+            self.s3.head_bucket(Bucket=self.bucket)
+        except ClientError as e:
+            error_code = e.response['Error']['Code']
+            if error_code == '404':
+                raise ConnectionError(f"Bucket '{self.bucket}' does not exist")
+            elif error_code == '403':
+                raise ConnectionError(f"Access denied to bucket '{self.bucket}'")
+            else:
+                raise ConnectionError(f"Failed to connect to S3: {str(e)}")
+    
     
     def create(self, path: str, content: bytes) -> bool:
         try:
@@ -151,6 +167,37 @@ class FileService:
         target = dest_path if dest_path else source.name
         content = source.read_bytes()
         return self.backend.create(target, content)
+
+    def upload_directory(self, dir_path: str, prefix: str = "", recursive: bool = True) -> dict:
+        """Upload entire directory to storage backend"""
+        source_dir = Path(dir_path)
+        if not source_dir.exists() or not source_dir.is_dir():
+            return {"success": False, "uploaded": [], "failed": []}
+        
+        uploaded = []
+        failed = []
+        
+        if recursive:
+            items = source_dir.rglob("*")
+        else:
+            items = source_dir.glob("*")
+        
+        for item in items:
+            if item.is_file():
+                relative = item.relative_to(source_dir)
+                dest = str(Path(prefix) / relative) if prefix else str(relative)
+                dest = dest.replace("\\", "/")
+                
+                try:
+                    content = item.read_bytes()
+                    if self.backend.create(dest, content):
+                        uploaded.append(dest)
+                    else:
+                        failed.append(dest)
+                except Exception:
+                    failed.append(dest)
+        
+        return {"success": len(failed) == 0, "uploaded": uploaded, "failed": failed}
     
     def create_file(self, path: str, content: bytes) -> bool:
         return self.backend.create(path, content)

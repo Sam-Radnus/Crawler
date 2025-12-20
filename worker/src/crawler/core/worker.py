@@ -1,6 +1,7 @@
 import argparse
 import json
 import time
+import os
 from typing import Dict, Any, Optional, List
 from kafka import KafkaConsumer, KafkaProducer
 from kafka.errors import NoBrokersAvailable
@@ -10,6 +11,7 @@ from geospatial.prioritizer import Prioritizer
 from src.crawler.storage.database_service import DatabaseService
 from src.crawler.storage.cache_service import RedisService
 from src.crawler.core.html_downloader import HTMLDownloader
+from src.crawler.storage.file_storage import FileService, S3Storage
 from src.crawler.core.transaction import (
     TransactionManager,
     TransactionStatus
@@ -19,7 +21,6 @@ from src.crawler.parsing.link_extractor import LinkExtractor
 from src.crawler.utils.property_matcher import PropertyURLMatcher
 from pybloom_live import BloomFilter
 
-import os
 from src.crawler.storage.file_storage import (
     extract_property_id,
     ensure_dirs,
@@ -32,6 +33,7 @@ from src.crawler.storage.file_storage import (
 class PropertyPageTransactionManager:
     def __init__(
         self,
+        fs: FileService,
         url: str,
         content: str,
         status_code: int,
@@ -51,6 +53,7 @@ class PropertyPageTransactionManager:
         self.producer = producer
         self.dlq_topic = dlq_topic
         self.start_time = start_time
+        self.fs = fs
         
         self.property_id = None
         self.base_path = None
@@ -153,6 +156,17 @@ class PropertyPageTransactionManager:
             except Exception as e:
                 self.logger.log_warning(f"Failed to rollback images: {e}")
     
+    def _upload_to_s3(self):
+        source_path = self.base_path
+        prefix = self.property_id
+
+        details = self.fs.upload_directory(source_path, prefix)
+        self.logger.log_info(f"uploaded_details for {source_path} to {prefix} --> {details}")
+        
+
+    def _delete_from_s3(self):
+        self.logger.log_warning("Failed to upload to s3 bucket")
+    
     def execute(self) -> bool:
         # Check if content changed before starting transaction
         if not self.cache.has_url_changed(self.url, self.content):
@@ -182,6 +196,10 @@ class PropertyPageTransactionManager:
             "download_images",
             self._download_images,
             self._rollback_download_images
+        ).add_step(
+            "upload_to_s3",
+            self._upload_to_s3,
+            self._delete_from_s3
         )
         
         result = tm.execute()
@@ -224,6 +242,7 @@ class Worker:
         self.topic = topic
         self.cache = cache_service
         self.dlq_topic = dlq 
+        self.s3_client = None
 
         with open(config_path, 'r') as f:
             self.config: Dict[str, Any] = json.load(f)
@@ -238,6 +257,23 @@ class Worker:
         max_retries = 30
         retry_delay = 2
         last_error = None
+        
+        access_key = os.environ['AWS_ACCESS_KEY']
+        secret_key = os.environ['AWS_SECRET_KEY']
+        bucket = os.environ['BUCKET']
+        REGION = os.environ['REGION']
+
+        self.logger.log_info(f"Loading s3 client")
+
+        self.s3_client = S3Storage(
+            bucket = bucket, region = REGION, 
+            aws_access_key = access_key, aws_secret_key = secret_key
+        )
+
+        self.fs = FileService(self.s3_client)
+
+        self.logger.log_info(f"Successfully Loaded s3 client")
+
 
         for attempt in range(max_retries):
             try:
@@ -343,6 +379,7 @@ class Worker:
                 
                 txn_manager = PropertyPageTransactionManager(
                     url = url,
+                    fs = self.fs,
                     content = result["content"],
                     status_code = result["status_code"],
                     database_service = self.database_service,
