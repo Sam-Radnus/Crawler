@@ -29,6 +29,20 @@ from src.crawler.storage.file_storage import (
     download_images,
 )
 
+import warnings
+
+warnings.filterwarnings(
+    "ignore",
+    category=DeprecationWarning
+)
+
+# OR more specifically
+warnings.filterwarnings(
+    "ignore",
+    category=DeprecationWarning,
+    message="Boto3 will no longer support Python 3.9.*"
+)
+
 
 class PropertyPageTransactionManager:
     def __init__(
@@ -346,7 +360,8 @@ class Worker:
         self._topic_for_priority = lambda p: f"urls_priority_{p}"
 
     def process_url(
-            self, url: str, payload: Optional[Dict[str, Any]] = None) -> bool:
+            self, url: str, payload: Optional[Dict[str, Any]] = None
+        ) -> bool:
         
         start: float = time.time()
         self.logger.log_info(
